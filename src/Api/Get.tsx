@@ -32,7 +32,9 @@ async function Get<T>(url: string): Promise<ApiResponse<T> | null> {
       Toaster("error", resData.message || "Something went wrong");
     }
   } catch (error: any) {
-    const msg = error?.response?.data?.message || "Something went wrong";
+    const msg = error?.response?.data?.message || "No database connection";
+    console.log("msg",msg);
+    
     const status = error?.response?.status;
 
     if (status === 410 && !isRedirecting) {

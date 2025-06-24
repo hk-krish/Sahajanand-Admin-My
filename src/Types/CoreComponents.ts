@@ -27,7 +27,7 @@ export interface CardHeaderProp {
   title?: string;
   headClass?: string;
   tagClass?: string;
-  isEditing?:boolean;
+  isEditing?: boolean;
   setIsEditing?: (val: boolean) => void;
   Search?: (key: string) => void;
   btnTitle?: string;
@@ -47,5 +47,15 @@ export interface RatioImageProp {
   className?: string;
   src: string;
   alt?: string;
-  style?:{ height : number }
+  style?: { height: number };
+}
+
+export interface CommonFileUploadProps {
+  multiple?: boolean;
+  register?: any;
+  errors?: any;
+  setValue?: any;
+  setPhoto?: (photo: string) => void; 
+  uploadedFiles?: File[];
+  setUploadedFiles?: (files: File[]) => void;
 }

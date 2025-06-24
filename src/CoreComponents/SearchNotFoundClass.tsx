@@ -1,16 +1,15 @@
+import { ImagePath } from "@/Constant";
+import RatioImage from "@/Utils/RatioImage";
 import { FC } from "react";
-import { Col } from "reactstrap";
 
-const SearchNotFoundClass:FC<{ word: string }> = ({ word }) => {
+const SearchNotFoundClass: FC<{ word: string }> = ({ word }) => {
   return (
-    <Col sm="12">
-      <div>
-        <div className="text-center p-5">
-          {/* <Image className="img-100 mb-4" src={dynamicImage(`other-images/sad.gif`)} alt="" /> */}
-          <p>{`Sorry, Not Found Any ${word}`}</p>
-        </div>
+    <div className="no-found-item text-center">
+      <RatioImage src={`${ImagePath}other-images/not-found.svg`} alt="not-found" className="img-fluid" />
+      <div className="no-found-content">
+        <h3>{word}</h3>
       </div>
-    </Col>
+    </div>
   );
 };
 

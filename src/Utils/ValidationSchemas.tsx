@@ -5,21 +5,52 @@ export const LoginSchema = yup.object().shape({
     .string()
     // .matches(/^[0-9]{10}$/, "Enter a valid 10-digit phone number")
     .required("Login Id is required"),
-  password: yup.string().min(6, "Password must be at least 6 characters long").matches(/[!@#$%^&*()_+={}:;"'<>,.?/-]/, "Password must include at least one special character").required("Password is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters long")
+    .matches(/[!@#$%^&*()_+={}:;"'<>,.?/-]/, "Password must include at least one special character")
+    .required("Password is required"),
 });
+
+const tagArraySchema = yup
+  .array()
+  .of(
+    yup.lazy((value) =>
+      typeof value === "string"
+        ? yup.string()
+        : yup.object().shape({
+            label: yup.string().required(),
+            customOption: yup.boolean().optional(),
+          })
+    )
+  )
+  .min(1, "At least one value is required")
+  .required("This field is required");
 
 export const AddProductSchema = yup.object().shape({
   name: yup.string().required("Product name is required"),
-  title: yup.string().required("Project title is required"),
-  client: yup.string().required("Client name is required"),
-  progress: yup.number().typeError("Progress must be a number").min(0, "Minimum is 0%").max(100, "Maximum is 100%").required("Progress is required"),
+  slug: yup.string().required("Slug is required"),
+  description: yup.string().required("Description is required"),
+  price: yup.string().required("Price is required"),
+  salePrice: yup.string().required("Sale Price is required"),
+  sku: yup.string().required("SKU is required"),
+  stock: yup.string().required("Stock is required"),
+  category: yup.string().required("Category is required"),
+  subCategory: yup.string().required("Sub Category is required"),
+  tags: tagArraySchema,
+  color: tagArraySchema,
+  size: tagArraySchema,
+  material: tagArraySchema,
+  fabric: tagArraySchema,
+  occasion: tagArraySchema,
 });
 
 export const AddCategorySchema = yup.object().shape({
   name: yup.string().required("Product name is required"),
-  title: yup.string().required("Project title is required"),
-  client: yup.string().required("Client name is required"),
-  progress: yup.number().typeError("Progress must be a number").min(0, "Minimum is 0%").max(100, "Maximum is 100%").required("Progress is required"),
+  slug: yup.string().required("Slug is required"),
+  description: yup.string().required("Description is required"),
+  image: yup.array().of(yup.mixed()).min(1, "Image is required").required("Image is required"),
+  isFeatured: yup.boolean(),
 });
 
 export const AddFaqSchema = yup.object().shape({

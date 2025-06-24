@@ -2697,13 +2697,6 @@ body.offcanvas {
   max-width: max-content;
 }
 
-.rbt-input-multi {
-  &.focus {
-    border-color: $primary-color !important;
-    box-shadow: 0 0 0 0.25rem rgba(100, 2, 105, 0.3) !important;
-  }
-}
-
 .card-header-box {
   form {
     .form-group {
@@ -2789,6 +2782,21 @@ body.offcanvas {
       &.custom-checkbox:checked {
         background-color: #f2a93e;
       }
+      &:focus,
+      &:focus-visible {
+        outline: none !important;
+      }
+    }
+
+    .rbt-input-multi {
+      background-color: #fff;
+      padding: 10px 16px;
+      border: 1px dashed #dedbdb;
+      width: 100%;
+      border-radius: 4px;
+      &.focus {
+        box-shadow: none !important;
+      }
     }
 
     textarea {
@@ -2797,6 +2805,10 @@ body.offcanvas {
       border: 1px dashed #dedbdb;
       width: 100%;
       border-radius: 4px;
+      &:focus,
+      &:focus-visible {
+        outline: none !important;
+      }
     }
 
     select.form-select {
@@ -2805,6 +2817,15 @@ body.offcanvas {
       border: 1px dashed #dedbdb;
       width: 100%;
       border-radius: 4px;
+      &:focus {
+        border: 1px dashed #dedbdb !important;
+        box-shadow: none !important;
+      }
+    }
+    .switch {
+      .switch-state {
+        border: 1px dashed #dedbdb;
+      }
     }
 
     .choose-img-box {
@@ -3023,6 +3044,30 @@ body.offcanvas {
     }
   }
 }
+
+//no-found-item
+.no-found-item {
+  img {
+    width: 32%;
+  }
+
+  .no-found-content {
+    margin-top: 32px;
+
+    h3 {
+      font-weight: 400;
+      color: rgba(var(--title-color), 1);
+    }
+
+    p {
+      width: 70%;
+      margin-inline: auto;
+      color: rgba(var(--content-color), 1);
+      margin-top: 12px;
+    }
+  }
+}
+
 /**=====================
     4.3 Update CSS Ends
 ==========================**/

@@ -1,25 +1,22 @@
 import { Toaster } from "@/Utils/ToastNotification";
-import axios, { AxiosRequestHeaders } from "axios";
-// import { getToken } from "../utils";
+import axios, { AxiosError } from "axios";
 
-let isRedirecting = false;
-
-export interface ApiResponse<T> {
+interface ResponseData {
   status: number;
   message?: string;
-  data?: T;
 }
 
-async function Post<TInput, TResponse>(url: string, data?: TInput): Promise<ApiResponse<TResponse> | null> {
-  const isFormData = data instanceof FormData;
-  // const token = getToken();
-  const headers = {
-    // ...(isToken ? { Authorization: token } : {}),
-    ...(isFormData ? {} : { "Content-Type": "application/json" }),
-  };
+const Delete = async (url: string): Promise<ResponseData | null> => {
+  let isRedirecting = false;
 
   try {
-    const response = await axios.post<ApiResponse<TResponse>>(url, data, { headers });
+    const response = await axios.delete<ResponseData>(url, {
+      headers: {
+        // Authorization: authToken,
+        "Content-Type": "application/json",
+      },
+    });
+
     const resData = response.data;
 
     if (response.status === 200) {
@@ -35,13 +32,14 @@ async function Post<TInput, TResponse>(url: string, data?: TInput): Promise<ApiR
     } else {
       Toaster("error", resData.message || "Something went wrong");
     }
-  } catch (error: any) {
-    const msg = error?.response?.data?.message || "No database connection";
-    const status = error?.response?.status;
+  } catch (error: unknown) {
+    const err = error as AxiosError<{ message?: string }>;
+    const msg = err?.response?.data?.message || "Something went wrong";
+    const status = err?.response?.status;
 
     if (status === 410 && !isRedirecting) {
       isRedirecting = true;
-      window.location.href = "/";
+      window.location.href = "/session-expired";
       setTimeout(() => (isRedirecting = false), 1000);
     } else {
       Toaster("error", msg);
@@ -49,6 +47,6 @@ async function Post<TInput, TResponse>(url: string, data?: TInput): Promise<ApiR
   }
 
   return null;
-}
+};
 
-export default Post;
+export default Delete;

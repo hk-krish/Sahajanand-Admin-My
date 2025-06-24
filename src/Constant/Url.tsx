@@ -17,6 +17,14 @@ const URL = {
     TermsCondition: "/terms-condition",
     TermsConditionEdit: "/terms-condition/add/edit",
   },
+  Category: {
+    Category: "/category",
+    Add: "/category/add",
+    Delete:"/category",
+  },
+  Upload: {
+    Upload: "/upload",
+  },
 } as const;
 
 // Type-safe transformation

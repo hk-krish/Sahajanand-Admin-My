@@ -1,12 +1,37 @@
+import { Post } from "@/Api";
+import { Url_Keys } from "@/Constant";
+import { CommonFileUploadProps } from "@/Types/CoreComponents";
+import { Toaster } from "@/Utils/ToastNotification";
 import { GalleryAdd } from "iconsax-react";
 import { FC, Fragment, useState } from "react";
 import Dropzone from "react-dropzone";
 
-const CommonFileUpload: FC<{ multiple?: boolean }> = ({ multiple }) => {
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+const CommonFileUpload: FC<CommonFileUploadProps> = ({ multiple, errors, setValue, setPhoto, uploadedFiles, setUploadedFiles }) => {
 
-  const onDrop = (acceptedFiles: File[]) => setUploadedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
-  const removeFile = (indexToRemove: number) => setUploadedFiles((prevFiles) => prevFiles.filter((_, index) => index !== indexToRemove));
+  const onDrop = async (acceptedFiles: File[]) => {
+    const updatedFiles = multiple ? [...uploadedFiles, ...acceptedFiles] : acceptedFiles;
+
+    for (const file of acceptedFiles) {
+      const imageURL = new FormData();
+      imageURL.append("image", file);
+      try {
+        const result = await Post(Url_Keys.Upload.Upload, imageURL);
+        setPhoto(result.data as string);
+      } catch {
+        Toaster("error", "Image upload failed.");
+        return;
+      }
+    }
+    setUploadedFiles(updatedFiles);
+    setValue("image", updatedFiles);
+  };
+
+  const removeFile = (indexToRemove: number) => {
+    const updatedFiles = uploadedFiles.filter((_, index) => index !== indexToRemove);
+    setUploadedFiles(updatedFiles);
+    setValue("image", updatedFiles);
+  };
+
   return (
     <Fragment>
       {uploadedFiles.length === 0 ? (
@@ -15,7 +40,7 @@ const CommonFileUpload: FC<{ multiple?: boolean }> = ({ multiple }) => {
             <div {...getRootProps()} className="dropzone-container">
               <input {...getInputProps()} />
               <div className="dz-message needsclick">
-                <GalleryAdd color="#cca270" variant="Bulk"/>
+                <GalleryAdd color="#cca270" variant="Bulk" />
                 <h5>Image upload</h5>
               </div>
             </div>
@@ -33,7 +58,6 @@ const CommonFileUpload: FC<{ multiple?: boolean }> = ({ multiple }) => {
               )}
             </Dropzone>
           )}
-
           <div className="uploaded-files">
             {uploadedFiles.map((file, index) => (
               <div key={index} className="file-card">
@@ -47,6 +71,7 @@ const CommonFileUpload: FC<{ multiple?: boolean }> = ({ multiple }) => {
           </div>
         </Fragment>
       )}
+      {errors?.image && <p className="text-danger">{errors.image.message}</p>}
     </Fragment>
   );
 };

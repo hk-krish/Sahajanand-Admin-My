@@ -1,23 +1,44 @@
+import { Post } from "@/Api";
+import { Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
 import CommonFileUpload from "@/CoreComponents/CommonFileUpload";
 import { AddCategorySchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
 
 const AddCategoryContainer = () => {
+  const [photo, setPhoto] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+
   const {
     register,
     handleSubmit,
+    setValue,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(AddCategorySchema),
   });
 
-  const onSubmit = (data: any) => {
-    console.log("Form Data:", data);
+  const onSubmit = async (data: any) => {
+    const Category = {
+      name: data.name,
+      slug: data.slug,
+      description: data.description,
+      isFeatured: data.isFeatured,
+      image: photo,
+    };
+    try {
+      const response = await Post(Url_Keys.Category.Add, Category);
+      if (response?.status === 200) {
+        reset();
+        setPhoto("");
+        setUploadedFiles([]);
+      }
+    } catch (error) {}
   };
 
   return (
@@ -33,43 +54,43 @@ const AddCategoryContainer = () => {
                   <Row className="gy-3">
                     <Col md="6">
                       <div className="input-box">
-                        <Label>Product Name</Label>
-                        <input id="name" type="text" placeholder="Product name" {...register("name")} />
+                        <Label>Category Name</Label>
+                        <input id="name" type="text" placeholder="Category Name" {...register("name")} />
                         {errors.name && <p className="text-danger">{errors.name.message}</p>}
                       </div>
                     </Col>
                     <Col md="6">
                       <div className="input-box">
-                        <Label>Project Title</Label>
-                        <input type="text" placeholder="ProjectTitlePlaceholder" {...register("title")} />
-                        {errors.title && <p className="text-danger">{errors.title.message}</p>}
+                        <Label>Slug</Label>
+                        <input type="text" placeholder="Slug" {...register("slug")} />
+                        {errors.slug && <p className="text-danger">{errors.slug.message}</p>}
                       </div>
                     </Col>
 
-                    <Col md="6">
+                    <Col md="12">
                       <div className="input-box">
-                        <Label>Client Name</Label>
-                        <input type="text" placeholder="ClientNamePlaceholder" {...register("client")} />
-                        {errors.client && <p className="text-danger">{errors.client.message}</p>}
+                        <Label>Description</Label>
+                        <textarea placeholder="Description" {...register("description")} />
+                        {errors.description && <p className="text-danger">{errors.description.message}</p>}
                       </div>
                     </Col>
-
-                    <Col md="6">
-                      <div className="input-box">
-                        <Label>Project Progress (%)</Label>
-                        <select className="form-select" {...register("progress")}>
-                          <option disabled>Static Menu</option>
-                          <option>Simple</option>
-                          <option>Classified</option>
-                        </select>
-                        {errors.progress && <p className="text-danger">{errors.progress.message}</p>}
-                      </div>
-                    </Col>
-
-                    <Col className="custom-dropzone-project input-box">
+                    <Col md="12" className="custom-dropzone-project input-box">
                       <div className="mb-3">
                         <Label>Upload Image</Label>
-                        <CommonFileUpload multiple />
+                        <CommonFileUpload register={register} errors={errors} setValue={setValue} setPhoto={setPhoto} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+                      </div>
+                    </Col>
+                    <Col sm="6" md="3">
+                      <div className="input-box">
+                        <div className="d-flex">
+                          <Label className="col-form-label m-r-10">Featured</Label>
+                          <div className="text-end switch-sm">
+                            <Label className="switch">
+                              <input type="checkbox" {...register("isFeatured")} />
+                              <span className="switch-state" />
+                            </Label>
+                          </div>
+                        </div>
                       </div>
                     </Col>
                   </Row>

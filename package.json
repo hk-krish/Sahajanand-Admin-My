@@ -16,6 +16,7 @@
     "iconsax-react": "^0.0.8",
     "next": "15.3.3",
     "react": "^19.0.0",
+    "react-bootstrap-typeahead": "^6.4.1",
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.58.1",
