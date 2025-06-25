@@ -43,13 +43,34 @@ export const AddProductSchema = yup.object().shape({
   material: tagArraySchema,
   fabric: tagArraySchema,
   occasion: tagArraySchema,
+  isNewArrival: yup.boolean(),
+  isBestSelling: yup.boolean(),
+  isFeatured: yup.boolean(),
+  showOnHomepage: yup.boolean(),
+  image: yup
+    .array()
+    .of(
+      yup.mixed().test("file-or-url", "Invalid image", (value) => {
+        return typeof value === "string" || value instanceof File;
+      })
+    )
+    .min(1, "Image is required")
+    .required("Image is required"),
 });
 
 export const AddCategorySchema = yup.object().shape({
   name: yup.string().required("Product name is required"),
   slug: yup.string().required("Slug is required"),
   description: yup.string().required("Description is required"),
-  image: yup.array().of(yup.mixed()).min(1, "Image is required").required("Image is required"),
+  image: yup
+    .array()
+    .of(
+      yup.mixed().test("file-or-url", "Invalid image", (value) => {
+        return typeof value === "string" || value instanceof File;
+      })
+    )
+    .min(1, "Image is required")
+    .required("Image is required"),
   isFeatured: yup.boolean(),
 });
 

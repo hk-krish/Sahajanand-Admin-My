@@ -17,10 +17,11 @@ export const RouteList = {
     Product: "/product",
     AddProduct: "/product/add-product",
   },
-
+  
   Category: {
     Category: "/category",
     AddCategory: "/category/add-category",
+    EditCategory: "/category/edit-category",
   },
 
   FAQ: "/faq",

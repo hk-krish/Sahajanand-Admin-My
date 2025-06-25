@@ -55,7 +55,41 @@ export interface CommonFileUploadProps {
   register?: any;
   errors?: any;
   setValue?: any;
-  setPhoto?: (photo: string) => void; 
+  setPhoto?: (photo: string | string[]) => void;
+  photo?: string | string[];
   uploadedFiles?: File[];
   setUploadedFiles?: (files: File[]) => void;
+}
+
+export interface SearchFunctionProps {
+  btnTitle: string;
+  btnLink?: string;
+  openModal?: () => void;
+  setSearchData?: (value: string) => void;
+}
+
+export interface PaginationListProps {
+  pageCount: number;
+  onPageChange: (data: { selected: number }) => void;
+  page: number;
+}
+
+export interface PaginationProps {
+  pageCount: number;
+  selectedPageLimit: number;
+  onPageLimitChange: (limit: number) => void;
+  onPageChange: (data: { selected: number }) => void;
+  page: number;
+}
+
+export interface CustomCheckboxType {
+  register: any;
+  name: string;
+  title?: string;
+}
+
+export interface CustomTypeaheadType {
+  errors: any;
+  control: any;
+  title?: string;
 }

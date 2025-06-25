@@ -2693,9 +2693,6 @@ body.offcanvas {
     width: 25px;
   }
 }
-.pageLimit {
-  max-width: max-content;
-}
 
 .card-header-box {
   form {
@@ -3064,6 +3061,30 @@ body.offcanvas {
       margin-inline: auto;
       color: rgba(var(--content-color), 1);
       margin-top: 12px;
+    }
+  }
+}
+.pagination-custom {
+  background-color: $white;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  .pageLimit {
+    display: flex;
+    max-width: max-content;
+    align-items: center;
+  }
+  .page-link:focus {
+    border-color: #cca270 !important;
+    box-shadow: 0 0 0 0.25rem #cca2704d !important;
+  }
+  @media only screen and (max-width: 575.98px) {
+    .row {
+      .pagination-box {
+        padding-top: 15px;
+        display: flex;
+        justify-content: center !important;
+      }
     }
   }
 }

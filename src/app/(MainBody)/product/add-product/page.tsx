@@ -6,7 +6,7 @@ const AddProduct = () => {
   useEffect(() => {
     (async () => {
       if (typeof window !== "undefined") {
-        const newClient = (await import("@/Components/Product/AddProduct")).default;
+        const newClient = (await import("@/Components/Product/ProductDataForm/AddProduct")).default;
         setClient(() => newClient);
       }
     })();

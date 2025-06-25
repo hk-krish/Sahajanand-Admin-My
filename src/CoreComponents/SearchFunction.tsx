@@ -1,23 +1,19 @@
 import { Href } from "@/Constant";
+import { SearchFunctionProps } from "@/Types/CoreComponents";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, FormEvent } from "react";
 import { Button, Col, Form, Input, Row } from "reactstrap";
 
-interface SearchFunctionProps {
-  btnTitle: string;
-  btnLink?: string;
-  openModal?: () => void;
-}
+const SearchFunction: FC<SearchFunctionProps> = ({ btnTitle, btnLink, openModal ,setSearchData}) => {
 
-const SearchFunction: FC<SearchFunctionProps> = ({ btnTitle, btnLink, openModal }) => {
   return (
     <div className="feature-products">
       <Row>
         <Col md="10">
           <Form>
             <div className="form-group m-0">
-              <Input type="text" placeholder={"Search"} />
-              <i className="fa fa-search"></i>
+              <Input type="text" placeholder="Search" onChange={(e) => setSearchData?.(e.target.value)} />
+              <i className="fa fa-search" />
             </div>
           </Form>
         </Col>

@@ -21,10 +21,18 @@ const URL = {
     Category: "/category",
     Add: "/category/add",
     Delete:"/category",
+    Edit:"/category/edit"
   },
   Upload: {
     Upload: "/upload",
+    Delete:"/upload"
   },
+  Product:{
+    Product:"/product",
+    Add: "/product/add",
+    Delete:"/product",
+    Edit:"/product/edit"
+  }
 } as const;
 
 // Type-safe transformation

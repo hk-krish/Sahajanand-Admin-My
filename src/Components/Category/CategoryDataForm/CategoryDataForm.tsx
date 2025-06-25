@@ -1,18 +1,23 @@
 import { Post } from "@/Api";
-import { Url_Keys } from "@/Constant";
+import { RouteList, Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
 import CommonFileUpload from "@/CoreComponents/CommonFileUpload";
+import { useAppSelector } from "@/ReduxToolkit/Hooks";
+import { CategoryFormData } from "@/Types/Product";
 import { AddCategorySchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Fragment, useState } from "react";
+import { useRouter } from "next/navigation";
+import { FC, Fragment, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
 
-const AddCategoryContainer = () => {
-  const [photo, setPhoto] = useState("");
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+const CategoryDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
+  const [photo, setPhoto] = useState<any>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
+  const { singleEditingCategory } = useAppSelector((state) => state.product);
 
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -23,7 +28,21 @@ const AddCategoryContainer = () => {
     resolver: yupResolver(AddCategorySchema),
   });
 
-  const onSubmit = async (data: any) => {
+  useEffect(() => {
+    if (singleEditingCategory && action === "Edit") {
+      setValue("name", singleEditingCategory.name);
+      setValue("slug", singleEditingCategory.slug);
+      setValue("description", singleEditingCategory.description);
+      setValue("isFeatured", singleEditingCategory.isFeatured);
+      if (singleEditingCategory.image) {
+        setValue("image", [singleEditingCategory.image]);
+        setPhoto(singleEditingCategory.image);
+        setUploadedFiles([{ name: singleEditingCategory.image, preview: singleEditingCategory.image }]);
+      }
+    }
+  }, [action, setValue, singleEditingCategory]);
+
+  const onSubmit = async (data: CategoryFormData) => {
     const Category = {
       name: data.name,
       slug: data.slug,
@@ -32,22 +51,23 @@ const AddCategoryContainer = () => {
       image: photo,
     };
     try {
-      const response = await Post(Url_Keys.Category.Add, Category);
+      const response = action === "Edit" ? await Post(Url_Keys.Category.Edit, { id: singleEditingCategory._id, ...Category }) : await Post(Url_Keys.Category.Add, Category);
       if (response?.status === 200) {
         reset();
         setPhoto("");
         setUploadedFiles([]);
+        router.push(RouteList.Category.Category);
       }
     } catch (error) {}
   };
 
   return (
     <Fragment>
-      <Breadcrumbs mainTitle="Add Category" parent="Product" />
+      <Breadcrumbs mainTitle={`${action} Category`} parent="Category" />
       <Row>
         <Col sm="12">
           <Card>
-            <CommonCardHeader title="Add Category" />
+            <CommonCardHeader title={`${action} Category`} />
             <CardBody>
               <div className="input-items">
                 <Form onSubmit={handleSubmit(onSubmit)}>
@@ -77,7 +97,7 @@ const AddCategoryContainer = () => {
                     <Col md="12" className="custom-dropzone-project input-box">
                       <div className="mb-3">
                         <Label>Upload Image</Label>
-                        <CommonFileUpload register={register} errors={errors} setValue={setValue} setPhoto={setPhoto} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+                        <CommonFileUpload register={register} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
                       </div>
                     </Col>
                     <Col sm="6" md="3">
@@ -98,7 +118,7 @@ const AddCategoryContainer = () => {
                     <Col>
                       <div className="text-center">
                         <Button type="submit" color="primary">
-                          Save Product
+                          {`${action} Category`}
                         </Button>
                       </div>
                     </Col>
@@ -113,4 +133,4 @@ const AddCategoryContainer = () => {
   );
 };
 
-export default AddCategoryContainer;
+export default CategoryDataForm;

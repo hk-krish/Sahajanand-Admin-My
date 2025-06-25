@@ -6,7 +6,7 @@ const AddCategory = () => {
   useEffect(() => {
     (async () => {
       if (typeof window !== "undefined") {
-        const newClient = (await import("@/Components/Category/CategoryDataForm/AddCategory")).default;
+        const newClient = (await import("@/Components/Category/CategoryDataForm/EditCategory")).default;
         setClient(() => newClient);
       }
     })();
