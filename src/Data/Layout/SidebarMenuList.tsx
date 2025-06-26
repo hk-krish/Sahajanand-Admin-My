@@ -123,7 +123,7 @@ export const menuList: MenuItem[] | undefined = [
         icon: "button",
         active: false,
         type: "link",
-        url: RouteList.Blog,
+        url: RouteList.Blog.Blog,
       },
     ],
   },

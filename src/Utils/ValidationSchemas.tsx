@@ -31,12 +31,12 @@ export const AddProductSchema = yup.object().shape({
   name: yup.string().required("Product name is required"),
   slug: yup.string().required("Slug is required"),
   description: yup.string().required("Description is required"),
-  price: yup.string().required("Price is required"),
-  salePrice: yup.string().required("Sale Price is required"),
+  price: yup.number().required("Price is required"),
+  salePrice: yup.number().required("Sale Price is required"),
   sku: yup.string().required("SKU is required"),
-  stock: yup.string().required("Stock is required"),
-  category: yup.string().required("Category is required"),
-  subCategory: yup.string().required("Sub Category is required"),
+  stock: yup.number().required("Stock is required"),
+  categoryId: yup.string().required("Category is required"),
+  subCategoryId: yup.string().required("Sub Category is required"),
   tags: tagArraySchema,
   color: tagArraySchema,
   size: tagArraySchema,
@@ -85,8 +85,13 @@ export const AddBannerSchema = yup.object().shape({
 });
 
 export const AddBlogSchema = yup.object().shape({
-  name: yup.string().required("Product name is required"),
   title: yup.string().required("Project title is required"),
+  content: yup.string().required("Content is required"),
+  slug: yup.string().required("Slug is required"),
+  metaTitle: yup.string().required("Meta Title is required"),
+  metaDescription: yup.string().required("Meta Description is required"),
+  category: yup.string().required("Category is required"),
+  status: yup.string().required("Status is required"),
 });
 
 export const AddCollectionSchema = yup.object().shape({

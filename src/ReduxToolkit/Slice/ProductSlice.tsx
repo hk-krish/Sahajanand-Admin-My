@@ -1,19 +1,33 @@
 import { Get } from "@/Api";
 import { Url_Keys } from "@/Constant";
-import { CategoryApiResponse, FetchApiParams, ProductSliceType } from "@/Types/Product";
+import { CategoryApiResponse, FetchApiParams, ProductApiResponse, ProductSliceType } from "@/Types/Product";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState: ProductSliceType = {
   isAddCollectionModal: false,
   allCategory: null,
   singleEditingCategory: null,
-  isCollectionSearchData: null
+  isCategorySearchData: null,
+  isLoadingCategory: true,
+  allProduct: null,
+  isProductSearchData: null,
+  singleEditingProduct:null,
+  isLoadingProduct:true
 };
 
 export const fetchCategoryApiData = createAsyncThunk<CategoryApiResponse, FetchApiParams>("admin/category", async ({ page, limit, search }) => {
-  let url = `${Url_Keys.Category.Category}?page=${page}&limit=${limit}`;
+  let url = Url_Keys.Category.Category;
+  if (page) url += `?page=${page}&limit=${limit}`;
   if (search) url += `&search=${search}`;
   const response = await Get<CategoryApiResponse>(url);
+  return response?.data;
+});
+
+export const fetchProductApiData = createAsyncThunk<ProductApiResponse, FetchApiParams>("admin/product", async ({ page, limit, search }) => {
+  let url = Url_Keys.Product.Product;
+  if (page) url += `?page=${page}&limit=${limit}`;
+  if (search) url += `&search=${search}`;
+  const response = await Get<ProductApiResponse>(url);
   return response?.data;
 });
 
@@ -27,16 +41,27 @@ const ProductSlice = createSlice({
     setSingleEditingCategory(state, action) {
       state.singleEditingCategory = action.payload;
     },
-    setCollectionSearchData: (state, action) => {
-      state.isCollectionSearchData = action.payload;
+    setCategorySearchData: (state, action) => {
+      state.isCategorySearchData = action.payload;
+    },
+    setProductSearchData: (state, action) => {
+      state.isProductSearchData = action.payload;
+    },
+    setSingleEditingProduct(state, action) {
+      state.singleEditingProduct = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCategoryApiData.fulfilled, (state, action) => {
       state.allCategory = action.payload;
+      state.isLoadingCategory = false;
+    });
+    builder.addCase(fetchProductApiData.fulfilled, (state, action) => {
+      state.allProduct = action.payload;
+      state.isLoadingProduct = false
     });
   },
 });
 
-export const { setAddCollectionModal, setSingleEditingCategory ,setCollectionSearchData} = ProductSlice.actions;
+export const { setAddCollectionModal, setSingleEditingCategory, setCategorySearchData, setProductSearchData ,setSingleEditingProduct} = ProductSlice.actions;
 export default ProductSlice.reducer;

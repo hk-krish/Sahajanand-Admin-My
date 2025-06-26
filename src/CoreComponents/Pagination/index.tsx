@@ -44,7 +44,7 @@ const Pagination: FC<PaginationProps> = ({ pageCount, selectedPageLimit, onPageL
   return (
     <div className="pagination-custom">
       {pageCount > 0 && (
-        <Row>
+        <div className="d-flex">
           <Col sm="6" lg="3">
             <div className="pageLimit">
               <label htmlFor="pageLimit" className="pe-3 m-0">
@@ -56,7 +56,7 @@ const Pagination: FC<PaginationProps> = ({ pageCount, selectedPageLimit, onPageL
           <Col sm="6" lg="9" className="d-flex align-items-end justify-content-end pagination-box">
             <PaginationList pageCount={pageCount} onPageChange={onPageChange} page={page} />
           </Col>
-        </Row>
+        </div>
       )}
     </div>
   );

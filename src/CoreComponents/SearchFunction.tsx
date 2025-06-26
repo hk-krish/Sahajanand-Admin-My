@@ -1,7 +1,7 @@
 import { Href } from "@/Constant";
 import { SearchFunctionProps } from "@/Types/CoreComponents";
 import Link from "next/link";
-import { FC, FormEvent } from "react";
+import { FC } from "react";
 import { Button, Col, Form, Input, Row } from "reactstrap";
 
 const SearchFunction: FC<SearchFunctionProps> = ({ btnTitle, btnLink, openModal ,setSearchData}) => {

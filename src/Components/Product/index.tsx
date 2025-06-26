@@ -1,18 +1,29 @@
-import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
-import SearchFunction from "@/CoreComponents/SearchFunction";
-import { Fragment } from "react";
-import { Container } from "reactstrap";
-import GridView from "./GridView";
 import { RouteList } from "@/Constant";
+import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
+import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
+import { useAppDispatch } from "@/ReduxToolkit/Hooks";
+import { setProductSearchData } from "@/ReduxToolkit/Slice/ProductSlice";
+import { Fragment } from "react";
+import { Card, CardBody, Col, Container } from "reactstrap";
+import GridView from "./GridView";
 
 const ProductContainer = () => {
+  const dispatch = useAppDispatch();
+
+  const setSearchData = (e: string) => dispatch(setProductSearchData(e));
   return (
     <Fragment>
       <Breadcrumbs mainTitle="Product" parent="Pages" />
       <Container fluid className={`product-wrapper`}>
         <div className="product-grid">
-          <SearchFunction btnTitle="Add Product" btnLink={RouteList.Product.AddProduct}/>
-          <GridView />
+          <Col sx="12">
+            <Card>
+              <CommonCardHeader Search={setSearchData} btnTitle="Add Product" btnLink={RouteList.Product.AddProduct} />
+              <CardBody>
+                <GridView />
+              </CardBody>
+            </Card>
+          </Col>
         </div>
       </Container>
     </Fragment>

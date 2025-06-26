@@ -30,7 +30,6 @@ const URL = {
   Product:{
     Product:"/product",
     Add: "/product/add",
-    Delete:"/product",
     Edit:"/product/edit"
   }
 } as const;

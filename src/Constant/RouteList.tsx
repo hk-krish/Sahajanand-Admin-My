@@ -16,18 +16,23 @@ export const RouteList = {
   Product: {
     Product: "/product",
     AddProduct: "/product/add-product",
+    EditProduct: "/product/edit-product",
   },
-  
+
   Category: {
     Category: "/category",
     AddCategory: "/category/add-category",
     EditCategory: "/category/edit-category",
   },
+  Blog: {
+    Blog: "/blog",
+    AddBlog: "/blog/add-blog",
+    EditBlog: "/blog/edit-blog",
+  },
 
   FAQ: "/faq",
   Banners: "/banners",
   TrackOrder: "/track-order",
-  Blog: "/blog",
   Collections: "/collections",
   Setting: "/setting",
   ChangePassword: "/change-password",

@@ -1,4 +1,4 @@
-import { Href, ImagePath } from "@/Constant";
+import { Href, ImagePath, RouteList } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
 import { useAppDispatch } from "@/ReduxToolkit/Hooks";
@@ -11,46 +11,34 @@ import Link from "next/link";
 
 const BlogContainer = () => {
   const [searchData, setSearchData] = useState("");
-  const [isEdit, setEdit] = useState(false);
   const dispatch = useAppDispatch();
 
-  const AddSalesmanModalClick = () => dispatch(setAddBlogModal());
   return (
     <Fragment>
       <Breadcrumbs mainTitle="Blog" parent="Pages" />
       <Container fluid>
         <Col sx="12">
           <Card>
-            <CommonCardHeader Search={setSearchData} btnTitle="Add Blog" btnClick={AddSalesmanModalClick} />
+            <CommonCardHeader Search={setSearchData} btnTitle="Add Blog" btnLink={RouteList.Blog.AddBlog} />
             <CardBody>
               <div className="blog-boxes">
-                <Row className="g-3">
+                <Row className="g-4">
                   <Col xs="12" sm="6" lg="4" xl="3">
                     <div className="blog-box list-box">
                       <div className="blog-image">
                         <RatioImage className=" img" src={`${ImagePath}product/compare-1.jpg`} alt="blog1" />
                         <div className="product-hover">
                           <ul>
-                            {!isEdit ? (
-                              <>
-                                <li>
-                                  <Link href={Href} color="transparent">
-                                    <i className="icon icon-trash" />
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link href={Href} color="transparent">
-                                    <i className="icon icon-pen" />
-                                  </Link>
-                                </li>
-                              </>
-                            ) : (
-                              <li>
-                                <Link href={Href} color="transparent">
-                                  <i className="icon icon-cart2" />
-                                </Link>
-                              </li>
-                            )}
+                            <li>
+                              <Link href={Href} color="transparent">
+                                <i className="icon icon-trash" />
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href={Href} color="transparent">
+                                <i className="icon icon-pen" />
+                              </Link>
+                            </li>
                           </ul>
                         </div>
                       </div>

@@ -2651,10 +2651,17 @@ body.offcanvas {
   .product-grid {
     .product-wrapper-grid {
       .gridRow {
-        .product-box {
-          .product-img {
-            .ribbon-index {
-              z-index: 0;
+        .card {
+          background-color: rgba(249, 249, 249, 1);
+          border: none;
+          &:hover {
+            box-shadow: none;
+          }
+          .product-box {
+            .product-img {
+              .ribbon-index {
+                z-index: 0;
+              }
             }
           }
         }
@@ -2909,6 +2916,7 @@ body.offcanvas {
           border-radius: 0%;
           transform: scale(1);
           transition: all 0.3s ease;
+          z-index: 1;
         }
       }
 
@@ -3065,17 +3073,19 @@ body.offcanvas {
   }
 }
 .pagination-custom {
-  background-color: $white;
-  margin-bottom: 20px;
-  padding: 20px;
+  background-color: rgba(249, 249, 249, 1);
+  padding: 15px 15px;
   border-radius: 8px;
   .pageLimit {
     display: flex;
     max-width: max-content;
     align-items: center;
   }
+  .page-link{
+    background-color: $white;
+    border: 1px dashed $primary-color;
+  }
   .page-link:focus {
-    border-color: #cca270 !important;
     box-shadow: 0 0 0 0.25rem #cca2704d !important;
   }
   @media only screen and (max-width: 575.98px) {
@@ -3086,6 +3096,35 @@ body.offcanvas {
         justify-content: center !important;
       }
     }
+  }
+}
+.skeleton {
+  background: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+
+  &-image {
+    height: 150px;
+    border-radius: 8px;
+  }
+
+  &-text {
+    height: 20px;
+    margin-top: 10px;
+    border-radius: 4px;
+
+    &.short {
+      width: 60%;
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
   }
 }
 

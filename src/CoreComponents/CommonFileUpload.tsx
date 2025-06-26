@@ -85,7 +85,6 @@ const CommonFileUpload: FC<CommonFileUploadProps> = ({ multiple, errors, setValu
               return (
                 <div key={index} className="file-card">
                   <img src={imageSrc} alt={file.name || `image-${index}`} className="file-thumbnail" />
-                  <p className="file-name">{file.name || `image-${index}`}</p>
                   <button onClick={() => removeFile(index)} className="remove-button" title="Remove file">
                     ×
                   </button>

@@ -1,58 +1,111 @@
+import { Post } from "@/Api";
+import { RouteList, Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
 import CommonFileUpload from "@/CoreComponents/CommonFileUpload";
 import CustomCheckbox from "@/CoreComponents/CustomCheckbox";
 import CustomTypeahead from "@/CoreComponents/CustomTypeahead";
+import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
+import { fetchCategoryApiData } from "@/ReduxToolkit/Slice/ProductSlice";
+import { ProductFormData, SelectOption } from "@/Types/Product";
 import { AddProductSchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FC, Fragment, useState } from "react";
+import { useRouter } from "next/navigation";
+import { FC, Fragment, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
 
 const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
-  const [photo, setPhoto] = useState<any>([]);
+  const [photo, setPhoto] = useState<string | string[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
+  const { allCategory, singleEditingProduct } = useAppSelector((state) => state.product);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
     control,
     setValue,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(AddProductSchema),
   });
 
-  const onSubmit = (data: any) => {
-     const Product = {
+  useEffect(() => {
+    if (singleEditingProduct && action === "Edit") {
+      setValue("name", singleEditingProduct.name);
+      setValue("slug", singleEditingProduct.slug);
+      setValue("description", singleEditingProduct.description);
+      setValue("price", singleEditingProduct.price);
+      setValue("salePrice", singleEditingProduct.salePrice);
+      setValue("sku", singleEditingProduct.sku);
+      setValue("categoryId", singleEditingProduct.categoryId);
+      setValue("subCategoryId", singleEditingProduct.subCategoryId);
+      setValue("tags", singleEditingProduct.tags);
+      setValue("color", singleEditingProduct.attributes.color);
+      setValue("size", singleEditingProduct.attributes.size);
+      setValue("material", singleEditingProduct.attributes.material);
+      setValue("fabric", singleEditingProduct.attributes.fabric);
+      setValue("occasion", singleEditingProduct.attributes.occasion);
+      setValue("stock", singleEditingProduct.stock);
+      setValue("isFeatured", singleEditingProduct.isFeatured);
+      if (singleEditingProduct.images) {
+        setValue("image", [singleEditingProduct.images]);
+        setPhoto(singleEditingProduct.images);
+        if (Array.isArray(singleEditingProduct.images)) {
+          setUploadedFiles(
+            singleEditingProduct.images.map((img) => ({
+              name: img,
+              preview: img,
+            }))
+          );
+        }
+      }
+    }
+  }, [action, setValue, singleEditingProduct]);
+
+  const onSubmit = async (data: ProductFormData) => {
+    const normalizeTags = (items: SelectOption[] = []) => items.map((item) => (typeof item === "string" ? item : item.label));
+    const Product = {
       name: data.name,
       slug: data.slug,
       description: data.description,
-      price:data.price,
-      salePrice:data.salePrice,
-      sku:data.sku,
-      categoryId:data.categoryId,
-      subCategoryId:data.subCategoryId,
-      tags:data.tags,
-      attributes:{
-
+      price: data.price,
+      salePrice: data.salePrice,
+      sku: data.sku,
+      images: photo,
+      categoryId: data.categoryId,
+      subCategoryId: data.subCategoryId,
+      tags: normalizeTags(data.tags),
+      attributes: {
+        color: normalizeTags(data.color),
+        size: normalizeTags(data.size),
+        material: normalizeTags(data.material),
+        fabric: normalizeTags(data.fabric),
+        occasion: normalizeTags(data.occasion),
       },
-      stock:data.stock,
-      isNewArrival:data.isNewArrival,
-      isBestSelling:data.isBestSelling,
-      showOnHomepage:data.showOnHomepage,
+      stock: data.stock,
+      isNewArrival: data.isNewArrival,
+      isBestSelling: data.isBestSelling,
       isFeatured: data.isFeatured,
-      image: photo,
+      showOnHomepage: data.showOnHomepage,
     };
-    // const normalizedTags = (data.tags || []).map((tag: any) => (typeof tag === "string" ? tag : tag.label));
-
-    // const finalData = {
-    //   ...data,
-    //   tags: normalizedTags,
-    //   image:photo
-    // };
-
-    console.log("Final Form Data:", Product);
+    try {
+      const response = action === "Edit" ? await Post(Url_Keys.Product.Edit, { productId: singleEditingProduct._id, ...Product }) : await Post(Url_Keys.Product.Add, Product);
+      if (response?.status === 200) {
+        reset();
+        setPhoto([]);
+        setUploadedFiles([]);
+        router.push(RouteList.Product.Product);
+      }
+    } catch (error) {}
   };
+
+  useEffect(() => {
+    dispatch(fetchCategoryApiData({}));
+  }, [dispatch]);
 
   return (
     <Fragment>
@@ -124,24 +177,30 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                     <Col sm="6" md="4" lg="3" xl="2">
                       <div className="input-box">
                         <Label>Category</Label>
-                        <select className="form-select" {...register("category")}>
+                        <select className="form-select" {...register("categoryId")}>
                           <option>Select Category</option>
-                          <option value="simple">Simple</option>
-                          <option value="classified">Classified</option>
+                          {allCategory?.category_data?.map((category, index) => (
+                            <option value={category?._id} key={index}>
+                              {category?.name}
+                            </option>
+                          ))}
                         </select>
-                        {errors.category && <p className="text-danger">{errors.category.message}</p>}
+                        {errors.categoryId && <p className="text-danger">{errors.categoryId.message}</p>}
                       </div>
                     </Col>
 
                     <Col sm="6" md="4" lg="3" xl="2">
                       <div className="input-box">
                         <Label>Sub Category</Label>
-                        <select className="form-select" {...register("subCategory")}>
+                        <select className="form-select" {...register("subCategoryId")}>
                           <option>Select Sub Category</option>
-                          <option value="option1">Option 1</option>
-                          <option value="option2">Option 2</option>
+                          {allCategory?.category_data?.map((category, index) => (
+                            <option value={category?._id} key={index}>
+                              {category?.name}
+                            </option>
+                          ))}
                         </select>
-                        {errors.subCategory && <p className="text-danger">{errors.subCategory.message}</p>}
+                        {errors.subCategoryId && <p className="text-danger">{errors.subCategoryId.message}</p>}
                       </div>
                     </Col>
 

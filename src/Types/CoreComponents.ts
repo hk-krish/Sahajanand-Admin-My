@@ -32,6 +32,7 @@ export interface CardHeaderProp {
   Search?: (key: string) => void;
   btnTitle?: string;
   btnClick?: () => void;
+  btnLink?: string;
 }
 
 export interface InformationProp {
@@ -92,4 +93,8 @@ export interface CustomTypeaheadType {
   errors: any;
   control: any;
   title?: string;
+}
+
+export interface ProductImageProps {
+  image: string | string[];
 }
