@@ -40,7 +40,7 @@ export const menuList: MenuItem[] | undefined = [
         icon: "widget",
         active: false,
         type: "link",
-        url: RouteList.Collections,
+        url: RouteList.Collections.Collections,
       },
       {
         id: 10,

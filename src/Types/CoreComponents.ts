@@ -23,6 +23,11 @@ export interface CardSubtitle {
   mark?: string;
 }
 
+export interface TypeFilterData {
+    value?: string;
+    label?: string;
+  };
+
 export interface CardHeaderProp {
   title?: string;
   headClass?: string;
@@ -30,9 +35,12 @@ export interface CardHeaderProp {
   isEditing?: boolean;
   setIsEditing?: (val: boolean) => void;
   Search?: (key: string) => void;
+  searchClass?: string;
   btnTitle?: string;
   btnClick?: () => void;
   btnLink?: string;
+  typeFilter?: (id: string) => void;
+  typeFilterData?: TypeFilterData[];
 }
 
 export interface InformationProp {
@@ -59,8 +67,8 @@ export interface CommonFileUploadProps {
   photo?: string | string[];
   uploadedFiles?: File[];
   setUploadedFiles?: (files: File[]) => void;
-  trigger?:any;
-  name?:string
+  trigger?: any;
+  name?: string;
 }
 
 export interface SearchFunctionProps {
@@ -94,7 +102,7 @@ export interface CustomTypeaheadType {
   errors: any;
   control: any;
   title?: string;
-  name?:string
+  name?: string;
 }
 
 export interface ProductImageProps {

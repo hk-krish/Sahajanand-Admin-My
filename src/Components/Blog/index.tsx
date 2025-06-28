@@ -50,7 +50,7 @@ const BlogContainer = () => {
       <Container fluid>
         <Col sx="12">
           <Card>
-            <CommonCardHeader Search={setSearchData} btnTitle="Add Blog" btnLink={RouteList.Blog.AddBlog} />
+            <CommonCardHeader searchClass="col-md-10 col-sm-7" Search={setSearchData} btnTitle="Add Blog" btnLink={RouteList.Blog.AddBlog} />
             <CardBody>
               <div className="blog-boxes">
                 {isLoadingBlog ? (

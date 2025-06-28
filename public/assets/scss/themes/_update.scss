@@ -2735,6 +2735,19 @@ body.offcanvas {
         height: 50px;
         margin-bottom: 15px;
       }
+      select.form-select {
+        background-color: #fff;
+        padding: 8px 16px;
+        border: 1px dashed #dedbdb;
+        width: 100%;
+        border-radius: 4px;
+        height: 50px;
+        margin-bottom: 15px;
+        &:focus {
+          border: 1px dashed #dedbdb !important;
+          box-shadow: none !important;
+        }
+      }
     }
   }
 }
@@ -2850,6 +2863,10 @@ body.offcanvas {
       &:focus {
         border: 1px dashed #dedbdb !important;
         box-shadow: none !important;
+      }
+      &:disabled {
+        background-color: var(--bs-secondary-bg);
+        color: #6e6e6f;
       }
     }
     .switch {

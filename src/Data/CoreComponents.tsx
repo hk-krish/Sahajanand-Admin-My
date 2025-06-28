@@ -25,3 +25,22 @@ export const LinkTypeData = [
   { value: "collection", label: "Collection" },
 ];
 
+export const CategoryData = [
+  { value: "orders", label: "Orders" },
+  { value: "payments", label: "Payments" },
+  { value: "shipping", label: "Shipping" },
+  { value: "returns", label: "Returns" },
+  { value: "products", label: "Products" },
+  { value: "account", label: "Account" },
+  { value: "technical", label: "Technical" },
+  { value: "pricing", label: "Pricing" },
+  { value: "security", label: "Security" },
+];
+
+export const CollectionTypeData = [
+  { value: "our", label: "Our" },
+  { value: "occasion", label: "Occasion" },
+  { value: "material", label: "Material" },
+  { value: "color", label: "Color" },
+  { value: "theme", label: "Theme" },
+];

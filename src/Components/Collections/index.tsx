@@ -1,16 +1,19 @@
+import { RouteList } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
 import { useAppDispatch } from "@/ReduxToolkit/Hooks";
-import { setAddCollectionModal } from "@/ReduxToolkit/Slice/ProductSlice";
+import { setCollectionSearchData } from "@/ReduxToolkit/Slice/ProductSlice";
 import { Fragment, useState } from "react";
 import { Card, CardBody, Col, Container } from "reactstrap";
 import GridView from "./GridView";
+import { CollectionTypeData } from "@/Data/CoreComponents";
 
 const CollectionsContainer = () => {
-  const [searchData, setSearchData] = useState("");
+    const [isTypeFilter, setTypeFilter] = useState("");
+  
   const dispatch = useAppDispatch();
 
-  const AddSalesmanModalClick = () => dispatch(setAddCollectionModal());
+  const setSearchData = (e: string) => dispatch(setCollectionSearchData(e));
 
   return (
     <Fragment>
@@ -19,9 +22,9 @@ const CollectionsContainer = () => {
         <div className="product-grid">
           <Col sx="12">
             <Card>
-              <CommonCardHeader Search={setSearchData} btnTitle="Add Collections" btnClick={AddSalesmanModalClick} />
+              <CommonCardHeader searchClass="col-md-8" Search={setSearchData} typeFilter={setTypeFilter} typeFilterData={CollectionTypeData} btnTitle="Add Collections" btnLink={RouteList.Collections.AddCollections} />
               <CardBody>
-                <GridView />
+                <GridView isTypeFilter={isTypeFilter}/>
               </CardBody>
             </Card>
           </Col>

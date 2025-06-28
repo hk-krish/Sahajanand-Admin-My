@@ -38,12 +38,24 @@ const URL = {
     Edit: "/blog/edit",
     Delete: "/blog",
   },
-  Banner:{
-    Banner:"/banner",
+  Banner: {
+    Banner: "/banner",
     Add: "/banner/add",
     Edit: "/banner/edit",
     Delete: "/banner",
-  }
+  },
+  Faq: {
+    Faq: "/faq",
+    Add: "/faq/add",
+    Edit: "/faq/edit",
+    Delete: "/faq",
+  },
+  Collection: {
+    Collection: "/collection",
+    Add: "/collection/add",
+    Edit: "/collection/edit",
+    Delete: "/collection",
+  },
 } as const;
 
 // Type-safe transformation

@@ -28,6 +28,7 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
     control,
     setValue,
     reset,
+    trigger,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(AddProductSchema),
@@ -98,6 +99,7 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
         reset();
         setPhoto([]);
         setUploadedFiles([]);
+        trigger("image")
         router.push(RouteList.Product.Product);
       }
     } catch (error) {}
@@ -214,7 +216,7 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                     <Col md="12" className="custom-dropzone-project input-box">
                       <div className="mb-3">
                         <Label>Upload Image</Label>
-                        <CommonFileUpload multiple name="image" errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+                        <CommonFileUpload multiple name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
                       </div>
                     </Col>
                     <Col md="12" lg="10" xl="8">

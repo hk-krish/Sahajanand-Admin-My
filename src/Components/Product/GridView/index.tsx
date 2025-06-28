@@ -13,10 +13,11 @@ import { Fragment, useCallback, useEffect, useState } from "react";
 import { Card, Col, Row } from "reactstrap";
 
 const GridView = () => {
-  const { allProduct, isProductSearchData, isLoadingProduct } = useAppSelector((state) => state.product);
   const [page, setPage] = useState(0);
   const [pageLimit, setPageLimit] = useState(LimitOptions[0]?.value);
+  
   const dispatch = useAppDispatch();
+  const { allProduct, isProductSearchData, isLoadingProduct } = useAppSelector((state) => state.product);
 
   const EditItem = (item: ProductType) => {
     dispatch(setSingleEditingProduct(item));

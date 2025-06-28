@@ -12,10 +12,11 @@ const initialState: BannersSliceType = {
   singleEditingBanner:null
 };
 
-export const fetchBannerApiData = createAsyncThunk<BannerApiResponse, FetchApiParams>("admin/category", async ({ page, limit, search }) => {
+export const fetchBannerApiData = createAsyncThunk<BannerApiResponse, FetchApiParams>("admin/banner", async ({ page, limit, search ,typeFilter}) => {
   let url = Url_Keys.Banner.Banner;
   if (page) url += `?page=${page}&limit=${limit}`;
   if (search) url += `&search=${search}`;
+  if (typeFilter) url += `&typeFilter=${typeFilter}`;
   const response = await Get<BannerApiResponse>(url);
   return response?.data;
 });

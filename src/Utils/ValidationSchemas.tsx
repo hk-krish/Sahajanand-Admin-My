@@ -69,13 +69,22 @@ export const AddCategorySchema = yup.object().shape({
 });
 
 export const AddFaqSchema = yup.object().shape({
-  name: yup.string().required("Product name is required"),
-  title: yup.string().required("Project title is required"),
+  question: yup.string().required("Question is required"),
+  answer: yup.string().required("Answer is required"),
+  priority: yup
+    .number()
+    .typeError("Priority must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
+    .min(1, "Priority must be at least 1")
+    .required("Priority is required"),
+  category: yup.string().required("Category is required"),
 });
 
 export const AddBannerSchema = yup.object().shape({
   type: yup.string().required("Type is required"),
-  title: yup.string().required("Project title is required"),
+  title: yup.string().required("Title is required"),
   linkType: yup.string().required("Link Type is required"),
   linkId: yup.string().required("Link Id is required"),
   priority: yup
@@ -104,8 +113,20 @@ export const AddBlogSchema = yup.object().shape({
 });
 
 export const AddCollectionSchema = yup.object().shape({
-  name: yup.string().required("Product name is required"),
-  title: yup.string().required("Project title is required"),
+  name: yup.string().required("Name is required"),
+  type: yup.string().required("Type is required"),
+  description: yup.string().required("Description is required"),
+  image: imageSchema,
+  isVisible: yup.boolean(),
+  priority: yup
+    .number()
+    .typeError("Priority must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
+    .min(1, "Priority must be at least 1")
+    .required("Priority is required"),
+  products:tagArraySchema,
 });
 
 export const SettingSchema = yup.object().shape({

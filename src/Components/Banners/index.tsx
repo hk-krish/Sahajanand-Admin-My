@@ -5,7 +5,7 @@ import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
 import Pagination from "@/CoreComponents/Pagination";
 import SearchNotFoundClass from "@/CoreComponents/SearchNotFoundClass";
 import Skeleton from "@/CoreComponents/Skeleton";
-import { LimitOptions } from "@/Data/CoreComponents";
+import { BannerTypeData, LimitOptions } from "@/Data/CoreComponents";
 import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { fetchBannerApiData, setAddBannerModal, setBannerSearchData, setSingleEditingBanner } from "@/ReduxToolkit/Slice/BannersSlice";
 import { BannerType } from "@/Types/Banner";
@@ -16,11 +16,13 @@ import { Button, Card, CardBody, Col, Container, Row, Table } from "reactstrap";
 import AddBannersModal from "./AddBannersModal";
 
 const BannersContainer = () => {
-  const [isEdit,setEdit] = useState(false)
+  const [isEdit, setEdit] = useState(false);
   const [page, setPage] = useState(0);
   const [pageLimit, setPageLimit] = useState(LimitOptions[0]?.value);
-  const { allBanner, isBannerSearchData, isLoadingBanner } = useAppSelector((state) => state.banners);
+  const [isTypeFilter, setTypeFilter] = useState("");
+
   const dispatch = useAppDispatch();
+  const { allBanner, isBannerSearchData, isLoadingBanner } = useAppSelector((state) => state.banners);
 
   const AddSalesmanModalClick = () => dispatch(setAddBannerModal());
   const setSearchData = (e: string) => dispatch(setBannerSearchData(e));
@@ -34,15 +36,15 @@ const BannersContainer = () => {
 
   const EditBanner = (item: BannerType) => {
     dispatch(setSingleEditingBanner(item));
-    setEdit(true)
-    AddSalesmanModalClick()
+    setEdit(true);
+    AddSalesmanModalClick();
   };
 
   const getAllBanner = useCallback(async () => {
     try {
-      await dispatch(fetchBannerApiData({ page: page + 1, limit: pageLimit, search: isBannerSearchData }));
+      await dispatch(fetchBannerApiData({ page: page + 1, limit: pageLimit, search: isBannerSearchData, typeFilter: isTypeFilter }));
     } catch (error) {}
-  }, [dispatch, page, pageLimit, isBannerSearchData]);
+  }, [dispatch, page, pageLimit, isBannerSearchData, isTypeFilter]);
 
   useEffect(() => {
     getAllBanner();
@@ -53,7 +55,7 @@ const BannersContainer = () => {
       <Container fluid>
         <Col md="12" className="custom-table">
           <Card>
-            <CommonCardHeader Search={setSearchData} btnTitle="Add Banners" btnClick={AddSalesmanModalClick} />
+            <CommonCardHeader Search={setSearchData} searchClass="col-md-8" typeFilter={setTypeFilter} typeFilterData={BannerTypeData} btnTitle="Add Banners" btnClick={AddSalesmanModalClick} />
             <CardBody>
               {isLoadingBanner ? (
                 <Row>
@@ -109,7 +111,7 @@ const BannersContainer = () => {
           </Card>
         </Col>
       </Container>
-      <AddBannersModal isEdit={isEdit} setEdit={setEdit} getAllBanner={getAllBanner}/>
+      <AddBannersModal isEdit={isEdit} setEdit={setEdit} getAllBanner={getAllBanner} />
     </Fragment>
   );
 };

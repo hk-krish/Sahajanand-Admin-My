@@ -1,12 +1,12 @@
 "use client";
 import { FunctionComponent, useEffect, useState } from "react";
 
-const EditCategory = () => {
+const AddCollection = () => {
   const [IsClient, setClient] = useState<FunctionComponent>();
   useEffect(() => {
     (async () => {
       if (typeof window !== "undefined") {
-        const newClient = (await import("@/Components/Category/CategoryDataForm/EditCategory")).default;
+        const newClient = (await import("@/Components/Collections/CollectionDataForm/AddCollection")).default;
         setClient(() => newClient);
       }
     })();
@@ -14,4 +14,4 @@ const EditCategory = () => {
   return IsClient ? <IsClient /> : "";
 };
 
-export default EditCategory;
+export default AddCollection;

@@ -23,6 +23,7 @@ const CategoryDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
     handleSubmit,
     setValue,
     reset,
+    trigger,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(AddCategorySchema),
@@ -56,6 +57,7 @@ const CategoryDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
         reset();
         setPhoto([]);
         setUploadedFiles([]);
+        trigger("image")
         router.push(RouteList.Category.Category);
       }
     } catch (error) {}
@@ -97,7 +99,7 @@ const CategoryDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                     <Col md="12" className="custom-dropzone-project input-box">
                       <div className="mb-3">
                         <Label>Upload Image</Label>
-                        <CommonFileUpload name="image" errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+                        <CommonFileUpload name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
                       </div>
                     </Col>
                     <Col sm="6" md="3">
@@ -118,7 +120,7 @@ const CategoryDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                     <Col>
                       <div className="text-center">
                         <Button type="submit" color="primary">
-                          {`${action} Category`}
+                          Save
                         </Button>
                       </div>
                     </Col>

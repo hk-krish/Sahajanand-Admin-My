@@ -19,7 +19,7 @@ const CategoryContainer = () => {
         <div className="product-grid">
           <Col sx="12">
             <Card>
-              <CommonCardHeader Search={setSearchData} btnTitle="Add Category" btnLink={RouteList.Category.AddCategory} />
+              <CommonCardHeader searchClass="col-md-10 col-sm-7" Search={setSearchData} btnTitle="Add Category" btnLink={RouteList.Category.AddCategory} />
               <CardBody>
                 <GridView />
               </CardBody>

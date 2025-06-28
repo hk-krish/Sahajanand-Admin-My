@@ -29,11 +29,15 @@ export const RouteList = {
     AddBlog: "/blog/add-blog",
     EditBlog: "/blog/edit-blog",
   },
+  Collections: {
+    Collections: "/collections",
+    AddCollections: "/collections/add-collections",
+    EditCollections: "/collections/edit-collections",
+  },
 
   FAQ: "/faq",
   Banners: "/banners",
   TrackOrder: "/track-order",
-  Collections: "/collections",
   Setting: "/setting",
   ChangePassword: "/change-password",
 };

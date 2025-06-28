@@ -1,6 +1,7 @@
+import { dynamicNumber } from "@/Utils";
 import { Edit, Trash } from "iconsax-react";
 import { Fragment } from "react";
-import { Button, Card, Col, Table } from "reactstrap";
+import { Button, Card, CardHeader, Col, Table } from "reactstrap";
 
 const Skeleton = ({ type }: any) => {
   return (
@@ -20,7 +21,7 @@ const Skeleton = ({ type }: any) => {
             </tr>
           </thead>
           <tbody>
-            {Array.from({ length: 5 }).map((_, index) => (
+            {dynamicNumber(5).map((_, index) => (
               <tr key={index}>
                 <td>
                   <div className="skeleton skeleton-text short" />
@@ -57,6 +58,21 @@ const Skeleton = ({ type }: any) => {
             ))}
           </tbody>
         </Table>
+      ) : type === "faq" ? (
+        <>
+          {dynamicNumber(5).map((_, index) => (
+            <Card key={index}>
+              <CardHeader>
+                <h2 className="mb-0">
+                  <div className="d-flex align-items-center justify-content-between gap-2">
+                    <div className="skeleton skeleton-text w-75 my-2" />
+                    <div className="skeleton skeleton-text w-25 my-2" />
+                  </div>
+                </h2>
+              </CardHeader>
+            </Card>
+          ))}
+        </>
       ) : (
         <Col xl="3" md="4" sm="6">
           <Card>

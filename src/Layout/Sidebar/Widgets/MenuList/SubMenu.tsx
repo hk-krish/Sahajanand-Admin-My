@@ -1,17 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import ConfigDB from "@/Config/Theme";
 import { Href } from "@/Constant";
+import SvgIcon from "@/CoreComponents/SvgIcon";
+import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
+import { setPinedMenu } from "@/ReduxToolkit/Slice/Layout/LayoutSlice";
+import { MenuItem, MenuListProps } from "@/Types/Layout";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC, Fragment, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import ConfigDB from "@/Config/Theme";
-import SvgIcon from "@/CoreComponents/SvgIcon";
-import { useAppSelector } from "@/ReduxToolkit/Hooks";
-import { MenuItem, MenuListProps } from "@/Types/Layout";
-import { setPinedMenu } from "@/ReduxToolkit/Slice/Layout/LayoutSlice";
 
 const SubMenu: FC<MenuListProps> = ({ menu, setActiveMenu, activeMenu, level }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = usePathname();
   const { pinedMenu } = useAppSelector((state) => state.layout);
   const sideBarIcon = ConfigDB.settings.sidebar.iconType;

@@ -11,7 +11,7 @@ const initialState: BlogSliceType = {
   singleEditingBlog:null
 };
 
-export const fetchBlogApiData = createAsyncThunk<BlogApiResponse, FetchApiParams>("admin/category", async ({ page, limit, search }) => {
+export const fetchBlogApiData = createAsyncThunk<BlogApiResponse, FetchApiParams>("admin/blog", async ({ page, limit, search }) => {
   let url = Url_Keys.Blog.Blog;
   if (page) url += `?page=${page}&limit=${limit}`;
   if (search) url += `&search=${search}`;

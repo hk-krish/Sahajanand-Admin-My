@@ -18,7 +18,7 @@ const ProductContainer = () => {
         <div className="product-grid">
           <Col sx="12">
             <Card>
-              <CommonCardHeader Search={setSearchData} btnTitle="Add Product" btnLink={RouteList.Product.AddProduct} />
+              <CommonCardHeader searchClass="col-md-10 col-sm-7" Search={setSearchData} btnTitle="Add Product" btnLink={RouteList.Product.AddProduct} />
               <CardBody>
                 <GridView />
               </CardBody>
