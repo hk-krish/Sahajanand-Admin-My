@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@hookform/resolvers": "^5.1.1",
     "@reduxjs/toolkit": "^2.8.2",
+    "antd": "^5.26.2",
     "axios": "^1.10.0",
     "bootstrap": "^5.3.6",
+    "dayjs": "^1.11.13",
     "iconsax-react": "^0.0.8",
     "next": "15.3.3",
     "react": "^19.0.0",

@@ -54,7 +54,7 @@ const CategoryDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       const response = action === "Edit" ? await Post(Url_Keys.Category.Edit, { id: singleEditingCategory._id, ...Category }) : await Post(Url_Keys.Category.Add, Category);
       if (response?.status === 200) {
         reset();
-        setPhoto("");
+        setPhoto([]);
         setUploadedFiles([]);
         router.push(RouteList.Category.Category);
       }
@@ -97,7 +97,7 @@ const CategoryDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                     <Col md="12" className="custom-dropzone-project input-box">
                       <div className="mb-3">
                         <Label>Upload Image</Label>
-                        <CommonFileUpload register={register} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+                        <CommonFileUpload name="image" errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
                       </div>
                     </Col>
                     <Col sm="6" md="3">

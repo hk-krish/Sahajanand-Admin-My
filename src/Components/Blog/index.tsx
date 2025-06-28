@@ -1,18 +1,49 @@
-import { Href, ImagePath, RouteList } from "@/Constant";
+import Delete from "@/Api/Delete";
+import { Href, RouteList, Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
-import { useAppDispatch } from "@/ReduxToolkit/Hooks";
-import RatioImage from "@/Utils/RatioImage";
-import { Fragment, useState } from "react";
-import { Card, CardBody, Col, Container, Row } from "reactstrap";
-import AddBlogModal from "./AddBlogModal";
-import { setAddBlogModal } from "@/ReduxToolkit/Slice/BlogSlice";
+import Pagination from "@/CoreComponents/Pagination";
+import ProductImage from "@/CoreComponents/ProductImage";
+import SearchNotFoundClass from "@/CoreComponents/SearchNotFoundClass";
+import Skeleton from "@/CoreComponents/Skeleton";
+import { LimitOptions } from "@/Data/CoreComponents";
+import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
+import { fetchBlogApiData, setBlogSearchData, setSingleEditingBlog } from "@/ReduxToolkit/Slice/BlogSlice";
+import { BlogType } from "@/Types/Blog";
+import { dynamicNumber } from "@/Utils";
 import Link from "next/link";
+import { Fragment, useCallback, useEffect, useState } from "react";
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
 const BlogContainer = () => {
-  const [searchData, setSearchData] = useState("");
+  const [page, setPage] = useState(0);
+  const [pageLimit, setPageLimit] = useState(LimitOptions[0]?.value);
+  const { allBlog, isBlogSearchData, isLoadingBlog } = useAppSelector((state) => state.blog);
+
   const dispatch = useAppDispatch();
 
+  const setSearchData = (e: string) => dispatch(setBlogSearchData(e));
+
+  const DeleteBlog = async (id: string) => {
+    try {
+      await Delete(`${Url_Keys.Blog.Delete}/${id}`);
+      getAllBlog();
+    } catch (error) {}
+  };
+
+  const EditItem = (item: BlogType) => {
+    dispatch(setSingleEditingBlog(item));
+  };
+
+  const getAllBlog = useCallback(async () => {
+    try {
+      await dispatch(fetchBlogApiData({ page: page + 1, limit: pageLimit, search: isBlogSearchData }));
+    } catch (error) {}
+  }, [dispatch, page, pageLimit, isBlogSearchData]);
+
+  useEffect(() => {
+    getAllBlog();
+  }, [getAllBlog]);
   return (
     <Fragment>
       <Breadcrumbs mainTitle="Blog" parent="Pages" />
@@ -22,162 +53,57 @@ const BlogContainer = () => {
             <CommonCardHeader Search={setSearchData} btnTitle="Add Blog" btnLink={RouteList.Blog.AddBlog} />
             <CardBody>
               <div className="blog-boxes">
-                <Row className="g-4">
-                  <Col xs="12" sm="6" lg="4" xl="3">
-                    <div className="blog-box list-box">
-                      <div className="blog-image">
-                        <RatioImage className=" img" src={`${ImagePath}product/compare-1.jpg`} alt="blog1" />
-                        <div className="product-hover">
-                          <ul>
-                            <li>
-                              <Link href={Href} color="transparent">
-                                <i className="icon icon-trash" />
-                              </Link>
-                            </li>
-                            <li>
-                              <Link href={Href} color="transparent">
-                                <i className="icon icon-pen" />
-                              </Link>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="blog-details border-0">
-                        <h6 className="mt-0">By John in Food</h6>
-                        <a href="blog-details.html">
-                          <h5>Paradise Taste of Meals</h5>
-                        </a>
-                        <p>a world of gourmet ingredients and specialty products that will inspire your culinary creativity. From aged balsamic vinegar to truffle-infused oils and imported cheeses, these indulgent treats add a touch of luxury to any meal.</p>
-                        <h6>on Mar. 20, 2024 By John</h6>
-                      </div>
-                    </div>
-                  </Col>
-                  <Col xs="12" sm="6" lg="4" xl="3">
-                    <div className="blog-box list-box">
-                      <div className="blog-image">
-                        <div>
-                          <RatioImage className=" img" src={`${ImagePath}product/compare-2.jpg`} alt="blog1" />
-                        </div>
-                      </div>
-                      <div className="blog-details border-0">
-                        <h6 className="mt-0">By John in Food</h6>
-                        <a href="blog-details.html">
-                          <h5>Paradise Taste of Meals</h5>
-                        </a>
-                        <p>a world of gourmet ingredients and specialty products that will inspire your culinary creativity. From aged balsamic vinegar to truffle-infused oils and imported cheeses, these indulgent treats add a touch of luxury to any meal.</p>
-                        <h6>on Mar. 20, 2024 By John</h6>
-                      </div>
-                    </div>
-                  </Col>
-                  <Col xs="12" sm="6" lg="4" xl="3">
-                    <div className="blog-box list-box">
-                      <div className="blog-image">
-                        <div>
-                          <RatioImage className=" img" src={`${ImagePath}product/compare-3.jpg`} alt="blog1" />
-                        </div>
-                      </div>
-                      <div className="blog-details border-0">
-                        <h6 className="mt-0">By John in Food</h6>
-                        <a href="blog-details.html">
-                          <h5>Paradise Taste of Meals</h5>
-                        </a>
-                        <p>a world of gourmet ingredients and specialty products that will inspire your culinary creativity. From aged balsamic vinegar to truffle-infused oils and imported cheeses, these indulgent treats add a touch of luxury to any meal.</p>
-                        <h6>on Mar. 20, 2024 By John</h6>
-                      </div>
-                    </div>
-                  </Col>
-                  <Col xs="12" sm="6" lg="4" xl="3">
-                    <div className="blog-box list-box">
-                      <div className="blog-image">
-                        <div>
-                          <RatioImage className=" img" src={`${ImagePath}product/compare-4.jpg`} alt="blog1" />
-                        </div>
-                      </div>
-                      <div className="blog-details border-0">
-                        <h6 className="mt-0">By John in Food</h6>
-                        <a href="blog-details.html">
-                          <h5>Paradise Taste of Meals</h5>
-                        </a>
-                        <p>a world of gourmet ingredients and specialty products that will inspire your culinary creativity. From aged balsamic vinegar to truffle-infused oils and imported cheeses, these indulgent treats add a touch of luxury to any meal.</p>
-                        <h6>on Mar. 20, 2024 By John</h6>
-                      </div>
-                    </div>
-                  </Col>
-                  <Col xs="12" sm="6" lg="4" xl="3">
-                    <div className="blog-box list-box">
-                      <div className="blog-image">
-                        <div>
-                          <RatioImage className=" img" src={`${ImagePath}product/compare-1.jpg`} alt="blog1" />
-                        </div>
-                      </div>
-                      <div className="blog-details border-0">
-                        <h6 className="mt-0">By John in Food</h6>
-                        <a href="blog-details.html">
-                          <h5>Paradise Taste of Meals</h5>
-                        </a>
-                        <p>a world of gourmet ingredients and specialty products that will inspire your culinary creativity. From aged balsamic vinegar to truffle-infused oils and imported cheeses, these indulgent treats add a touch of luxury to any meal.</p>
-                        <h6>on Mar. 20, 2024 By John</h6>
-                      </div>
-                    </div>
-                  </Col>
-                  <Col xs="12" sm="6" lg="4" xl="3">
-                    <div className="blog-box list-box">
-                      <div className="blog-image">
-                        <div>
-                          <RatioImage className=" img" src={`${ImagePath}product/compare-2.jpg`} alt="blog1" />
-                        </div>
-                      </div>
-                      <div className="blog-details border-0">
-                        <h6 className="mt-0">By John in Food</h6>
-                        <a href="blog-details.html">
-                          <h5>Paradise Taste of Meals</h5>
-                        </a>
-                        <p>a world of gourmet ingredients and specialty products that will inspire your culinary creativity. From aged balsamic vinegar to truffle-infused oils and imported cheeses, these indulgent treats add a touch of luxury to any meal.</p>
-                        <h6>on Mar. 20, 2024 By John</h6>
-                      </div>
-                    </div>
-                  </Col>
-                  <Col xs="12" sm="6" lg="4" xl="3">
-                    <div className="blog-box list-box">
-                      <div className="blog-image">
-                        <div>
-                          <RatioImage className=" img" src={`${ImagePath}product/compare-3.jpg`} alt="blog1" />
-                        </div>
-                      </div>
-                      <div className="blog-details border-0">
-                        <h6 className="mt-0">By John in Food</h6>
-                        <a href="blog-details.html">
-                          <h5>Paradise Taste of Meals</h5>
-                        </a>
-                        <p>a world of gourmet ingredients and specialty products that will inspire your culinary creativity. From aged balsamic vinegar to truffle-infused oils and imported cheeses, these indulgent treats add a touch of luxury to any meal.</p>
-                        <h6>on Mar. 20, 2024 By John</h6>
-                      </div>
-                    </div>
-                  </Col>
-                  <Col xs="12" sm="6" lg="4" xl="3">
-                    <div className="blog-box list-box">
-                      <div className="blog-image">
-                        <div>
-                          <RatioImage className=" img" src={`${ImagePath}product/compare-4.jpg`} alt="blog1" />
-                        </div>
-                      </div>
-                      <div className="blog-details border-0">
-                        <h6 className="mt-0">By John in Food</h6>
-                        <a href="blog-details.html">
-                          <h5>Paradise Taste of Meals</h5>
-                        </a>
-                        <p>a world of gourmet ingredients and specialty products that will inspire your culinary creativity. From aged balsamic vinegar to truffle-infused oils and imported cheeses, these indulgent treats add a touch of luxury to any meal.</p>
-                        <h6>on Mar. 20, 2024 By John</h6>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
+                {isLoadingBlog ? (
+                  <Row className="gridRow">
+                    {dynamicNumber(8).map((_, index) => (
+                      <Skeleton key={index} />
+                    ))}
+                  </Row>
+                ) : allBlog?.totalData !== 0 ? (
+                  <Fragment>
+                    <Row className="g-4 mb-4">
+                      {allBlog?.blog_data?.map((item, index) => (
+                        <Col xs="12" sm="6" lg="4" xl="3" key={index}>
+                          <div className="blog-box list-box">
+                            <div className="blog-image">
+                              <ProductImage image={item?.image} />
+                              <div className="product-hover">
+                                <ul>
+                                  <li onClick={() => DeleteBlog(item?._id)}>
+                                    <Link href={Href} color="transparent">
+                                      <i className="icon icon-trash" />
+                                    </Link>
+                                  </li>
+                                  <li onClick={() => EditItem(item)}>
+                                    <Link href={RouteList.Blog.EditBlog} color="transparent">
+                                      <i className="icon icon-pen" />
+                                    </Link>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div className="blog-details border-0">
+                              <h6 className="mt-0">{item?.metaTitle}</h6>
+                              <a href="blog-details.html">
+                                <h5>{item?.title}</h5>
+                              </a>
+                              <p>{item?.content}</p>
+                              <h6>{item?.scheduledAt}</h6>
+                            </div>
+                          </div>
+                        </Col>
+                      ))}
+                    </Row>
+                    <Pagination page={page} pageCount={allBlog?.state?.page_limit} selectedPageLimit={pageLimit} onPageLimitChange={setPageLimit} onPageChange={(selectedItem) => setPage(selectedItem.selected)} />
+                  </Fragment>
+                ) : (
+                  <SearchNotFoundClass word="No items found in Blog" />
+                )}
               </div>
             </CardBody>
           </Card>
         </Col>
       </Container>
-      <AddBlogModal />
     </Fragment>
   );
 };

@@ -7,7 +7,7 @@ import { GalleryAdd } from "iconsax-react";
 import { FC, Fragment } from "react";
 import Dropzone from "react-dropzone";
 
-const CommonFileUpload: FC<CommonFileUploadProps> = ({ multiple, errors, setValue, setPhoto, uploadedFiles = [], setUploadedFiles, photo }) => {
+const CommonFileUpload: FC<CommonFileUploadProps> = ({ multiple, errors, setValue, setPhoto, uploadedFiles = [], setUploadedFiles, photo, trigger, name }) => {
   const normalizedPhoto: string[] = Array.isArray(photo) ? photo : photo ? [photo] : [];
 
   const onDrop = async (acceptedFiles: File[]) => {
@@ -33,7 +33,8 @@ const CommonFileUpload: FC<CommonFileUploadProps> = ({ multiple, errors, setValu
     setPhoto?.(multiple ? newPhotos : newPhotos[0]);
 
     setUploadedFiles?.(updatedFiles);
-    setValue?.("image",  updatedFiles);
+    setValue?.(name, updatedFiles);
+    trigger?.(name);
   };
 
   const removeFile = async (indexToRemove: number) => {
@@ -44,7 +45,8 @@ const CommonFileUpload: FC<CommonFileUploadProps> = ({ multiple, errors, setValu
       const toDelete = normalizedPhoto[indexToRemove];
       // await Delete(`${Url_Keys.Upload.Delete}/${toDelete}`);
       setUploadedFiles?.(updatedFiles);
-      setValue?.("image", multiple ? updatedFiles : updatedFiles[0]);
+      setValue?.(name, multiple ? updatedFiles : updatedFiles[0]);
+      trigger?.(name);
       setPhoto?.(updatedPhoto);
     } catch {
       Toaster("error", "Failed to delete image");
@@ -94,7 +96,8 @@ const CommonFileUpload: FC<CommonFileUploadProps> = ({ multiple, errors, setValu
           </div>
         </Fragment>
       )}
-      {errors?.image && <p className="text-danger">{errors.image.message}</p>}
+      {(errors?.image && name === "image") && <p className="text-danger">{errors.image.message}</p>}
+      {(errors?.mobileImage && name === "mobileImage") && <p className="text-danger">{errors.mobileImage.message}</p>}
     </Fragment>
   );
 };

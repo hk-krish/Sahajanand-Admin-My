@@ -53,13 +53,14 @@ export interface RatioImageProp {
 
 export interface CommonFileUploadProps {
   multiple?: boolean;
-  register?: any;
   errors?: any;
   setValue?: any;
   setPhoto?: (photo: string | string[]) => void;
   photo?: string | string[];
   uploadedFiles?: File[];
   setUploadedFiles?: (files: File[]) => void;
+  trigger?:any;
+  name?:string
 }
 
 export interface SearchFunctionProps {
@@ -93,6 +94,7 @@ export interface CustomTypeaheadType {
   errors: any;
   control: any;
   title?: string;
+  name?:string
 }
 
 export interface ProductImageProps {

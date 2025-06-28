@@ -6,3 +6,22 @@ export const LimitOptions = [
   { value: 50, label: 50 },
   { value: 100, label: 100 },
 ];
+
+export const BlogStatus = [
+  { value: "draft", label: "Draft" },
+  { value: "published", label: "Published" },
+  { value: "scheduled", label: "Scheduled" },
+];
+
+export const BannerTypeData = [
+  { value: "hero", label: "Hero" },
+  { value: "offer", label: "Offer" },
+  { value: "collection", label: "Collection" },
+  { value: "section", label: "Section" },
+];
+
+export const LinkTypeData = [
+  { value: "product", label: "Product" },
+  { value: "collection", label: "Collection" },
+];
+

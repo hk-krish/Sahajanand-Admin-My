@@ -1,5 +1,4 @@
-import Delete from "@/Api/Delete";
-import { Href, RouteList, Url_Keys } from "@/Constant";
+import { RouteList } from "@/Constant";
 import Pagination from "@/CoreComponents/Pagination";
 import ProductImage from "@/CoreComponents/ProductImage";
 import SearchNotFoundClass from "@/CoreComponents/SearchNotFoundClass";
@@ -52,11 +51,6 @@ const GridView = () => {
                       <ProductImage image={item?.images} />
                       <div className="product-hover">
                         <ul>
-                          {/* <li onClick={() => DeleteItem(item?._id)}>
-                            <Link href={Href} color="transparent">
-                              <i className="icon icon-trash" />
-                            </Link>
-                          </li> */}
                           <li onClick={() => EditItem(item)}>
                             <Link href={RouteList.Product.EditProduct} color="transparent">
                               <i className="icon icon-pen" />

@@ -20,17 +20,29 @@ const URL = {
   Category: {
     Category: "/category",
     Add: "/category/add",
-    Delete:"/category",
-    Edit:"/category/edit"
+    Delete: "/category",
+    Edit: "/category/edit",
   },
   Upload: {
     Upload: "/upload",
-    Delete:"/upload"
+    Delete: "/upload",
   },
-  Product:{
-    Product:"/product",
+  Product: {
+    Product: "/product",
     Add: "/product/add",
-    Edit:"/product/edit"
+    Edit: "/product/edit",
+  },
+  Blog: {
+    Blog: "/blog",
+    Add: "/blog/add",
+    Edit: "/blog/edit",
+    Delete: "/blog",
+  },
+  Banner:{
+    Banner:"/banner",
+    Add: "/banner/add",
+    Edit: "/banner/edit",
+    Delete: "/banner",
   }
 } as const;
 

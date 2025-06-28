@@ -1,3 +1,4 @@
+import { ImagePath } from "@/Constant";
 import { ProductImageProps } from "@/Types/CoreComponents";
 import RatioImage from "@/Utils/RatioImage";
 import { FC, Fragment } from "react";
@@ -24,7 +25,7 @@ const ProductImage: FC<ProductImageProps> = ({ image }) => {
       <Swiper {...ProductImageSetting}>
         {images.map((imgSrc, idx) => (
           <SwiperSlide key={idx}>
-            <RatioImage src={imgSrc} alt={`product-${idx}`} className="img-fluid w-100" />
+            <RatioImage src={imgSrc ? imgSrc : `${ImagePath}product/compare-1.jpg`} alt={`product-${idx}`} className="img-fluid w-100" />
           </SwiperSlide>
         ))}
       </Swiper>

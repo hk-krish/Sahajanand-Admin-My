@@ -1,20 +1,52 @@
-import { Href, ImagePath } from "@/Constant";
+import Delete from "@/Api/Delete";
+import { Href, ImagePath, Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
+import Pagination from "@/CoreComponents/Pagination";
+import SearchNotFoundClass from "@/CoreComponents/SearchNotFoundClass";
+import Skeleton from "@/CoreComponents/Skeleton";
+import { LimitOptions } from "@/Data/CoreComponents";
+import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
+import { fetchBannerApiData, setAddBannerModal, setBannerSearchData, setSingleEditingBanner } from "@/ReduxToolkit/Slice/BannersSlice";
+import { BannerType } from "@/Types/Banner";
 import RatioImage from "@/Utils/RatioImage";
-import React, { Fragment, useState } from "react";
-import { Button, Card, CardBody, Col, Container, Table } from "reactstrap";
-import AddBannersModal from "./AddBannersModal";
-import { useAppDispatch } from "@/ReduxToolkit/Hooks";
-import { setAddBannerModal } from "@/ReduxToolkit/Slice/BannersSlice";
 import { Edit, Trash } from "iconsax-react";
+import { Fragment, useCallback, useEffect, useState } from "react";
+import { Button, Card, CardBody, Col, Container, Row, Table } from "reactstrap";
+import AddBannersModal from "./AddBannersModal";
 
 const BannersContainer = () => {
-  const [searchData, setSearchData] = useState("");
+  const [isEdit,setEdit] = useState(false)
+  const [page, setPage] = useState(0);
+  const [pageLimit, setPageLimit] = useState(LimitOptions[0]?.value);
+  const { allBanner, isBannerSearchData, isLoadingBanner } = useAppSelector((state) => state.banners);
   const dispatch = useAppDispatch();
 
   const AddSalesmanModalClick = () => dispatch(setAddBannerModal());
+  const setSearchData = (e: string) => dispatch(setBannerSearchData(e));
 
+  const DeleteBanner = async (id: string) => {
+    try {
+      await Delete(`${Url_Keys.Banner.Delete}/${id}`);
+      getAllBanner();
+    } catch (error) {}
+  };
+
+  const EditBanner = (item: BannerType) => {
+    dispatch(setSingleEditingBanner(item));
+    setEdit(true)
+    AddSalesmanModalClick()
+  };
+
+  const getAllBanner = useCallback(async () => {
+    try {
+      await dispatch(fetchBannerApiData({ page: page + 1, limit: pageLimit, search: isBannerSearchData }));
+    } catch (error) {}
+  }, [dispatch, page, pageLimit, isBannerSearchData]);
+
+  useEffect(() => {
+    getAllBanner();
+  }, [getAllBanner]);
   return (
     <Fragment>
       <Breadcrumbs mainTitle="Banners" parent="Pages" />
@@ -23,51 +55,61 @@ const BannersContainer = () => {
           <Card>
             <CommonCardHeader Search={setSearchData} btnTitle="Add Banners" btnClick={AddSalesmanModalClick} />
             <CardBody>
-              <Table responsive>
-                <thead className="bg-light-primary">
-                  <tr>
-                    <th>Sr No.</th>
-                    <th>Name</th>
-                    <th>Mobile number</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1 </td>
-                    <td>
-                      <RatioImage className="img-fluid img-60" src={`${ImagePath}product/compare-1.jpg`} />
-                    </td>
-                    <td>item.phoneNumber</td>
-                    <td>
-                      <Button color="primary" href={Href} className="m-1 p-1">
-                        <Trash className="action" />
-                      </Button>
-                      <Button color="danger" href={Href} className="m-1 p-1">
-                        <Edit className="action" />
-                      </Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2 </td>
-                    <td>item.name</td>
-                    <td>item.phoneNumber</td>
-                    <td>
-                      <Button color="primary" href={Href} className="m-1 p-1">
-                        <Trash className="action" />
-                      </Button>
-                      <Button color="danger" href={Href} className="m-1 p-1">
-                        <Edit className="action" />
-                      </Button>
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
+              {isLoadingBanner ? (
+                <Row>
+                  <Skeleton type="table" />
+                </Row>
+              ) : allBanner?.totalData !== 0 ? (
+                <Fragment>
+                  <Table responsive className="mb-4">
+                    <thead className="bg-light-primary">
+                      <tr>
+                        <th>Sr No.</th>
+                        <th>Desktop Image</th>
+                        <th>Mobile Image</th>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Priority</th>
+                        <th>Link Type</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {allBanner?.banner_data?.map((item, index) => (
+                        <tr key={index}>
+                          <td>{index + 1} </td>
+                          <td>
+                            <RatioImage className="img-fluid img-60" src={item?.imageDesktop ? item.imageDesktop : `${ImagePath}product/compare-1.jpg`} />
+                          </td>
+                          <td>
+                            <RatioImage className="img-fluid img-60" src={item?.imageMobile ? item.imageMobile : `${ImagePath}product/compare-1.jpg`} />
+                          </td>
+                          <td>{item.title}</td>
+                          <td>{item.type}</td>
+                          <td>{item.priority}</td>
+                          <td>{item.linkType}</td>
+                          <td>
+                            <Button color="primary" href={Href} className="m-1 p-1" onClick={() => DeleteBanner(item?._id)}>
+                              <Trash className="action" />
+                            </Button>
+                            <Button color="danger" href={Href} className="m-1 p-1" onClick={() => EditBanner(item)}>
+                              <Edit className="action" />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                  <Pagination page={page} pageCount={allBanner?.state?.page_limit} selectedPageLimit={pageLimit} onPageLimitChange={setPageLimit} onPageChange={(selectedItem) => setPage(selectedItem.selected)} />
+                </Fragment>
+              ) : (
+                <SearchNotFoundClass word="No items found in Banner" />
+              )}
             </CardBody>
           </Card>
         </Col>
       </Container>
-      <AddBannersModal />
+      <AddBannersModal isEdit={isEdit} setEdit={setEdit} getAllBanner={getAllBanner}/>
     </Fragment>
   );
 };

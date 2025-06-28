@@ -2,7 +2,7 @@ import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
 import { useAppDispatch } from "@/ReduxToolkit/Hooks";
 import { setAddFaqModal } from "@/ReduxToolkit/Slice/FaqSlice";
-import { Add, Edit, Minus, Trash } from "iconsax-react";
+import { Add, ArrowDown2, ArrowUp2, Edit, Minus, Trash } from "iconsax-react";
 import { Fragment, useState } from "react";
 import { Button, Card, CardBody, CardHeader, Col, Collapse, Container } from "reactstrap";
 import AddSalesmanModal from "./AddFaqModal";
@@ -31,9 +31,11 @@ const FaqContainer = () => {
                           <span className="d-flex align-items-center justify-content-between gap-2">
                             item.title
                             <div className="d-flex align-items-center">
-                              {isActivity ? <Add size="32" /> : <Minus size="32" />}
-                              <Trash size="22" />
-                              <Edit size="22" />
+                              <div className="faq-hover">
+                                <Trash size="22" />
+                                <Edit size="22" />
+                              </div>
+                              {isActivity ? <ArrowUp2 size="20" /> : <ArrowDown2 size="20" />}
                             </div>
                           </span>
                         </Button>
@@ -49,7 +51,7 @@ const FaqContainer = () => {
                         <Button color="transparent" className="btn-link collapsed justify-content-between" onClick={handelChange}>
                           <span className="d-flex align-items-center justify-content-between gap-2">
                             item.title
-                            {isActivity ? <Add size="32" /> : <Minus size="32" />}
+                            {isActivity ? <Minus size="20" /> : <Add size="20" />}
                           </span>
                         </Button>
                       </h2>

@@ -33,7 +33,6 @@ async function Get<T>(url: string): Promise<ApiResponse<T> | null> {
     }
   } catch (error: any) {
     const msg = error?.response?.data?.message || "No database connection";
-    console.log("msg",msg);
     
     const status = error?.response?.status;
 

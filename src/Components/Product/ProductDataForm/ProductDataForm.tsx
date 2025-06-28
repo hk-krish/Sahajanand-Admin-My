@@ -204,17 +204,17 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                       </div>
                     </Col>
 
-                    <CustomTypeahead control={control} errors={errors.tags} title="tags" />
-                    <CustomTypeahead control={control} errors={errors.color} title="color" />
-                    <CustomTypeahead control={control} errors={errors.size} title="size" />
-                    <CustomTypeahead control={control} errors={errors.material} title="material" />
-                    <CustomTypeahead control={control} errors={errors.fabric} title="fabric" />
-                    <CustomTypeahead control={control} errors={errors.occasion} title="occasion" />
+                    <CustomTypeahead control={control} errors={errors.tags} title="Tags" name="tags" />
+                    <CustomTypeahead control={control} errors={errors.color} title="Color" name="color" />
+                    <CustomTypeahead control={control} errors={errors.size} title="Size" name="size" />
+                    <CustomTypeahead control={control} errors={errors.material} title="Material" name="material" />
+                    <CustomTypeahead control={control} errors={errors.fabric} title="Fabric" name="fabric" />
+                    <CustomTypeahead control={control} errors={errors.occasion} title="Occasion" name="occasion" />
 
                     <Col md="12" className="custom-dropzone-project input-box">
                       <div className="mb-3">
                         <Label>Upload Image</Label>
-                        <CommonFileUpload multiple register={register} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+                        <CommonFileUpload multiple name="image" errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
                       </div>
                     </Col>
                     <Col md="12" lg="10" xl="8">

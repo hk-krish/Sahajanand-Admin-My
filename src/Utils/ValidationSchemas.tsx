@@ -27,6 +27,16 @@ const tagArraySchema = yup
   .min(1, "At least one value is required")
   .required("This field is required");
 
+const imageSchema = yup
+  .array()
+  .of(
+    yup.mixed().test("file-or-url", "Invalid image", (value) => {
+      return typeof value === "string" || value instanceof File;
+    })
+  )
+  .min(1, "Image is required")
+  .required("Image is required");
+
 export const AddProductSchema = yup.object().shape({
   name: yup.string().required("Product name is required"),
   slug: yup.string().required("Slug is required"),
@@ -47,31 +57,15 @@ export const AddProductSchema = yup.object().shape({
   isBestSelling: yup.boolean(),
   isFeatured: yup.boolean(),
   showOnHomepage: yup.boolean(),
-  image: yup
-    .array()
-    .of(
-      yup.mixed().test("file-or-url", "Invalid image", (value) => {
-        return typeof value === "string" || value instanceof File;
-      })
-    )
-    .min(1, "Image is required")
-    .required("Image is required"),
+  image: imageSchema,
 });
 
 export const AddCategorySchema = yup.object().shape({
   name: yup.string().required("Product name is required"),
   slug: yup.string().required("Slug is required"),
   description: yup.string().required("Description is required"),
-  image: yup
-    .array()
-    .of(
-      yup.mixed().test("file-or-url", "Invalid image", (value) => {
-        return typeof value === "string" || value instanceof File;
-      })
-    )
-    .min(1, "Image is required")
-    .required("Image is required"),
   isFeatured: yup.boolean(),
+  image: imageSchema,
 });
 
 export const AddFaqSchema = yup.object().shape({
@@ -80,8 +74,20 @@ export const AddFaqSchema = yup.object().shape({
 });
 
 export const AddBannerSchema = yup.object().shape({
-  name: yup.string().required("Product name is required"),
+  type: yup.string().required("Type is required"),
   title: yup.string().required("Project title is required"),
+  linkType: yup.string().required("Link Type is required"),
+  linkId: yup.string().required("Link Id is required"),
+  priority: yup
+    .number()
+    .typeError("Priority must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
+    .min(1, "Priority must be at least 1")
+    .required("Priority is required"),
+  image: imageSchema,
+  mobileImage: imageSchema,
 });
 
 export const AddBlogSchema = yup.object().shape({
@@ -92,6 +98,9 @@ export const AddBlogSchema = yup.object().shape({
   metaDescription: yup.string().required("Meta Description is required"),
   category: yup.string().required("Category is required"),
   status: yup.string().required("Status is required"),
+  metaKeywords: tagArraySchema,
+  tags: tagArraySchema,
+  image: imageSchema,
 });
 
 export const AddCollectionSchema = yup.object().shape({
