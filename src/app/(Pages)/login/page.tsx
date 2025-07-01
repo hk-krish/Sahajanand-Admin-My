@@ -1,8 +1,10 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { FunctionComponent, useEffect, useState } from "react";
 
 const Login = () => {
   const [IsClient, setClient] = useState<FunctionComponent>();
+  const router = useRouter();
   useEffect(() => {
     (async () => {
       if (typeof window !== "undefined") {

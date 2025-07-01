@@ -2,7 +2,7 @@ import { Post } from "@/Api";
 import { RouteList, Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
-import CommonFileUpload from "@/CoreComponents/CommonFileUpload";
+import CommonImageUpload from "@/CoreComponents/CommonImageUpload";
 import { useAppSelector } from "@/ReduxToolkit/Hooks";
 import { CategoryFormData } from "@/Types/Product";
 import { AddCategorySchema } from "@/Utils/ValidationSchemas";
@@ -14,7 +14,6 @@ import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
 
 const CategoryDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
   const [photo, setPhoto] = useState<any>([]);
-  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const { singleEditingCategory } = useAppSelector((state) => state.product);
 
   const router = useRouter();
@@ -37,8 +36,7 @@ const CategoryDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       setValue("isFeatured", singleEditingCategory.isFeatured);
       if (singleEditingCategory.image) {
         setValue("image", [singleEditingCategory.image]);
-        setPhoto(singleEditingCategory.image);
-        setUploadedFiles([{ name: singleEditingCategory.image, preview: singleEditingCategory.image }]);
+        setPhoto([singleEditingCategory.image]);
       }
     }
   }, [action, setValue, singleEditingCategory]);
@@ -49,15 +47,14 @@ const CategoryDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       slug: data.slug,
       description: data.description,
       isFeatured: data.isFeatured,
-      image: photo,
+      image: photo[0],
     };
     try {
       const response = action === "Edit" ? await Post(Url_Keys.Category.Edit, { id: singleEditingCategory._id, ...Category }) : await Post(Url_Keys.Category.Add, Category);
       if (response?.status === 200) {
         reset();
         setPhoto([]);
-        setUploadedFiles([]);
-        trigger("image")
+        trigger("image");
         router.push(RouteList.Category.Category);
       }
     } catch (error) {}
@@ -99,7 +96,7 @@ const CategoryDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                     <Col md="12" className="custom-dropzone-project input-box">
                       <div className="mb-3">
                         <Label>Upload Image</Label>
-                        <CommonFileUpload name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+                        <CommonImageUpload name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} />
                       </div>
                     </Col>
                     <Col sm="6" md="3">

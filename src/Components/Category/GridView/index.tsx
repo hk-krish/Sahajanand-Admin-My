@@ -73,7 +73,7 @@ const GridView = () => {
                       </div>
                     </div>
                     <div className="product-details">
-                      <Link href={RouteList.Home}>
+                      <Link href={RouteList.Default}>
                         <h4>{item.name}</h4>
                       </Link>
                       <div className="product-price">{item.slug}</div>

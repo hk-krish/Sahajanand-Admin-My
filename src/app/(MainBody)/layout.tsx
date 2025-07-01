@@ -7,14 +7,13 @@ import TapTop from "@/Layout/TapTop";
 import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { addSidebarTypes, setSideBarToggle } from "@/ReduxToolkit/Slice/Layout/ThemeCustomizerSlice";
 import { ChildrenType } from "@/Types/Layout";
-import { FC, useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 
 export default function RootLayout({ children }: ChildrenType) {
-  const { sidebarTypes, sideBarToggle } = useAppSelector((state) => state.themeCustomizer);
   const dispatch = useAppDispatch();
+  const { sidebarTypes, sideBarToggle } = useAppSelector((state) => state.themeCustomizer);
 
-  // function for sidebar type change from vertical to horizontal
   const updateSidebarBasedOnWidth = () => {
     const windowWidth = window.innerWidth;
     if (sidebarTypes === "compact-wrapper") {
@@ -36,7 +35,7 @@ export default function RootLayout({ children }: ChildrenType) {
   }, [sidebarTypes]);
 
   return (
-    <>
+    <Fragment>
       <div className={`page-wrapper ${sideBarToggle ? "compact-wrapper" : sidebarTypes}`}>
         <Header />
         <div className="page-body-wrapper">
@@ -47,6 +46,6 @@ export default function RootLayout({ children }: ChildrenType) {
       </div>
       <TapTop />
       <ToastContainer />
-    </>
+    </Fragment>
   );
 }

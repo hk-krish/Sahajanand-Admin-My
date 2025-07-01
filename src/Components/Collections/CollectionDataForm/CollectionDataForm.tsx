@@ -2,11 +2,11 @@ import { Post } from "@/Api";
 import { RouteList, Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
-import CommonFileUpload from "@/CoreComponents/CommonFileUpload";
+import CommonImageUpload from "@/CoreComponents/CommonImageUpload";
 import { CollectionTypeData } from "@/Data/CoreComponents";
 import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { fetchProductApiData } from "@/ReduxToolkit/Slice/ProductSlice";
-import { CategoryFormData, CollectionFormData, SelectOption } from "@/Types/Product";
+import { CollectionFormData, SelectOption } from "@/Types/Product";
 import { AddCollectionSchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,6 @@ import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
 
 const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
   const [photo, setPhoto] = useState<any>([]);
-  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const { allProduct, singleEditingCollection } = useAppSelector((state) => state.product);
 
   const dispatch = useAppDispatch();
@@ -44,8 +43,7 @@ const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       setValue("products", singleEditingCollection.products);
       if (singleEditingCollection.image) {
         setValue("image", [singleEditingCollection.image]);
-        setPhoto(singleEditingCollection.image);
-        setUploadedFiles([{ name: singleEditingCollection.image, preview: singleEditingCollection.image }]);
+        setPhoto([singleEditingCollection.image]);
       }
     }
   }, [action, setValue, singleEditingCollection]);
@@ -56,7 +54,7 @@ const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       name: data.name,
       type: data.type,
       description: data.description,
-      image: photo,
+      image: photo[0],
       isVisible: data.isVisible,
       priority: data.priority,
       products: normalizeTags(data.products),
@@ -66,7 +64,6 @@ const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       if (response?.status === 200) {
         reset();
         setPhoto([]);
-        setUploadedFiles([]);
         trigger("image")
         router.push(RouteList.Collections.Collections);
       }
@@ -135,7 +132,7 @@ const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                     <Col md="12" className="custom-dropzone-project input-box">
                       <div className="mb-3">
                         <Label>Upload Image</Label>
-                        <CommonFileUpload name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+                        <CommonImageUpload name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo}/>
                       </div>
                     </Col>
                     <Col sm="6" md="3">

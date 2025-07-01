@@ -4,7 +4,6 @@ import { CategoryApiResponse, CollectionApiResponse, FetchApiParams, ProductApiR
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState: ProductSliceType = {
-  isAddCollectionModal: false,
   allCategory: null,
   singleEditingCategory: null,
   isCategorySearchData: null,
@@ -48,9 +47,6 @@ const ProductSlice = createSlice({
   name: "Product",
   initialState,
   reducers: {
-    setAddCollectionModal: (state) => {
-      state.isAddCollectionModal = !state.isAddCollectionModal;
-    },
     setSingleEditingCategory(state, action) {
       state.singleEditingCategory = action.payload;
     },
@@ -86,5 +82,5 @@ const ProductSlice = createSlice({
   },
 });
 
-export const { setAddCollectionModal, setSingleEditingCategory, setCategorySearchData, setProductSearchData, setSingleEditingProduct, setCollectionSearchData, setSingleEditingCollection } = ProductSlice.actions;
+export const {setSingleEditingCategory, setCategorySearchData, setProductSearchData, setSingleEditingProduct, setCollectionSearchData, setSingleEditingCollection } = ProductSlice.actions;
 export default ProductSlice.reducer;

@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import { FormEvent, ReactNode } from "react";
 
 export interface SvgProps {
   iconId?: string | undefined;
@@ -24,9 +24,9 @@ export interface CardSubtitle {
 }
 
 export interface TypeFilterData {
-    value?: string;
-    label?: string;
-  };
+  value?: string;
+  label?: string;
+}
 
 export interface CardHeaderProp {
   title?: string;
@@ -69,6 +69,7 @@ export interface CommonFileUploadProps {
   setUploadedFiles?: (files: File[]) => void;
   trigger?: any;
   name?: string;
+  type?: string;
 }
 
 export interface SearchFunctionProps {
@@ -107,4 +108,25 @@ export interface CustomTypeaheadType {
 
 export interface ProductImageProps {
   image: string | string[];
+}
+
+export interface NoSsrProps {
+  children: ReactNode;
+}
+
+export interface PostApiResponse<T> {
+  status: number;
+  message: string;
+  data?: T;
+}
+
+export interface GetApiResponse<T> {
+  status: number;
+  message?: string;
+  data?: T;
+}
+
+export interface DeleteApiResponse {
+  status: number;
+  message?: string;
 }

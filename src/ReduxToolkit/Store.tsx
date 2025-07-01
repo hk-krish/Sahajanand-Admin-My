@@ -6,16 +6,20 @@ import FaqSlice from "./Slice/FaqSlice";
 import BannersSlice from "./Slice/BannersSlice";
 import BlogSlice from "./Slice/BlogSlice";
 import AboutSlice from "./Slice/AboutSlice";
+import AuthSlice from "./Slice/Layout/AuthSlice";
+import UserSlice from "./Slice/UserSlice";
 
 export const store = configureStore({
   reducer: {
+    auth: AuthSlice,
     layout: LayoutSlice,
     themeCustomizer: ThemeCustomizerSlice,
-    product: ProductSlice, 
-    faq: FaqSlice, 
-    banners: BannersSlice, 
-    blog: BlogSlice, 
-    about: AboutSlice,  
+    product: ProductSlice,
+    faq: FaqSlice,
+    banners: BannersSlice,
+    blog: BlogSlice,
+    about: AboutSlice,
+    users: UserSlice,
   },
 });
 

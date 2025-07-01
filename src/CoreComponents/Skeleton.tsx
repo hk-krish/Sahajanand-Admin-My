@@ -59,7 +59,7 @@ const Skeleton = ({ type }: any) => {
           </tbody>
         </Table>
       ) : type === "faq" ? (
-        <>
+        <Fragment>
           {dynamicNumber(5).map((_, index) => (
             <Card key={index}>
               <CardHeader>
@@ -72,7 +72,7 @@ const Skeleton = ({ type }: any) => {
               </CardHeader>
             </Card>
           ))}
-        </>
+        </Fragment>
       ) : (
         <Col xl="3" md="4" sm="6">
           <Card>

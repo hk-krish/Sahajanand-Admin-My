@@ -1,6 +1,9 @@
+import { Post } from "@/Api";
+import { Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
-import { ChangePasswordSchema } from "@/Utils/ValidationSchemas";
+import { ForgotPasswordType } from "@/Types/Layout";
+import { ForgotPasswordSchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Fragment } from "react";
 import { useForm } from "react-hook-form";
@@ -10,13 +13,19 @@ const ChangePasswordContainer = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(ChangePasswordSchema),
+    resolver: yupResolver(ForgotPasswordSchema),
   });
 
-  const onSubmit = (data: any) => {
-    console.log("Form Data:", data);
+  const onSubmit = async (data: ForgotPasswordType) => {
+    try {
+      const response = await Post(Url_Keys.Auth.ForgotPassword, data, false);
+      if (response.status === 200) {
+        reset();
+      }
+    } catch (error) {}
   };
   return (
     <Fragment>
@@ -39,17 +48,17 @@ const ChangePasswordContainer = () => {
 
                     <Col md="6">
                       <div className="input-box">
-                        <Label>Old Password</Label>
-                        <input type="password" {...register("oldPassword")} placeholder="Enter old password" />
-                        {errors.oldPassword && <p className="text-danger">{errors.oldPassword.message}</p>}
+                        <Label>Password</Label>
+                        <input type="text" {...register("password")} placeholder="Enter Password" />
+                        {errors.password && <p className="text-danger">{errors.password.message}</p>}
                       </div>
                     </Col>
 
                     <Col md="6">
                       <div className="input-box">
-                        <Label>New Password</Label>
-                        <input type="password" {...register("newPassword")} placeholder="Enter new password" />
-                        {errors.newPassword && <p className="text-danger">{errors.newPassword.message}</p>}
+                        <Label>Confirm Password</Label>
+                        <input type="text" {...register("confirmPassword")} placeholder="Enter Confirm password" />
+                        {errors.confirmPassword && <p className="text-danger">{errors.confirmPassword.message}</p>}
                       </div>
                     </Col>
                   </Row>
@@ -57,7 +66,7 @@ const ChangePasswordContainer = () => {
                     <Col>
                       <div className="text-center mt-4">
                         <Button type="submit" color="primary">
-                          Submit
+                          Save
                         </Button>
                       </div>
                     </Col>

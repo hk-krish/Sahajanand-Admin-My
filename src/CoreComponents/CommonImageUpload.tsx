@@ -1,19 +1,17 @@
 import { Post } from "@/Api";
 import Delete from "@/Api/Delete";
 import { ImagePath, Url_Keys } from "@/Constant";
-import { CommonFileUploadProps } from "@/Types/CoreComponents";
 import { Toaster } from "@/Utils/ToastNotification";
 import { GalleryAdd } from "iconsax-react";
 import Image from "next/image";
 import { FC, Fragment } from "react";
 import Dropzone from "react-dropzone";
 
-const CommonFileUpload: FC<CommonFileUploadProps> = ({ multiple, errors, setValue, setPhoto, uploadedFiles = [], setUploadedFiles, photo, trigger, name, type }) => {
+const CommonImageUpload: FC<any> = ({ multiple, errors, setValue, setPhoto, photo, trigger, name, type }) => {
   const normalizedPhoto: string[] = Array.isArray(photo) ? photo : photo ? [photo] : [];
+console.log("normalizedPhoto",normalizedPhoto);
 
   const onDrop = async (acceptedFiles: File[]) => {
-    const updatedFiles = multiple ? [...uploadedFiles, ...acceptedFiles] : acceptedFiles;
-
     const uploadedPhotoURLs: string[] = [];
 
     for (const file of acceptedFiles) {
@@ -31,23 +29,19 @@ const CommonFileUpload: FC<CommonFileUploadProps> = ({ multiple, errors, setValu
 
     const newPhotos = multiple ? [...normalizedPhoto, ...uploadedPhotoURLs] : uploadedPhotoURLs;
 
-    setPhoto?.(multiple ? newPhotos : newPhotos[0]);
-
-    setUploadedFiles?.(updatedFiles);
-    setValue?.(name, updatedFiles);
+    setPhoto?.(multiple ? newPhotos : [newPhotos[0]]);
+    setValue?.(name, newPhotos);
     trigger?.(name);
   };
 
-  const removeFile = async (indexToRemove: number,imageSrc:string) => {
-    const updatedFiles = uploadedFiles.filter((_, index) => index !== indexToRemove);
-    const updatedPhoto = normalizedPhoto.filter((_, index) => index !== indexToRemove);
+  const removeFile = async (imageSrc: string) => {
+    const updatedPhoto = normalizedPhoto.filter((img) => img !== imageSrc);
 
     try {
-      await Delete(Url_Keys.Upload.Delete, { imageUrl: imageSrc });
-      setUploadedFiles?.(updatedFiles);
-      setValue?.(name, multiple ? updatedFiles : updatedFiles[0]);
-      trigger?.(name);
       setPhoto?.(updatedPhoto);
+      // await Delete(Url_Keys.Upload.Delete, { imageUrl: imageSrc });
+      setValue?.(name, updatedPhoto);
+      trigger?.(name);
     } catch {
       Toaster("error", "Failed to delete image");
     }
@@ -55,7 +49,7 @@ const CommonFileUpload: FC<CommonFileUploadProps> = ({ multiple, errors, setValu
 
   return (
     <Fragment>
-      {uploadedFiles.length === 0 ? (
+      {photo?.length === 0 ? (
         <Dropzone onDrop={onDrop}>
           {({ getRootProps, getInputProps }) => (
             <Fragment>
@@ -89,23 +83,20 @@ const CommonFileUpload: FC<CommonFileUploadProps> = ({ multiple, errors, setValu
             </Dropzone>
           )}
           <div className="uploaded-files">
-            {uploadedFiles.map((file: any, index) => {
-              const isURL = typeof file === "string" || file.preview;
-              const imageSrc = isURL ? file.preview || file : URL.createObjectURL(file);
-
+            {photo?.map((file: any, index) => {
               return (
                 <Fragment key={index}>
                   {type === "profile" ? (
                     <div className="dropzone-container-profile d-flex justify-content-center">
-                      <img id="profile" src={imageSrc} alt={file.name || `image-${index}`} />
-                      <button onClick={() => removeFile(index,imageSrc)} className="remove-button" title="Remove file">
+                      <img id="profile" src={file} alt={file.name || `image-${index}`} />
+                      <button onClick={() => removeFile(file)} className="remove-button" title="Remove file">
                         ×
                       </button>
                     </div>
                   ) : (
                     <div className="file-card">
-                      <img src={imageSrc} alt={file.name || `image-${index}`} className="file-thumbnail" />
-                      <button onClick={() => removeFile(index,imageSrc)} className="remove-button" title="Remove file">
+                      <img src={file} alt={file.name || `image-${index}`} className="file-thumbnail" />
+                      <button onClick={() => removeFile(file)} className="remove-button" title="Remove file">
                         ×
                       </button>
                     </div>
@@ -122,4 +113,4 @@ const CommonFileUpload: FC<CommonFileUploadProps> = ({ multiple, errors, setValu
   );
 };
 
-export default CommonFileUpload;
+export default CommonImageUpload;

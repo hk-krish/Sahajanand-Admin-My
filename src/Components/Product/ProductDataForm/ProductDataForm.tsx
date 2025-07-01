@@ -2,7 +2,7 @@ import { Post } from "@/Api";
 import { RouteList, Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
-import CommonFileUpload from "@/CoreComponents/CommonFileUpload";
+import CommonImageUpload from "@/CoreComponents/CommonImageUpload";
 import CustomCheckbox from "@/CoreComponents/CustomCheckbox";
 import CustomTypeahead from "@/CoreComponents/CustomTypeahead";
 import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
@@ -11,16 +11,16 @@ import { ProductFormData, SelectOption } from "@/Types/Product";
 import { AddProductSchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import { FC, Fragment, useEffect, useState } from "react";
+import { FC, Fragment, useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
 
 const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
   const [photo, setPhoto] = useState<string | string[]>([]);
-  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
-  const { allCategory, singleEditingProduct } = useAppSelector((state) => state.product);
+
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { allCategory, singleEditingProduct } = useAppSelector((state) => state.product);
 
   const {
     register,
@@ -55,14 +55,6 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       if (singleEditingProduct.images) {
         setValue("image", [singleEditingProduct.images]);
         setPhoto(singleEditingProduct.images);
-        if (Array.isArray(singleEditingProduct.images)) {
-          setUploadedFiles(
-            singleEditingProduct.images.map((img) => ({
-              name: img,
-              preview: img,
-            }))
-          );
-        }
       }
     }
   }, [action, setValue, singleEditingProduct]);
@@ -98,16 +90,21 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       if (response?.status === 200) {
         reset();
         setPhoto([]);
-        setUploadedFiles([]);
-        trigger("image")
+        trigger("image");
         router.push(RouteList.Product.Product);
       }
     } catch (error) {}
   };
 
-  useEffect(() => {
-    dispatch(fetchCategoryApiData({}));
+  const getAllCategory = useCallback(async () => {
+    try {
+      await dispatch(fetchCategoryApiData({}));
+    } catch (error) {}
   }, [dispatch]);
+
+  useEffect(() => {
+    getAllCategory();
+  }, [getAllCategory]);
 
   return (
     <Fragment>
@@ -212,13 +209,19 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                     <CustomTypeahead control={control} errors={errors.material} title="Material" name="material" />
                     <CustomTypeahead control={control} errors={errors.fabric} title="Fabric" name="fabric" />
                     <CustomTypeahead control={control} errors={errors.occasion} title="Occasion" name="occasion" />
-
+                   
                     <Col md="12" className="custom-dropzone-project input-box">
+                      <div className="mb-3">
+                        <Label>Upload Image</Label>
+                        <CommonImageUpload multiple name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo}/>
+                      </div>
+                    </Col>
+                    {/* <Col md="12" className="custom-dropzone-project input-box">
                       <div className="mb-3">
                         <Label>Upload Image</Label>
                         <CommonFileUpload multiple name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
                       </div>
-                    </Col>
+                    </Col> */}
                     <Col md="12" lg="10" xl="8">
                       <Row>
                         <CustomCheckbox register={register} title="New Arrival" name="isNewArrival" />

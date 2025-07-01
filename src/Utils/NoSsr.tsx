@@ -1,11 +1,8 @@
 "use client";
 
+import { NoSsrProps } from "@/Types/CoreComponents";
 import dynamic from "next/dynamic";
-import { FC, Fragment, ReactNode } from "react";
-
-interface NoSsrProps {
-  children: ReactNode;
-}
+import { FC, Fragment } from "react";
 
 const NoSsr: FC<NoSsrProps> = (props) => <Fragment>{props.children}</Fragment>;
 

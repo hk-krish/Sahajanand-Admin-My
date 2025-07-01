@@ -44,3 +44,14 @@ export interface SearchListProps {
   setSearchedWord: (key: string) => void;
   onItemClick?: (url: string) => void;
 }
+
+export interface LoginType {
+  email: string;
+  password: string;
+}
+
+export interface ForgotPasswordType {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}

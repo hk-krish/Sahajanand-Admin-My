@@ -1,25 +1,20 @@
+import { PostApiResponse } from "@/Types/CoreComponents";
+import { getToken } from "@/Utils";
 import { Toaster } from "@/Utils/ToastNotification";
-import axios, { AxiosRequestHeaders } from "axios";
-// import { getToken } from "../utils";
+import axios from "axios";
 
 let isRedirecting = false;
 
-export interface ApiResponse<T> {
-  status: number;
-  message?: string;
-  data?: T;
-}
-
-async function Post<TInput, TResponse>(url: string, data?: TInput): Promise<ApiResponse<TResponse> | null> {
+async function Post<TInput, TResponse>(url: string, data?: TInput, isToken: boolean = true): Promise<PostApiResponse<TResponse> | null> {
   const isFormData = data instanceof FormData;
-  // const token = getToken();
+  const authToken = getToken();
   const headers = {
-    // ...(isToken ? { Authorization: token } : {}),
+    ...(isToken ? { Authorization: authToken } : {}),
     ...(isFormData ? {} : { "Content-Type": "application/json" }),
   };
 
   try {
-    const response = await axios.post<ApiResponse<TResponse>>(url, data, { headers });
+    const response = await axios.post<PostApiResponse<TResponse>>(url, data, { headers });
     const resData = response.data;
 
     if (response.status === 200) {

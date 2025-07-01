@@ -1,6 +1,5 @@
 export const RouteList = {
   Default: `/`,
-  Home: "/home",
 
   Auth: {
     Login: "/login",

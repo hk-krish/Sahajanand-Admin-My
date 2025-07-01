@@ -69,8 +69,6 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
   };
 
   const onSubmit = async (data: BannerFormData) => {
-    console.log(data);
-
     const Banner = {
       type: data.type,
       title: data.title,

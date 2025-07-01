@@ -1,20 +1,19 @@
+import { DeleteApiResponse } from "@/Types/CoreComponents";
+import { getToken } from "@/Utils";
 import { Toaster } from "@/Utils/ToastNotification";
 import axios, { AxiosError } from "axios";
 
-interface ResponseData {
-  status: number;
-  message?: string;
-}
-
-const Delete = async (url: string): Promise<ResponseData | null> => {
+const Delete = async (url: string,data?:any): Promise<DeleteApiResponse | null> => {
   let isRedirecting = false;
+  const authToken = getToken();
 
   try {
-    const response = await axios.delete<ResponseData>(url, {
+    const response = await axios.delete<DeleteApiResponse>(url, {
       headers: {
-        // Authorization: authToken,
+        Authorization: authToken,
         "Content-Type": "application/json",
       },
+      data
     });
 
     const resData = response.data;

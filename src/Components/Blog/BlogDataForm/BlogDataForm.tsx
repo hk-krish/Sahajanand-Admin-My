@@ -16,7 +16,7 @@ import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { useRouter } from "next/navigation";
-import { FC, Fragment, useEffect, useState } from "react";
+import { FC, Fragment, useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
 
@@ -94,9 +94,15 @@ const BlogDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
     } catch (error) {}
   };
 
-  useEffect(() => {
-    dispatch(fetchCategoryApiData({}));
-  }, [dispatch]);
+    const getAllCategory = useCallback(async () => {
+      try {
+        await dispatch(fetchCategoryApiData({}));
+      } catch (error) {}
+    }, [dispatch]);
+  
+    useEffect(() => {
+      getAllCategory();
+    }, [getAllCategory]);
 
   return (
     <Fragment>

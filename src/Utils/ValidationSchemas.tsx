@@ -1,13 +1,27 @@
 import * as yup from "yup";
 
 export const LoginSchema = yup.object().shape({
-  phoneNumber: yup
-    .string()
-    // .matches(/^[0-9]{10}$/, "Enter a valid 10-digit phone number")
-    .required("Login Id is required"),
+  email: yup.string().email("Enter a valid email address").required("Email Id is required"),
   password: yup
     .string()
-    .min(6, "Password must be at least 6 characters long")
+    .matches(/[!@#$%^&*()_+={}:;"'<>,.?/-]/, "Password must include at least one special character")
+    .required("Password is required"),
+});
+
+export const ForgotPasswordSchema = yup.object().shape({
+  email: yup.string().email("Enter a valid email address").required("Email Id is required"),
+  password: yup
+    .string()
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
+    .matches(/[!@#$%^&*()_+={}:;"'<>,.?/-]/, "Password must include at least one special character")
+    .required("Password is required"),
+  confirmPassword: yup
+    .string()
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
     .matches(/[!@#$%^&*()_+={}:;"'<>,.?/-]/, "Password must include at least one special character")
     .required("Password is required"),
 });
@@ -41,10 +55,28 @@ export const AddProductSchema = yup.object().shape({
   name: yup.string().required("Product name is required"),
   slug: yup.string().required("Slug is required"),
   description: yup.string().required("Description is required"),
-  price: yup.number().required("Price is required"),
-  salePrice: yup.number().required("Sale Price is required"),
+  price: yup
+    .number()
+    .typeError("Price must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
+    .required("Price is required"),
+  salePrice: yup
+    .number()
+    .typeError("Sale Price must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
+    .required("Sale Price is required"),
   sku: yup.string().required("SKU is required"),
-  stock: yup.number().required("Stock is required"),
+  stock: yup
+    .number()
+    .typeError("Stock must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
+    .required("Stock is required"),
   categoryId: yup.string().required("Category is required"),
   subCategoryId: yup.string().required("Sub Category is required"),
   tags: tagArraySchema,
@@ -126,18 +158,22 @@ export const AddCollectionSchema = yup.object().shape({
     })
     .min(1, "Priority must be at least 1")
     .required("Priority is required"),
-  products:tagArraySchema,
+  products: tagArraySchema,
 });
 
 export const SettingSchema = yup.object().shape({
-  name: yup.string().required("Product name is required"),
-  mobileNumber: yup.string().required("Mobile Number is required"),
-  client: yup.string().required("Client name is required"),
-  progress: yup.number().typeError("Progress must be a number").min(0, "Minimum is 0%").max(100, "Maximum is 100%").required("Progress is required"),
-});
-
-export const ChangePasswordSchema = yup.object().shape({
-  email: yup.string().required("Product name is required"),
-  oldPassword: yup.string().required("Mobile Number is required"),
-  newPassword: yup.string().required("Client name is required"),
+  firstName: yup.string().required("First Name is required"),
+  lastName: yup.string().required("Last Name is required"),
+  email: yup.string().required("Email is required"),
+  phoneNumber: yup
+    .number()
+    .typeError("Phone Number must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
+    .required("Phone Number is required"),
+  facebook: yup.string().required("Facebook is required"),
+  twitter: yup.string().required("Twitter is required"),
+  instagram: yup.string().required("Instagram is required"),
+  image: imageSchema,
 });

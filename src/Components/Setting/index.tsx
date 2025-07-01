@@ -1,29 +1,82 @@
+import { Post } from "@/Api";
+import { Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
+import CommonFileUpload from "@/CoreComponents/CommonFileUpload";
+import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
+import { fetchSingleUserApiData } from "@/ReduxToolkit/Slice/UserSlice";
 import { SettingSchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Facebook, Instagram, Snapchat, Xrp } from "iconsax-react";
-import { Fragment, useState } from "react";
+import { Facebook, Instagram, Xrp } from "iconsax-react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Card, CardBody, Col, Container, Form, InputGroup, InputGroupText, Label, Row } from "reactstrap";
 
 const SettingContainer = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [dropdownValue, setDropdownValue] = useState("Facebook");
+  const [photo, setPhoto] = useState<any>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
 
-  const toggle = () => setDropdownOpen((prevState) => !prevState);
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+  const { singleUser } = useAppSelector((state) => state.users);
 
   const {
     register,
     handleSubmit,
+    setValue,
+    trigger,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(SettingSchema),
   });
 
-  const onSubmit = (data: any) => {
-    console.log("Form Data:", data);
+  useEffect(() => {
+    if (singleUser) {
+      setValue("firstName", singleUser?.firstName);
+      setValue("lastName", singleUser?.lastName);
+      setValue("email", singleUser?.email);
+      setValue("phoneNumber", singleUser?.phoneNumber);
+      setValue("facebook", singleUser?.socialMedia?.facebook);
+      setValue("twitter", singleUser?.socialMedia?.twitter);
+      setValue("instagram", singleUser?.socialMedia?.instagram);
+      if (singleUser?.profilePhoto) {
+        setValue("image", [singleUser?.profilePhoto]);
+        setPhoto(singleUser?.profilePhoto);
+        setUploadedFiles([{ name: singleUser?.profilePhoto, preview: singleUser?.profilePhoto }]);
+      }
+    }
+  }, [setValue, singleUser]);
+
+  const onSubmit = async (data: any) => {
+    const setting = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+      socialMedia: {
+        facebook: data.facebook,
+        twitter: data.twitter,
+        instagram: data.instagram,
+      },
+      profilePhoto: photo,
+    };
+    try {
+      const response = await Post(Url_Keys.Users.EditAdmin, { userId: singleUser?._id, ...setting });
+      if (response?.status === 200) {
+        getSingleUser();
+      }
+    } catch (error) {}
   };
+
+  const getSingleUser = useCallback(async () => {
+    try {
+      await dispatch(fetchSingleUserApiData({ search: user?._id }));
+    } catch (error) {}
+  }, [dispatch, user?._id]);
+
+  useEffect(() => {
+    getSingleUser();
+  }, [getSingleUser]);
   return (
     <Fragment>
       <Breadcrumbs mainTitle="Setting" parent="Pages" />
@@ -35,38 +88,41 @@ const SettingContainer = () => {
               <div className="input-items">
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <Row className="gy-3">
-                    <Col md="6">
-                      <div className="input-box">
-                        <Label>Name</Label>
-                        <input id="name" type="text" placeholder="Product name" {...register("name")} />
-                        {errors.name && <p className="text-danger">{errors.name.message}</p>}
+                    <Col md="12" className="custom-dropzone-project input-box avatar-upload">
+                      <div className="mb-3">
+                        <CommonFileUpload type="profile" name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+                        <Label className="d-flex justify-content-center mt-2">Upload Image</Label>
                       </div>
                     </Col>
                     <Col md="6">
                       <div className="input-box">
-                        <Label>Mobile Number</Label>
-                        <input type="text" placeholder="ProjectTitlePlaceholder" {...register("mobileNumber")} />
-                        {errors.mobileNumber && <p className="text-danger">{errors.mobileNumber.message}</p>}
-                      </div>
-                    </Col>
-
-                    <Col md="6">
-                      <div className="input-box">
-                        <Label>Client Name</Label>
-                        <input type="text" placeholder="ClientNamePlaceholder" {...register("client")} />
-                        {errors.client && <p className="text-danger">{errors.client.message}</p>}
+                        <Label>first Name</Label>
+                        <input type="text" placeholder="First Name" {...register("firstName")} />
+                        {errors.firstName && <p className="text-danger">{errors.firstName.message}</p>}
                       </div>
                     </Col>
 
                     <Col md="6">
                       <div className="input-box">
-                        <Label>Project Progress (%)</Label>
-                        <select className="form-select" {...register("progress")}>
-                          <option disabled>Static Menu</option>
-                          <option>Simple</option>
-                          <option>Classified</option>
-                        </select>
-                        {errors.progress && <p className="text-danger">{errors.progress.message}</p>}
+                        <Label>Last Name</Label>
+                        <input type="text" placeholder="Last Name" {...register("lastName")} />
+                        {errors.lastName && <p className="text-danger">{errors.lastName.message}</p>}
+                      </div>
+                    </Col>
+
+                    <Col md="6">
+                      <div className="input-box">
+                        <Label>Email</Label>
+                        <input type="text" placeholder="Email" {...register("email")} />
+                        {errors.email && <p className="text-danger">{errors.email.message}</p>}
+                      </div>
+                    </Col>
+
+                    <Col md="6">
+                      <div className="input-box">
+                        <Label>Phone Number</Label>
+                        <input type="number" placeholder="Phone Number" {...register("phoneNumber")} />
+                        {errors.phoneNumber && <p className="text-danger">{errors.phoneNumber.message}</p>}
                       </div>
                     </Col>
 
@@ -77,8 +133,9 @@ const SettingContainer = () => {
                           <InputGroupText className="list-light-primary">
                             <Facebook />
                           </InputGroupText>
-                          <input type="text" placeholder="Facebook" />
+                          <input type="text" placeholder="Facebook" {...register("facebook")} />
                         </InputGroup>
+                        {errors.facebook && <p className="text-danger">{errors.facebook.message}</p>}
                       </div>
                     </Col>
                     <Col md="6">
@@ -88,30 +145,21 @@ const SettingContainer = () => {
                           <InputGroupText className="list-light-primary">
                             <Instagram />
                           </InputGroupText>
-                          <input type="text" placeholder="Instagram" />
+                          <input type="text" placeholder="Instagram" {...register("instagram")} />
                         </InputGroup>
+                        {errors.instagram && <p className="text-danger">{errors.instagram.message}</p>}
                       </div>
                     </Col>
                     <Col md="6">
                       <div className="input-box">
-                        <Label>Snapchat</Label>
-                        <InputGroup>
-                          <InputGroupText className="list-light-primary">
-                            <Snapchat />
-                          </InputGroupText>
-                          <input type="text" placeholder="Snapchat" />
-                        </InputGroup>
-                      </div>
-                    </Col>
-                    <Col md="6">
-                      <div className="input-box">
-                        <Label>Xrp</Label>
+                        <Label>Twitter</Label>
                         <InputGroup>
                           <InputGroupText className="list-light-primary">
                             <Xrp />
                           </InputGroupText>
-                          <input type="text" placeholder="Xrp" />
+                          <input type="text" placeholder="Twitter" {...register("twitter")} />
                         </InputGroup>
+                        {errors.twitter && <p className="text-danger">{errors.twitter.message}</p>}
                       </div>
                     </Col>
                   </Row>

@@ -155,7 +155,6 @@ export interface CollectionFormData {
 
 
 export interface ProductSliceType {
-  isAddCollectionModal: boolean;
   allCategory: CategoryApiResponse;
   singleEditingCategory: CategoryType;
   isCategorySearchData: string;

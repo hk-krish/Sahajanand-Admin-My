@@ -57,8 +57,8 @@ const SubMenu: FC<MenuListProps> = ({ menu, setActiveMenu, activeMenu, level }) 
             className={`${level === 0 ? "sidebar-link sidebar-title" : ""} ${(item.menu ? item.menu.map((innerItem) => ActiveNavLinkUrl(innerItem.url)).includes(true) : ActiveNavLinkUrl(item.url)) || activeMenu[level]?.title === item.title ? "active" : ""}`}
             href={item.url ? item.url : Href}
             onClick={() => {
-              const temp = [...activeMenu]; // Copy array
-              temp[level] = temp[level]?.title !== item.title ? item : ({} as MenuItem); // store full object
+              const temp = [...activeMenu]; 
+              temp[level] = temp[level]?.title !== item.title ? item : ({} as MenuItem); 
               setActiveMenu(temp);
             }}
           >

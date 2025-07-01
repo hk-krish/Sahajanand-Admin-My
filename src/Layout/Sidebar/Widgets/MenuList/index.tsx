@@ -10,7 +10,7 @@ const MenuList = () => {
   const shouldHideMenu = (mainMenu: MenuItem) => mainMenu?.Items?.map((data) => data.title).every((titles) => pinedMenu.includes(titles));
 
   return (
-    <>
+    <Fragment>
       {menuList &&
         menuList.map((mainMenu, index) => (
           <Fragment key={index}>
@@ -22,7 +22,7 @@ const MenuList = () => {
             <SubMenu menu={mainMenu.Items} activeMenu={activeMenu} setActiveMenu={setActiveMenu} level={0} />
           </Fragment>
         ))}
-    </>
+    </Fragment>
   );
 };
 

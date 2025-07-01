@@ -1,22 +1,22 @@
+import { GetApiResponse } from "@/Types/CoreComponents";
+import { getToken } from "@/Utils";
 import { Toaster } from "@/Utils/ToastNotification";
 import axios, { AxiosRequestConfig } from "axios";
 
-export interface ApiResponse<T> {
-  status: number;
-  message?: string;
-  data?: T;
-}
-
-async function Get<T>(url: string): Promise<ApiResponse<T> | null> {
+async function Get<T>(url: string): Promise<GetApiResponse<T> | null> {
   let isRedirecting = false;
+  const authToken = getToken();
 
   const config: AxiosRequestConfig = {
     method: "GET",
+    headers: {
+      Authorization: authToken,
+    },
   };
 
   try {
-    const response = await axios.get<ApiResponse<T>>(url, config);
-    
+    const response = await axios.get<GetApiResponse<T>>(url, config);
+
     const resData = response.data;
 
     if (response.status === 200) {
@@ -33,7 +33,7 @@ async function Get<T>(url: string): Promise<ApiResponse<T> | null> {
     }
   } catch (error: any) {
     const msg = error?.response?.data?.message || "No database connection";
-    
+
     const status = error?.response?.status;
 
     if (status === 410 && !isRedirecting) {
