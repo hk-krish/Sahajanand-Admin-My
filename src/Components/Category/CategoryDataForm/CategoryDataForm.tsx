@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
 
 const CategoryDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
-  const [photo, setPhoto] = useState<any>([]);
+  const [photo, setPhoto] = useState<string[]>([]);
   const { singleEditingCategory } = useAppSelector((state) => state.product);
 
   const router = useRouter();

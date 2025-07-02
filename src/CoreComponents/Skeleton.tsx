@@ -1,9 +1,9 @@
 import { dynamicNumber } from "@/Utils";
 import { Edit, Trash } from "iconsax-react";
-import { Fragment } from "react";
+import { FC, Fragment } from "react";
 import { Button, Card, CardHeader, Col, Table } from "reactstrap";
 
-const Skeleton = ({ type }: any) => {
+const Skeleton: FC<{ type?: string }> = ({ type }) => {
   return (
     <Fragment>
       {type === "table" ? (

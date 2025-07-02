@@ -2,9 +2,10 @@ import { Post } from "@/Api";
 import { Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
-import CommonFileUpload from "@/CoreComponents/CommonFileUpload";
+import CommonImageUpload from "@/CoreComponents/CommonImageUpload";
 import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { fetchSingleUserApiData } from "@/ReduxToolkit/Slice/UserSlice";
+import { SettingFormData } from "@/Types/UserType";
 import { SettingSchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Facebook, Instagram, Xrp } from "iconsax-react";
@@ -13,8 +14,7 @@ import { useForm } from "react-hook-form";
 import { Button, Card, CardBody, Col, Container, Form, InputGroup, InputGroupText, Label, Row } from "reactstrap";
 
 const SettingContainer = () => {
-  const [photo, setPhoto] = useState<any>([]);
-  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
+  const [photo, setPhoto] = useState<string[]>([]);
 
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
@@ -41,13 +41,12 @@ const SettingContainer = () => {
       setValue("instagram", singleUser?.socialMedia?.instagram);
       if (singleUser?.profilePhoto) {
         setValue("image", [singleUser?.profilePhoto]);
-        setPhoto(singleUser?.profilePhoto);
-        setUploadedFiles([{ name: singleUser?.profilePhoto, preview: singleUser?.profilePhoto }]);
+        setPhoto([singleUser?.profilePhoto]);
       }
     }
   }, [setValue, singleUser]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: SettingFormData) => {
     const setting = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -58,7 +57,7 @@ const SettingContainer = () => {
         twitter: data.twitter,
         instagram: data.instagram,
       },
-      profilePhoto: photo,
+      profilePhoto: photo[0],
     };
     try {
       const response = await Post(Url_Keys.Users.EditAdmin, { userId: singleUser?._id, ...setting });
@@ -90,7 +89,7 @@ const SettingContainer = () => {
                   <Row className="gy-3">
                     <Col md="12" className="custom-dropzone-project input-box avatar-upload">
                       <div className="mb-3">
-                        <CommonFileUpload type="profile" name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+                        <CommonImageUpload type="profile" name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} />
                         <Label className="d-flex justify-content-center mt-2">Upload Image</Label>
                       </div>
                     </Col>

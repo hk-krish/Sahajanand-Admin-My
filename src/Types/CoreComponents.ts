@@ -59,14 +59,12 @@ export interface RatioImageProp {
   style?: { height: number };
 }
 
-export interface CommonFileUploadProps {
+export interface CommonImageUploadProps {
   multiple?: boolean;
   errors?: any;
   setValue?: any;
-  setPhoto?: (photo: string | string[]) => void;
-  photo?: string | string[];
-  uploadedFiles?: File[];
-  setUploadedFiles?: (files: File[]) => void;
+  setPhoto?: (photo: string[]) => void;
+  photo?: string[];
   trigger?: any;
   name?: string;
   type?: string;

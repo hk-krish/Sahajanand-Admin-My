@@ -1,15 +1,16 @@
+/* eslint-disable @next/next/no-img-element */
 import { Post } from "@/Api";
 import Delete from "@/Api/Delete";
 import { ImagePath, Url_Keys } from "@/Constant";
+import { CommonImageUploadProps } from "@/Types/CoreComponents";
 import { Toaster } from "@/Utils/ToastNotification";
 import { GalleryAdd } from "iconsax-react";
 import Image from "next/image";
 import { FC, Fragment } from "react";
 import Dropzone from "react-dropzone";
 
-const CommonImageUpload: FC<any> = ({ multiple, errors, setValue, setPhoto, photo, trigger, name, type }) => {
+const CommonImageUpload: FC<CommonImageUploadProps> = ({ multiple, errors, setValue, setPhoto, photo, trigger, name, type }) => {
   const normalizedPhoto: string[] = Array.isArray(photo) ? photo : photo ? [photo] : [];
-console.log("normalizedPhoto",normalizedPhoto);
 
   const onDrop = async (acceptedFiles: File[]) => {
     const uploadedPhotoURLs: string[] = [];
@@ -36,15 +37,10 @@ console.log("normalizedPhoto",normalizedPhoto);
 
   const removeFile = async (imageSrc: string) => {
     const updatedPhoto = normalizedPhoto.filter((img) => img !== imageSrc);
-
-    try {
-      setPhoto?.(updatedPhoto);
-      // await Delete(Url_Keys.Upload.Delete, { imageUrl: imageSrc });
-      setValue?.(name, updatedPhoto);
-      trigger?.(name);
-    } catch {
-      Toaster("error", "Failed to delete image");
-    }
+    await Delete(Url_Keys.Upload.Delete, { imageUrl: imageSrc },false);
+    setPhoto?.(updatedPhoto);
+    setValue?.(name, updatedPhoto);
+    trigger?.(name);
   };
 
   return (
@@ -83,20 +79,20 @@ console.log("normalizedPhoto",normalizedPhoto);
             </Dropzone>
           )}
           <div className="uploaded-files">
-            {photo?.map((file: any, index) => {
+            {photo?.map((file: string, index) => {
               return (
                 <Fragment key={index}>
                   {type === "profile" ? (
                     <div className="dropzone-container-profile d-flex justify-content-center">
-                      <img id="profile" src={file} alt={file.name || `image-${index}`} />
-                      <button onClick={() => removeFile(file)} className="remove-button" title="Remove file">
+                      <img id="profile" src={file} alt={`image-${index}`} />
+                      <button type="button" onClick={() => removeFile(file)} className="remove-button" title="Remove file">
                         ×
                       </button>
                     </div>
                   ) : (
                     <div className="file-card">
-                      <img src={file} alt={file.name || `image-${index}`} className="file-thumbnail" />
-                      <button onClick={() => removeFile(file)} className="remove-button" title="Remove file">
+                      <img src={file} alt={`image-${index}`} className="file-thumbnail" />
+                      <button type="button" onClick={() => removeFile(file)} className="remove-button" title="Remove file">
                         ×
                       </button>
                     </div>

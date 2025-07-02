@@ -2,7 +2,7 @@ import { Post } from "@/Api";
 import { RouteList, Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
-import CommonFileUpload from "@/CoreComponents/CommonFileUpload";
+import CommonImageUpload from "@/CoreComponents/CommonImageUpload";
 import CustomTypeahead from "@/CoreComponents/CustomTypeahead";
 import { BlogStatus } from "@/Data/CoreComponents";
 import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
@@ -23,8 +23,7 @@ import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
 dayjs.extend(utc);
 
 const BlogDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
-  const [photo, setPhoto] = useState<string | string[]>([]);
-  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
+  const [photo, setPhoto] = useState<string[]>([]);
   const { allCategory } = useAppSelector((state) => state.product);
   const { singleEditingBlog } = useAppSelector((state) => state.blog);
   const [startDate, setStartDate] = useState<Date>(dayjs().startOf("day").toDate());
@@ -60,8 +59,7 @@ const BlogDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       }
       if (singleEditingBlog.image) {
         setValue("image", [singleEditingBlog.image]);
-        setPhoto(singleEditingBlog.image);
-        setUploadedFiles([{ name: singleEditingBlog.image, preview: singleEditingBlog.image }]);
+        setPhoto([singleEditingBlog.image]);
       }
     }
   }, [action, setValue, singleEditingBlog]);
@@ -80,14 +78,13 @@ const BlogDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       tags: normalizeTags(data.tags),
       scheduledAt: startDate,
       status: data.status,
-      image: photo,
+      image: photo[0],
     };
     try {
       const response = action === "Edit" ? await Post(Url_Keys.Blog.Edit, { blogId: singleEditingBlog._id, ...Blog }) : await Post(Url_Keys.Blog.Add, Blog);
       if (response?.status === 200) {
         reset();
         setPhoto([]);
-        setUploadedFiles([]);
         trigger("image");
         router.push(RouteList.Blog.Blog);
       }
@@ -199,7 +196,7 @@ const BlogDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                     <Col md="12" className="custom-dropzone-project input-box">
                       <div className="mb-3">
                         <Label>Upload Image</Label>
-                        <CommonFileUpload trigger={trigger} name="image" errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+                        <CommonImageUpload trigger={trigger} name="image" errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo}/>
                       </div>
                     </Col>
                   </Row>

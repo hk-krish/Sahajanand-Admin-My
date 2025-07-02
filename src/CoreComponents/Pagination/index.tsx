@@ -3,7 +3,7 @@ import { LimitOptions } from "@/Data/CoreComponents";
 import { PaginationProps } from "@/Types/CoreComponents";
 import { FC } from "react";
 import Select from "react-select";
-import { Col, Row } from "reactstrap";
+import { Col } from "reactstrap";
 import PaginationList from "./PaginationList";
 
 export const customStyles = {

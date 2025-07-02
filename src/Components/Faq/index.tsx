@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { fetchFaqApiData, setAddFaqModal, setFaqSearchData, setSingleEditingFaq } from "@/ReduxToolkit/Slice/FaqSlice";
 import { FaqType } from "@/Types/Faq";
 import { Add, Edit, Minus, Trash } from "iconsax-react";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Button, Card, CardBody, CardHeader, Col, Collapse, Container, Row } from "reactstrap";
 import AddSalesmanModal from "./AddFaqModal";
 
@@ -20,6 +20,7 @@ const FaqContainer = () => {
   const [page, setPage] = useState(0);
   const [pageLimit, setPageLimit] = useState(LimitOptions[0]?.value);
   const [isTypeFilter, setTypeFilter] = useState("");
+  const hasFetched = useRef(false);
 
   const dispatch = useAppDispatch();
   const { allFaq, isFaqSearchData, isLoadingFaq } = useAppSelector((state) => state.faq);
@@ -46,8 +47,12 @@ const FaqContainer = () => {
     } catch (error) {}
   }, [dispatch, page, pageLimit, isFaqSearchData, isTypeFilter]);
 
+
   useEffect(() => {
-    getAllFaq();
+    if (!hasFetched.current) {
+      getAllFaq();
+      hasFetched.current = true;
+    }
   }, [getAllFaq]);
   return (
     <Fragment>

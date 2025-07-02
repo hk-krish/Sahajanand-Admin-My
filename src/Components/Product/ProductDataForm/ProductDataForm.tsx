@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
 
 const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
-  const [photo, setPhoto] = useState<string | string[]>([]);
+  const [photo, setPhoto] = useState<string[]>([]);
 
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -216,12 +216,6 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                         <CommonImageUpload multiple name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo}/>
                       </div>
                     </Col>
-                    {/* <Col md="12" className="custom-dropzone-project input-box">
-                      <div className="mb-3">
-                        <Label>Upload Image</Label>
-                        <CommonFileUpload multiple name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
-                      </div>
-                    </Col> */}
                     <Col md="12" lg="10" xl="8">
                       <Row>
                         <CustomCheckbox register={register} title="New Arrival" name="isNewArrival" />

@@ -9,13 +9,14 @@ import { fetchProductApiData, setSingleEditingProduct } from "@/ReduxToolkit/Sli
 import { ProductType } from "@/Types/Product";
 import { dynamicNumber } from "@/Utils";
 import Link from "next/link";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Card, Col, Row } from "reactstrap";
 
 const GridView = () => {
   const [page, setPage] = useState(0);
   const [pageLimit, setPageLimit] = useState(LimitOptions[0]?.value);
-  
+  const hasFetched = useRef(false);
+
   const dispatch = useAppDispatch();
   const { allProduct, isProductSearchData, isLoadingProduct } = useAppSelector((state) => state.product);
 
@@ -30,7 +31,10 @@ const GridView = () => {
   }, [dispatch, page, pageLimit, isProductSearchData]);
 
   useEffect(() => {
-    getAllProduct();
+    if (!hasFetched.current) {
+      getAllProduct();
+      hasFetched.current = true;
+    }
   }, [getAllProduct]);
 
   return (

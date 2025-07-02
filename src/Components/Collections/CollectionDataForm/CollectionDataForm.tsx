@@ -16,7 +16,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
 
 const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
-  const [photo, setPhoto] = useState<any>([]);
+  const [photo, setPhoto] = useState<string[]>([]);
   const { allProduct, singleEditingCollection } = useAppSelector((state) => state.product);
 
   const dispatch = useAppDispatch();

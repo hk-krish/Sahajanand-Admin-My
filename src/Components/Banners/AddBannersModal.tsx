@@ -1,6 +1,6 @@
 import { Post } from "@/Api";
 import { Url_Keys } from "@/Constant";
-import CommonFileUpload from "@/CoreComponents/CommonFileUpload";
+import CommonImageUpload from "@/CoreComponents/CommonImageUpload";
 import { BannerTypeData, LinkTypeData } from "@/Data/CoreComponents";
 import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { setAddBannerModal } from "@/ReduxToolkit/Slice/BannersSlice";
@@ -14,10 +14,8 @@ import { Button, Col, Form, Label, Modal, ModalBody, ModalHeader, Row } from "re
 
 const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanner }) => {
   const [isLinkType, setLinkType] = useState("");
-  const [photo, setPhoto] = useState<any>([]);
-  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
-  const [mobilePhoto, setMobilePhoto] = useState<any>([]);
-  const [uploadedMobileFiles, setUploadedMobileFiles] = useState<any[]>([]);
+  const [photo, setPhoto] = useState<string[]>([]);
+  const [mobilePhoto, setMobilePhoto] = useState<string[]>([]);
 
   const dispatch = useAppDispatch();
   const { isAddBannerModal, singleEditingBanner } = useAppSelector((state) => state.banners);
@@ -44,13 +42,11 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
       }
       if (singleEditingBanner.imageDesktop) {
         setValue("image", [singleEditingBanner.imageDesktop]);
-        setPhoto(singleEditingBanner.imageDesktop);
-        setUploadedFiles([{ name: singleEditingBanner.imageDesktop, preview: singleEditingBanner.imageDesktop }]);
+        setPhoto([singleEditingBanner.imageDesktop]);
       }
       if (singleEditingBanner.imageMobile) {
         setValue("mobileImage", [singleEditingBanner.imageMobile]);
-        setMobilePhoto(singleEditingBanner.imageMobile);
-        setUploadedMobileFiles([{ name: singleEditingBanner.imageMobile, preview: singleEditingBanner.imageMobile }]);
+        setMobilePhoto([singleEditingBanner.imageMobile]);
       }
     }
   }, [isEdit, setValue, singleEditingBanner]);
@@ -62,8 +58,6 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
     dispatch(setAddBannerModal());
     setPhoto([]);
     setMobilePhoto([]);
-    setUploadedFiles([]);
-    setUploadedMobileFiles([]);
     trigger("image");
     trigger("mobileImage");
   };
@@ -75,8 +69,8 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
       priority: data.priority,
       linkType: data.linkType,
       linkId: data.linkId,
-      imageDesktop: photo,
-      imageMobile: mobilePhoto,
+      imageDesktop: photo[0],
+      imageMobile: mobilePhoto[0],
     };
     try {
       const response = isEdit ? await Post(Url_Keys.Banner.Edit, { bannerId: singleEditingBanner._id, ...Banner }) : await Post(Url_Keys.Banner.Add, Banner);
@@ -158,13 +152,13 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
                 <Col md="6" className="custom-dropzone-project input-box">
                   <div className="mb-3">
                     <Label>Image Desktop</Label>
-                    <CommonFileUpload name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+                    <CommonImageUpload name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo}/>
                   </div>
                 </Col>
                 <Col md="6" className="custom-dropzone-project input-box">
                   <div className="mb-3">
                     <Label>Image Mobile</Label>
-                    <CommonFileUpload name="mobileImage" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setMobilePhoto} photo={mobilePhoto} uploadedFiles={uploadedMobileFiles} setUploadedFiles={setUploadedMobileFiles} />
+                    <CommonImageUpload name="mobileImage" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setMobilePhoto} photo={mobilePhoto}/>
                   </div>
                 </Col>
               </Row>

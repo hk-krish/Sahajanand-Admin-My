@@ -27,3 +27,12 @@ export interface UserApiResponse {
   state: UserListState;
 }
 
+export interface SettingFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: number;
+  facebook: string;
+  twitter: string;
+  instagram: string;
+}

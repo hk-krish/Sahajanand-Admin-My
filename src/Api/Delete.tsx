@@ -3,7 +3,7 @@ import { getToken } from "@/Utils";
 import { Toaster } from "@/Utils/ToastNotification";
 import axios, { AxiosError } from "axios";
 
-const Delete = async (url: string,data?:any): Promise<DeleteApiResponse | null> => {
+const Delete = async (url: string, data?: any, toaster?: boolean): Promise<DeleteApiResponse | null> => {
   let isRedirecting = false;
   const authToken = getToken();
 
@@ -13,7 +13,7 @@ const Delete = async (url: string,data?:any): Promise<DeleteApiResponse | null> 
         Authorization: authToken,
         "Content-Type": "application/json",
       },
-      data
+      data,
     });
 
     const resData = response.data;
@@ -26,22 +26,25 @@ const Delete = async (url: string,data?:any): Promise<DeleteApiResponse | null> 
         Toaster("error", resData.message || "Something went wrong");
         return null;
       }
-    } else if (response.status === 404) {
-      Toaster("error", resData.message || "Not Found");
-    } else {
-      Toaster("error", resData.message || "Something went wrong");
+    } else if (toaster) {
+      if (response.status === 404) {
+        Toaster("error", resData.message || "Not Found");
+      } else {
+        Toaster("error", resData.message || "Something went wrong");
+      }
     }
   } catch (error: unknown) {
     const err = error as AxiosError<{ message?: string }>;
     const msg = err?.response?.data?.message || "Something went wrong";
     const status = err?.response?.status;
-
-    if (status === 410 && !isRedirecting) {
-      isRedirecting = true;
-      window.location.href = "/session-expired";
-      setTimeout(() => (isRedirecting = false), 1000);
-    } else {
-      Toaster("error", msg);
+    if (toaster) {
+      if (status === 410 && !isRedirecting) {
+        isRedirecting = true;
+        window.location.href = "/";
+        setTimeout(() => (isRedirecting = false), 1000);
+      } else {
+        Toaster("error", msg);
+      }
     }
   }
 
