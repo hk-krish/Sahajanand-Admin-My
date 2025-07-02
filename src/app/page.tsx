@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 const Home = () => {
   const router = useRouter();
-  useEffect(() => router.push(RouteList.Home), [router]);
+  useEffect(() => router.push(RouteList.Default), [router]);
   return <main></main>;
 };
 
