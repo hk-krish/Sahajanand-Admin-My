@@ -166,7 +166,7 @@ const SettingContainer = () => {
                     <Col>
                       <div className="text-center mt-4">
                         <Button type="submit" color="primary">
-                          Submit
+                          Save
                         </Button>
                       </div>
                     </Col>

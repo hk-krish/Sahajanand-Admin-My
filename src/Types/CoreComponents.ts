@@ -70,13 +70,6 @@ export interface CommonImageUploadProps {
   type?: string;
 }
 
-export interface SearchFunctionProps {
-  btnTitle: string;
-  btnLink?: string;
-  openModal?: () => void;
-  setSearchData?: (value: string) => void;
-}
-
 export interface PaginationListProps {
   pageCount: number;
   onPageChange: (data: { selected: number }) => void;

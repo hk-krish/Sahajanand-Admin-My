@@ -209,11 +209,11 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                     <CustomTypeahead control={control} errors={errors.material} title="Material" name="material" />
                     <CustomTypeahead control={control} errors={errors.fabric} title="Fabric" name="fabric" />
                     <CustomTypeahead control={control} errors={errors.occasion} title="Occasion" name="occasion" />
-                   
+
                     <Col md="12" className="custom-dropzone-project input-box">
                       <div className="mb-3">
                         <Label>Upload Image</Label>
-                        <CommonImageUpload multiple name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo}/>
+                        <CommonImageUpload multiple name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} />
                       </div>
                     </Col>
                     <Col md="12" lg="10" xl="8">
@@ -229,7 +229,7 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                     <Col>
                       <div className="text-center">
                         <Button type="submit" color="primary">
-                          {`${action} Product`}
+                          Save
                         </Button>
                       </div>
                     </Col>

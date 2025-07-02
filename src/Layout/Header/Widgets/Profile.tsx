@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Href, ImagePath, RouteList } from "@/Constant";
 import SvgIcon from "@/CoreComponents/SvgIcon";
 import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
@@ -20,9 +21,9 @@ const Profile = () => {
 
   const getSingleUser = useCallback(async () => {
     try {
-      await dispatch(fetchSingleUserApiData({ search: user._id }));
+      await dispatch(fetchSingleUserApiData({ search: user?._id }));
     } catch (error) {}
-  }, [dispatch, user._id]);
+  }, [dispatch, user?._id]);
 
   useEffect(() => {
     getSingleUser();

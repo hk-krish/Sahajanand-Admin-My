@@ -15,8 +15,8 @@ export const fetchSingleUserApiData = createAsyncThunk<UserApiResponse, FetchApi
   return response?.data;
 });
 
-const BannersSlice = createSlice({
-  name: "Banners",
+const UsersSlice = createSlice({
+  name: "Users",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -26,5 +26,5 @@ const BannersSlice = createSlice({
   },
 });
 
-export const {} = BannersSlice.actions;
-export default BannersSlice.reducer;
+export const {} = UsersSlice.actions;
+export default UsersSlice.reducer;
