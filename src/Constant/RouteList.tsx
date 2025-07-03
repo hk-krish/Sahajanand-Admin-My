@@ -33,10 +33,12 @@ export const RouteList = {
     AddCollections: "/collections/add-collections",
     EditCollections: "/collections/edit-collections",
   },
-
+  
   FAQ: "/faq",
   Banners: "/banners",
   TrackOrder: "/track-order",
   Setting: "/setting",
   ChangePassword: "/change-password",
+  Testimonial:"/testimonial",
+  ProductReview:"/product-review"
 };

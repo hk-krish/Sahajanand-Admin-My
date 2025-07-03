@@ -2815,6 +2815,13 @@ body.offcanvas {
         outline: none !important;
       }
     }
+    .rating {
+      background-color: #fff;
+      padding: 5px 16px;
+      border: 1px dashed #dedbdb;
+      width: 100%;
+      border-radius: 4px;
+    }
     .ant-picker-outlined {
       padding: 0px;
       background-color: #fff;

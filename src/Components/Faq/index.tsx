@@ -26,7 +26,7 @@ const FaqContainer = () => {
   const { allFaq, isFaqSearchData, isLoadingFaq } = useAppSelector((state) => state.faq);
 
   const handleChange = (id: string) => setActiveFaqId((prev) => (prev === id ? null : id));
-  const AddSalesmanModalClick = () => dispatch(setAddFaqModal());
+  const AddFaqModalClick = () => dispatch(setAddFaqModal());
   const setSearchData = (e: string) => dispatch(setFaqSearchData(e));
 
   const DeleteFaq = async (id: string) => {
@@ -38,7 +38,7 @@ const FaqContainer = () => {
   const EditFaq = (item: FaqType) => {
     dispatch(setSingleEditingFaq(item));
     setEdit(true);
-    AddSalesmanModalClick();
+    AddFaqModalClick();
   };
 
   const getAllFaq = useCallback(async () => {
@@ -60,7 +60,7 @@ const FaqContainer = () => {
       <Container fluid>
         <Col md="12">
           <Card>
-            <CommonCardHeader searchClass="col-md-8" Search={setSearchData} typeFilter={setTypeFilter} typeFilterData={CategoryData} btnTitle="Add Faq" btnClick={AddSalesmanModalClick} />
+            <CommonCardHeader searchClass="col-md-8" Search={setSearchData} typeFilter={setTypeFilter} typeFilterData={CategoryData} btnTitle="Add Faq" btnClick={AddFaqModalClick} />
             <CardBody>
               <div className="default-according style-1">
                 <Col xl="12" className="input-items">

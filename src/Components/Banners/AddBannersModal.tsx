@@ -4,7 +4,7 @@ import CommonImageUpload from "@/CoreComponents/CommonImageUpload";
 import { BannerTypeData, LinkTypeData } from "@/Data/CoreComponents";
 import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { setAddBannerModal } from "@/ReduxToolkit/Slice/BannersSlice";
-import { fetchProductApiData } from "@/ReduxToolkit/Slice/ProductSlice";
+import { fetchCollectionApiData, fetchProductApiData } from "@/ReduxToolkit/Slice/ProductSlice";
 import { AddBannersModalType, BannerFormData } from "@/Types/Banner";
 import { AddBannerSchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -19,7 +19,7 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
 
   const dispatch = useAppDispatch();
   const { isAddBannerModal, singleEditingBanner } = useAppSelector((state) => state.banners);
-  const { allProduct } = useAppSelector((state) => state.product);
+  const { allProduct , allCollection} = useAppSelector((state) => state.product);
 
   const {
     register,
@@ -82,6 +82,7 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
 
   useEffect(() => {
     dispatch(fetchProductApiData({}));
+    dispatch(fetchCollectionApiData({}));
   }, [dispatch]);
 
   return (
@@ -139,7 +140,11 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
                               {product?.name}
                             </option>
                           ))
-                        : ""}
+                        : allCollection?.collection_data?.map((product, index) => (
+                            <option value={product?._id} key={index}>
+                              {product?.name}
+                            </option>
+                          ))}
                     </select>
                     {errors.linkId && <p className="text-danger">{errors.linkId.message}</p>}
                   </div>

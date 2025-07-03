@@ -24,7 +24,7 @@ const BannersContainer = () => {
   const dispatch = useAppDispatch();
   const { allBanner, isBannerSearchData, isLoadingBanner } = useAppSelector((state) => state.banners);
 
-  const AddSalesmanModalClick = () => dispatch(setAddBannerModal());
+  const AddBannerModalClick = () => dispatch(setAddBannerModal());
   const setSearchData = (e: string) => dispatch(setBannerSearchData(e));
 
   const DeleteBanner = async (id: string) => {
@@ -37,7 +37,7 @@ const BannersContainer = () => {
   const EditBanner = (item: BannerType) => {
     dispatch(setSingleEditingBanner(item));
     setEdit(true);
-    AddSalesmanModalClick();
+    AddBannerModalClick();
   };
 
   const getAllBanner = useCallback(async () => {
@@ -55,7 +55,7 @@ const BannersContainer = () => {
       <Container fluid>
         <Col md="12" className="custom-table">
           <Card>
-            <CommonCardHeader Search={setSearchData} searchClass="col-md-8" typeFilter={setTypeFilter} typeFilterData={BannerTypeData} btnTitle="Add Banners" btnClick={AddSalesmanModalClick} />
+            <CommonCardHeader Search={setSearchData} searchClass="col-md-8" typeFilter={setTypeFilter} typeFilterData={BannerTypeData} btnTitle="Add Banners" btnClick={AddBannerModalClick} />
             <CardBody>
               {isLoadingBanner ? (
                 <Row>

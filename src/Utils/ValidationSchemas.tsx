@@ -41,15 +41,7 @@ const tagArraySchema = yup
   .min(1, "At least one value is required")
   .required("This field is required");
 
-const imageSchema = yup
-  .array()
-  .of(
-    yup.mixed().test("file-or-url", "Invalid image", (value) => {
-      return typeof value === "string" || value instanceof File;
-    })
-  )
-  .min(1, "Image is required")
-  .required("Image is required");
+const imageSchema = yup.array().min(1, "At least one image is required").required("Image is required");
 
 export const AddProductSchema = yup.object().shape({
   name: yup.string().required("Product name is required"),
@@ -176,4 +168,30 @@ export const SettingSchema = yup.object().shape({
   twitter: yup.string().required("Twitter is required"),
   instagram: yup.string().required("Instagram is required"),
   image: imageSchema,
+});
+
+export const AddTestimonialSchema = yup.object().shape({
+  message: yup.string().required("Message is required"),
+  rating: yup
+    .number()
+    .typeError("Rating must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
+    .min(1, "Rating must be at least 1")
+    .required("Rating is required"),
+  image: imageSchema,
+});
+
+export const AddProductReviewSchema = yup.object().shape({
+  productId: yup.string().required("Product is required"),
+  comment: yup.string().required("Comment is required"),
+  rating: yup
+    .number()
+    .typeError("Rating must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
+    .min(1, "Rating must be at least 1")
+    .required("Rating is required"),
 });

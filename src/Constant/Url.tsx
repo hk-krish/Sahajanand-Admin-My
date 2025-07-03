@@ -64,6 +64,16 @@ const URL = {
     User: "/user",
     EditAdmin: "/user/edit-admin",
   },
+  Testimonial:{
+    Testimonial:"/testimonial",
+    Add:"/testimonial/add",
+    Edit:"/testimonial/edit"
+  },
+  ProductReview:{
+    ProductReview:"/product-review",
+    Add:"/product-review/add",
+    Edit:"/product-review/edit"
+  }
 } as const;
 
 type UrlMap = typeof URL;

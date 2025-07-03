@@ -8,6 +8,8 @@ import BlogSlice from "./Slice/BlogSlice";
 import AboutSlice from "./Slice/AboutSlice";
 import AuthSlice from "./Slice/Layout/AuthSlice";
 import UserSlice from "./Slice/UserSlice";
+import TestimonialSlice from "./Slice/Testimonial";
+import ProductReviewSlice from "./Slice/ProductReview";
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +22,8 @@ export const store = configureStore({
     blog: BlogSlice,
     about: AboutSlice,
     users: UserSlice,
+    testimonial: TestimonialSlice,
+    productReview: ProductReviewSlice,
   },
 });
 

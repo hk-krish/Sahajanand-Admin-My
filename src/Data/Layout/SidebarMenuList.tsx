@@ -116,7 +116,6 @@ export const menuList: MenuItem[] | undefined = [
         type: "link",
         url: RouteList.Banners,
       },
-
       {
         id: 11,
         title: "Blog",
@@ -124,6 +123,22 @@ export const menuList: MenuItem[] | undefined = [
         active: false,
         type: "link",
         url: RouteList.Blog.Blog,
+      },
+      {
+        id: 12,
+        title: "Testimonial",
+        icon: "bonus-kit",
+        active: false,
+        type: "link",
+        url: RouteList.Testimonial,
+      },
+      {
+        id: 13,
+        title: "Product Review",
+        icon: "support-tickets",
+        active: false,
+        type: "link",
+        url: RouteList.ProductReview,
       },
     ],
   },

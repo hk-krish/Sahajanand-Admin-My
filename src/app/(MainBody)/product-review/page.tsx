@@ -1,12 +1,12 @@
 "use client";
 import { FunctionComponent, useEffect, useState } from "react";
 
-const Login = () => {
+const ProductReview = () => {
   const [IsClient, setClient] = useState<FunctionComponent>();
   useEffect(() => {
     (async () => {
       if (typeof window !== "undefined") {
-        const newClient = (await import("@/Components/Auth/Login")).default;
+        const newClient = (await import("@/Components/ProductReview")).default;
         setClient(() => newClient);
       }
     })();
@@ -14,4 +14,4 @@ const Login = () => {
   return IsClient ? <IsClient /> : "";
 };
 
-export default Login;
+export default ProductReview;

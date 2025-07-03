@@ -52,6 +52,9 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       setValue("occasion", singleEditingProduct.attributes.occasion);
       setValue("stock", singleEditingProduct.stock);
       setValue("isFeatured", singleEditingProduct.isFeatured);
+      setValue("isNewArrival", singleEditingProduct.isNewArrival);
+      setValue("isBestSelling", singleEditingProduct.isBestSelling);
+      setValue("showOnHomepage", singleEditingProduct.showOnHomepage);
       if (singleEditingProduct.images) {
         setValue("image", [singleEditingProduct.images]);
         setPhoto(singleEditingProduct.images);
