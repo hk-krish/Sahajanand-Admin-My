@@ -91,11 +91,11 @@ const BannersContainer = () => {
                           <td>{item.priority}</td>
                           <td>{item.linkType}</td>
                           <td>
-                            <Button color="primary" href={Href} className="m-1 p-1" onClick={() => DeleteBanner(item?._id)}>
-                              <Trash className="action" />
-                            </Button>
-                            <Button color="danger" href={Href} className="m-1 p-1" onClick={() => EditBanner(item)}>
+                            <Button color="primary" href={Href} className="m-1 p-1" onClick={() => EditBanner(item)}>
                               <Edit className="action" />
+                            </Button>
+                            <Button color="danger" href={Href} className="m-1 p-1" onClick={() => DeleteBanner(item?._id)}>
+                              <Trash className="action" />
                             </Button>
                           </td>
                         </tr>

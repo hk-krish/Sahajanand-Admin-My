@@ -13,6 +13,19 @@ export interface ProductReviewType {
   isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
+  user: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    profilePhoto: string;
+    userType: string;
+  };
+  product: {
+    _id: string;
+    name: string;
+    images: string[];
+  };
 }
 
 export interface ProductReviewState {

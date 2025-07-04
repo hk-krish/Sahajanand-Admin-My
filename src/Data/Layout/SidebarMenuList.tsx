@@ -126,11 +126,11 @@ export const menuList: MenuItem[] | undefined = [
       },
       {
         id: 12,
-        title: "Testimonial",
+        title: "Enquiry",
         icon: "bonus-kit",
         active: false,
         type: "link",
-        url: RouteList.Testimonial,
+        url: RouteList.Enquiry,
       },
       {
         id: 13,

@@ -4,11 +4,11 @@ import Link from "next/link";
 import { FC } from "react";
 import { Button, CardHeader, Col, Form, Input, Row } from "reactstrap";
 
-const CommonCardHeader: FC<CardHeaderProp> = ({ title, headClass, tagClass, setIsEditing, isEditing, Search, searchClass, btnTitle, btnClick, btnLink, typeFilter, typeFilterData }) => {
+const CommonCardHeader: FC<CardHeaderProp> = ({ title, headClass,rowClass, tagClass, setIsEditing, isEditing, Search, searchClass, btnTitle, btnClick, btnLink, typeFilter, typeFilterData }) => {
   return (
     <CardHeader className={`card-header-box ${headClass ? headClass : "pb-0"}`}>
       <Form>
-        <Row>
+        <Row className={rowClass}>
           {title && (
             <Col md="10" sm="7" xs="12" className="d-flex align-items-center">
               <h4 className={tagClass ? tagClass : ""}>{title}</h4>

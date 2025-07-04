@@ -64,15 +64,16 @@ const URL = {
     User: "/user",
     EditAdmin: "/user/edit-admin",
   },
-  Testimonial:{
-    Testimonial:"/testimonial",
-    Add:"/testimonial/add",
-    Edit:"/testimonial/edit"
-  },
   ProductReview:{
     ProductReview:"/product-review",
     Add:"/product-review/add",
     Edit:"/product-review/edit"
+  },
+   Enquiry:{
+    Enquiry:"/enquiry",
+    Add:"/enquiry/add",
+    Edit:"/enquiry/edit",
+    Delete:"/enquiry"
   }
 } as const;
 

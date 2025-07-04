@@ -41,6 +41,7 @@ export interface CardHeaderProp {
   btnLink?: string;
   typeFilter?: (id: string) => void;
   typeFilterData?: TypeFilterData[];
+  rowClass?:string;
 }
 
 export interface InformationProp {

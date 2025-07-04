@@ -69,11 +69,11 @@ const ProductReviewContainer = () => {
                       {allProductReview?.review_data?.map((item, index) => (
                         <tr key={index}>
                           <td>{index + 1} </td>
-                          <td>{item.productId}</td>
+                          <td>{item?.product?.name}</td>
                           <td>{item.comment}</td>
                           <td><Rating readonly initialValue={item?.rating || 0} size={20} className="mt-1" /></td>
                           <td>
-                            <Button color="danger" href={Href} className="m-1 p-1" onClick={() => EditProductReview(item)}>
+                            <Button color="primary" href={Href} className="m-1 p-1" onClick={() => EditProductReview(item)}>
                               <Edit className="action" />
                             </Button>
                           </td>

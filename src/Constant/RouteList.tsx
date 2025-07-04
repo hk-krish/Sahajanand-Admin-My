@@ -39,6 +39,6 @@ export const RouteList = {
   TrackOrder: "/track-order",
   Setting: "/setting",
   ChangePassword: "/change-password",
-  Testimonial:"/testimonial",
-  ProductReview:"/product-review"
+  ProductReview:"/product-review",
+  Enquiry:"/enquiry",
 };

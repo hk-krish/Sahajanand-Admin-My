@@ -44,3 +44,8 @@ export const CollectionTypeData = [
   { value: "color", label: "Color" },
   { value: "theme", label: "Theme" },
 ];
+
+export const EnquiryTypeData = [
+  { value: "enquiry", label: "Enquiry" },
+  { value: "contact-us", label: "Contact Us" },
+];
