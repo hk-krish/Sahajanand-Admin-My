@@ -1,5 +1,7 @@
 import * as yup from "yup";
 
+const emptyToUndefined = (value: any, originalValue: any) => (originalValue === "" ? undefined : value);
+
 export const LoginSchema = yup.object().shape({
   email: yup.string().email("Enter a valid email address").required("Email Id is required"),
   password: yup
@@ -111,6 +113,7 @@ export const AddBannerSchema = yup.object().shape({
   title: yup.string().required("Title is required"),
   linkType: yup.string().required("Link Type is required"),
   linkId: yup.string().required("Link Id is required"),
+  description: yup.string().required("Description is required"),
   priority: yup
     .number()
     .typeError("Priority must be a number")
@@ -157,30 +160,23 @@ export const SettingSchema = yup.object().shape({
   firstName: yup.string().required("First Name is required"),
   lastName: yup.string().required("Last Name is required"),
   email: yup.string().required("Email is required"),
-  phoneNumber: yup
-    .number()
-    .typeError("Phone Number must be a number")
-    .transform((value, originalValue) => {
-      return originalValue === "" ? undefined : value;
-    })
-    .required("Phone Number is required"),
+  phoneNumber: yup.number().typeError("Phone Number must be a number").transform(emptyToUndefined).required("Phone Number is required"),
   facebook: yup.string().required("Facebook is required"),
   twitter: yup.string().required("Twitter is required"),
   instagram: yup.string().required("Instagram is required"),
   image: imageSchema,
+  headerOffer: tagArraySchema,
+  address:yup.string().required("Address is required"),
+  city: yup.string().required("City is required"),
+  country: yup.string().required("Country is required"),
+  state: yup.string().required("State is required"),
+  zipCode: yup.number().typeError("Zip Code must be a number").transform(emptyToUndefined).required("Zip Code is required"),
 });
 
 export const AddProductReviewSchema = yup.object().shape({
   productId: yup.string().required("Product is required"),
   comment: yup.string().required("Comment is required"),
-  rating: yup
-    .number()
-    .typeError("Rating must be a number")
-    .transform((value, originalValue) => {
-      return originalValue === "" ? undefined : value;
-    })
-    .min(1, "Rating must be at least 1")
-    .required("Rating is required"),
+  rating: yup.number().typeError("Rating must be a number").transform(emptyToUndefined).min(1, "Rating must be at least 1").required("Rating is required"),
 });
 
 export const AddEnquirySchema = yup.object().shape({
@@ -188,4 +184,8 @@ export const AddEnquirySchema = yup.object().shape({
   email: yup.string().email("Enter a valid email address").required("Email Id is required"),
   message: yup.string().required("Message is required"),
   type: yup.string().required("Type is required"),
+});
+
+export const NewsLetterSchema = yup.object().shape({
+  email: yup.string().email("Enter a valid email address").required("Email Id is required"),
 });

@@ -36,6 +36,7 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
       setValue("title", singleEditingBanner.title);
       setValue("priority", singleEditingBanner.priority);
       setValue("linkId", singleEditingBanner.linkId);
+      setValue("description", singleEditingBanner.description);
       if (singleEditingBanner.linkType) {
         setValue("linkType", singleEditingBanner.linkType);
         setLinkType(singleEditingBanner.linkType);
@@ -43,10 +44,12 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
       if (singleEditingBanner.imageDesktop) {
         setValue("image", [singleEditingBanner.imageDesktop]);
         setPhoto([singleEditingBanner.imageDesktop]);
+        trigger("image")
       }
       if (singleEditingBanner.imageMobile) {
         setValue("mobileImage", [singleEditingBanner.imageMobile]);
         setMobilePhoto([singleEditingBanner.imageMobile]);
+        trigger("mobileImage")
       }
     }
   }, [isEdit, setValue, singleEditingBanner]);
@@ -69,6 +72,7 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
       priority: data.priority,
       linkType: data.linkType,
       linkId: data.linkId,
+      description: data.description,
       imageDesktop: photo[0],
       imageMobile: mobilePhoto[0],
     };
@@ -114,6 +118,11 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
                     </select>
                     {errors.type && <p className="text-danger">{errors.type.message}</p>}
                   </div>
+                </Col>
+                <Col md="12" className="input-box">
+                  <Label htmlFor="description">description</Label>
+                  <textarea id="description" placeholder="Description" {...register("description")} />
+                  {errors.description && <span className="text-danger">{errors.description.message}</span>}
                 </Col>
                 <Col md="4">
                   <div className="input-box">

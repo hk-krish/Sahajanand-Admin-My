@@ -12,6 +12,7 @@ export interface BannerType {
   isActive?: boolean;
   createdAt: string;
   updatedAt: string;
+  description: string;
 }
 
 export interface BannerState {
@@ -40,6 +41,7 @@ export interface BannerFormData {
   priority: number;
   linkType: string;
   linkId: string;
+  description: string;
 }
 
 export interface AddBannersModalType {

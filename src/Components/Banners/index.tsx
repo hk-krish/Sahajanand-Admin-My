@@ -70,6 +70,7 @@ const BannersContainer = () => {
                         <th>Desktop Image</th>
                         <th>Mobile Image</th>
                         <th>Title</th>
+                        <th>Description</th>
                         <th>Type</th>
                         <th>Priority</th>
                         <th>Link Type</th>
@@ -88,6 +89,7 @@ const BannersContainer = () => {
                           </td>
                           <td>{item.title}</td>
                           <td>{item.type}</td>
+                          <td>{item.description}</td>
                           <td>{item.priority}</td>
                           <td>{item.linkType}</td>
                           <td>

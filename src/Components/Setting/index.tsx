@@ -3,6 +3,7 @@ import { Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
 import CommonImageUpload from "@/CoreComponents/CommonImageUpload";
+import CustomTypeahead from "@/CoreComponents/CustomTypeahead";
 import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { fetchSingleUserApiData } from "@/ReduxToolkit/Slice/UserSlice";
 import { SettingFormData } from "@/Types/UserType";
@@ -24,6 +25,7 @@ const SettingContainer = () => {
     register,
     handleSubmit,
     setValue,
+    control,
     trigger,
     formState: { errors },
   } = useForm({
@@ -39,6 +41,12 @@ const SettingContainer = () => {
       setValue("facebook", singleUser?.socialMedia?.facebook);
       setValue("twitter", singleUser?.socialMedia?.twitter);
       setValue("instagram", singleUser?.socialMedia?.instagram);
+      setValue("headerOffer", singleUser?.headerOffer);
+      setValue("address", singleUser?.address);
+      setValue("city", singleUser?.city);
+      setValue("country", singleUser?.country);
+      setValue("state", singleUser?.state);
+      setValue("zipCode", singleUser?.zipCode);
       if (singleUser?.profilePhoto) {
         setValue("image", [singleUser?.profilePhoto]);
         setPhoto([singleUser?.profilePhoto]);
@@ -58,6 +66,11 @@ const SettingContainer = () => {
         instagram: data.instagram,
       },
       profilePhoto: photo[0],
+      address:data.address,
+      city: data.city,
+      country: data.country,
+      state: data.state,
+      zipCode: data.zipCode
     };
     try {
       const response = await Post(Url_Keys.Users.EditAdmin, { userId: singleUser?._id, ...setting });
@@ -124,6 +137,48 @@ const SettingContainer = () => {
                         {errors.phoneNumber && <p className="text-danger">{errors.phoneNumber.message}</p>}
                       </div>
                     </Col>
+
+                    <Col md="6">
+                      <div className="input-box">
+                        <Label>address</Label>
+                        <input type="text" placeholder="address" {...register("address")} />
+                        {errors.address && <p className="text-danger">{errors.address.message}</p>}
+                      </div>
+                    </Col>
+
+                    <Col md="6">
+                      <div className="input-box">
+                        <Label>city</Label>
+                        <input type="text" placeholder="city" {...register("city")} />
+                        {errors.city && <p className="text-danger">{errors.city.message}</p>}
+                      </div>
+                    </Col>
+
+                    <Col md="6">
+                      <div className="input-box">
+                        <Label>state</Label>
+                        <input type="text" placeholder="state" {...register("state")} />
+                        {errors.state && <p className="text-danger">{errors.state.message}</p>}
+                      </div>
+                    </Col>
+
+                    <Col md="6">
+                      <div className="input-box">
+                        <Label>country</Label>
+                        <input type="text" placeholder="country" {...register("country")} />
+                        {errors.country && <p className="text-danger">{errors.country.message}</p>}
+                      </div>
+                    </Col>
+
+                    <Col md="6">
+                      <div className="input-box">
+                        <Label>Pin Code</Label>
+                        <input type="number" placeholder="Zip Code" {...register("zipCode")} />
+                        {errors.zipCode && <p className="text-danger">{errors.zipCode.message}</p>}
+                      </div>
+                    </Col>
+
+                    <CustomTypeahead control={control} errors={errors.headerOffer} title="Header Offer" name="headerOffer" />
 
                     <Col md="6">
                       <div className="input-box">

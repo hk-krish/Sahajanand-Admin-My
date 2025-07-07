@@ -35,4 +35,9 @@ export interface SettingFormData {
   facebook: string;
   twitter: string;
   instagram: string;
+  address:string;
+  city: string;
+  country: string;
+  state: string;
+  zipCode: number;
 }

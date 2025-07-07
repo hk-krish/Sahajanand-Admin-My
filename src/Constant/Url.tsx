@@ -74,7 +74,13 @@ const URL = {
     Add:"/enquiry/add",
     Edit:"/enquiry/edit",
     Delete:"/enquiry"
-  }
+  },
+  NewsLetter:{
+    NewsLetter:"/news-letter",
+    Add:"/news-letter/add",
+    Edit:"/news-letter/edit",
+    Delete:"/news-letter",
+  },
 } as const;
 
 type UrlMap = typeof URL;

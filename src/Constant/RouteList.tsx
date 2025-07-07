@@ -41,4 +41,5 @@ export const RouteList = {
   ChangePassword: "/change-password",
   ProductReview:"/product-review",
   Enquiry:"/enquiry",
+  NewsLetter:"/news-letter",
 };
