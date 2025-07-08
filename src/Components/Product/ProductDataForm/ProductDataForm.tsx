@@ -12,8 +12,10 @@ import { AddProductSchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { FC, Fragment, useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Typeahead } from "react-bootstrap-typeahead";
+import { Controller, useForm } from "react-hook-form";
 import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
+import ColorSelector from "./ColorSelector";
 
 const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
   const [photo, setPhoto] = useState<string[]>([]);
@@ -205,9 +207,9 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                         {errors.subCategoryId && <p className="text-danger">{errors.subCategoryId.message}</p>}
                       </div>
                     </Col>
-
+                    
                     <CustomTypeahead control={control} errors={errors.tags} title="Tags" name="tags" />
-                    <CustomTypeahead control={control} errors={errors.color} title="Color" name="color" />
+                    <ColorSelector control={control} errors={errors} />
                     <CustomTypeahead control={control} errors={errors.size} title="Size" name="size" />
                     <CustomTypeahead control={control} errors={errors.material} title="Material" name="material" />
                     <CustomTypeahead control={control} errors={errors.fabric} title="Fabric" name="fabric" />

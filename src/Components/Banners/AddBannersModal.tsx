@@ -140,7 +140,7 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
                 </Col>
                 <Col md="4">
                   <div className="input-box">
-                    <Label>Product Link</Label>
+                    <Label>Link</Label>
                     <select disabled={!isLinkType} className="form-select" {...register("linkId")}>
                       <option value="">-- Select Product Type --</option>
                       {isLinkType === "product"

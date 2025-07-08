@@ -2781,7 +2781,7 @@ body.offcanvas {
   .input-box {
     .input-group {
       flex-wrap: nowrap;
-      span {
+      .input-group-text {
         background-color: #fff;
         border: 1px dashed #dedbdb;
         border-radius: 4px;
