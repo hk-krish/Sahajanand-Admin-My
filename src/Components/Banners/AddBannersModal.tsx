@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { setAddBannerModal } from "@/ReduxToolkit/Slice/BannersSlice";
 import { fetchCollectionApiData, fetchProductApiData } from "@/ReduxToolkit/Slice/ProductSlice";
 import { AddBannersModalType, BannerFormData } from "@/Types/Banner";
+import { getClosestColorName } from "@/Utils/getClosestColorName";
 import { AddBannerSchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FC, useEffect, useState } from "react";
@@ -151,7 +152,7 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
                           ))
                         : allCollection?.collection_data?.map((product, index) => (
                             <option value={product?._id} key={index}>
-                              {product?.name}
+                              {product?.type === "color"? getClosestColorName(product?.name) : product?.name}
                             </option>
                           ))}
                     </select>

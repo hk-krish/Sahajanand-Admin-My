@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { fetchCollectionApiData, setSingleEditingCollection } from "@/ReduxToolkit/Slice/ProductSlice";
 import { CollectionType } from "@/Types/Product";
 import { dynamicNumber } from "@/Utils";
+import { getClosestColorName } from "@/Utils/getClosestColorName";
 import Link from "next/link";
 import { FC, Fragment, useCallback, useEffect, useState } from "react";
 import { Card, Col, Row } from "reactstrap";
@@ -75,7 +76,7 @@ const GridView: FC<{ isTypeFilter: string }> = ({ isTypeFilter }) => {
                     </div>
                     <div className="product-details">
                       <Link href={RouteList.Default}>
-                        <h4>{item.name}</h4>
+                        <h4>{item?.type === "color" ? getClosestColorName(item?.name) : item.name}</h4>
                       </Link>
                       <div className="product-price">{item.type}</div>
                       <p>{item.description}</p>

@@ -9,14 +9,16 @@ import { fetchProductApiData } from "@/ReduxToolkit/Slice/ProductSlice";
 import { CollectionFormData, SelectOption } from "@/Types/Product";
 import { AddCollectionSchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { ColorPicker } from "antd";
 import { useRouter } from "next/navigation";
 import { FC, Fragment, useEffect, useState } from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Controller, useForm } from "react-hook-form";
-import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
+import { Button, Card, CardBody, Col, Form, InputGroup, InputGroupText, Label, Row } from "reactstrap";
 
 const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
   const [photo, setPhoto] = useState<string[]>([]);
+  const [isCollectionType, setCollectionType] = useState("");
   const { allProduct, singleEditingCollection } = useAppSelector((state) => state.product);
 
   const dispatch = useAppDispatch();
@@ -64,7 +66,7 @@ const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       if (response?.status === 200) {
         reset();
         setPhoto([]);
-        trigger("image")
+        trigger("image");
         router.push(RouteList.Collections.Collections);
       }
     } catch (error) {}
@@ -91,15 +93,8 @@ const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                   <Row className="gy-3">
                     <Col md="6">
                       <div className="input-box">
-                        <Label>name</Label>
-                        <input id="name" type="text" placeholder="Name" {...register("name")} />
-                        {errors.name && <p className="text-danger">{errors.name.message}</p>}
-                      </div>
-                    </Col>
-                    <Col md="6">
-                      <div className="input-box">
                         <Label>Type</Label>
-                        <select className="form-select" {...register("type")}>
+                        <select className="form-select" {...register("type")} onChange={(e) => setCollectionType(e.target.value)}>
                           <option value="">-- Select Type --</option>
                           {CollectionTypeData?.map((banner, index) => (
                             <option value={banner?.value} key={index}>
@@ -108,6 +103,30 @@ const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                           ))}
                         </select>
                         {errors.type && <p className="text-danger">{errors.type.message}</p>}
+                      </div>
+                    </Col>
+                    <Col md="6">
+                      <div className="input-box">
+                        <Label>name</Label>
+                        {isCollectionType === "color" ? (
+                          <InputGroup>
+                            <Controller
+                              name="name"
+                              control={control}
+                              render={({ field }) => (
+                                <>
+                                  <InputGroupText className="list-light-primary">
+                                    <ColorPicker value={field.value} onChangeComplete={(color) => field.onChange(color.toHexString())} />
+                                  </InputGroupText>
+                                  <input type="text" value={field.value} placeholder="name" {...register("name")} />
+                                </>
+                              )}
+                            />
+                          </InputGroup>
+                        ) : (
+                          <input id="name" type="text" placeholder="Name" {...register("name")} />
+                        )}
+                        {errors.name && <p className="text-danger">{errors.name.message}</p>}
                       </div>
                     </Col>
                     <Col md="12">
@@ -132,7 +151,7 @@ const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                     <Col md="12" className="custom-dropzone-project input-box">
                       <div className="mb-3">
                         <Label>Upload Image</Label>
-                        <CommonImageUpload name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo}/>
+                        <CommonImageUpload name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} />
                       </div>
                     </Col>
                     <Col sm="6" md="3">
