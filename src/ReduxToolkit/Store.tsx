@@ -11,6 +11,7 @@ import UserSlice from "./Slice/UserSlice";
 import ProductReviewSlice from "./Slice/ProductReview";
 import EnquirySlice from "./Slice/EnquirySlice";
 import NewsLetter from "./Slice/NewsLetterSlice";
+import AskQuestionSlice from "./Slice/AskQuestionSlice";
 
 export const store = configureStore({
   reducer: {
@@ -26,6 +27,7 @@ export const store = configureStore({
     productReview: ProductReviewSlice,
     enquiry: EnquirySlice,
     newsLetter: NewsLetter,
+    askQuestion: AskQuestionSlice,
   },
 });
 

@@ -42,4 +42,5 @@ export const RouteList = {
   ProductReview:"/product-review",
   Enquiry:"/enquiry",
   NewsLetter:"/news-letter",
+  AskQuestion:"/ask-a-question"
 };

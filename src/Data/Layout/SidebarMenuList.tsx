@@ -140,13 +140,21 @@ export const menuList: MenuItem[] | undefined = [
         type: "link",
         url: RouteList.ProductReview,
       },
-       {
+      {
         id: 14,
         title: "News Letter",
         icon: "to-do",
         active: false,
         type: "link",
         url: RouteList.NewsLetter,
+      },
+            {
+        id: 15,
+        title: "Ask a Question",
+        icon: "to-do",
+        active: false,
+        type: "link",
+        url: RouteList.AskQuestion,
       },
     ],
   },

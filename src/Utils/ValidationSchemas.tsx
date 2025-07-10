@@ -166,7 +166,7 @@ export const SettingSchema = yup.object().shape({
   instagram: yup.string().required("Instagram is required"),
   image: imageSchema,
   headerOffer: tagArraySchema,
-  address:yup.string().required("Address is required"),
+  address: yup.string().required("Address is required"),
   city: yup.string().required("City is required"),
   country: yup.string().required("Country is required"),
   state: yup.string().required("State is required"),
@@ -188,4 +188,15 @@ export const AddEnquirySchema = yup.object().shape({
 
 export const NewsLetterSchema = yup.object().shape({
   email: yup.string().email("Enter a valid email address").required("Email Id is required"),
+});
+
+export const AskQuestionSchema = yup.object().shape({
+  productId: yup.string().required("Product is required"),
+  name: yup.string().required("Name is required"),
+  phoneNumber: yup
+    .string()
+    .required("Phone Number is required")
+    .matches(/^[0-9]{10}$/, "Phone Number must be exactly 10 digits and contain no letters"),
+  email: yup.string().required("Email is required"),
+  message: yup.string().required("Message is required"),
 });

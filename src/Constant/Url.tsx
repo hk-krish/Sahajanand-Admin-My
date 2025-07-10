@@ -64,22 +64,28 @@ const URL = {
     User: "/user",
     EditAdmin: "/user/edit-admin",
   },
-  ProductReview:{
-    ProductReview:"/product-review",
-    Add:"/product-review/add",
-    Edit:"/product-review/edit"
+  ProductReview: {
+    ProductReview: "/product-review",
+    Add: "/product-review/add",
+    Edit: "/product-review/edit",
   },
-   Enquiry:{
-    Enquiry:"/enquiry",
-    Add:"/enquiry/add",
-    Edit:"/enquiry/edit",
-    Delete:"/enquiry"
+  Enquiry: {
+    Enquiry: "/enquiry",
+    Add: "/enquiry/add",
+    Edit: "/enquiry/edit",
+    Delete: "/enquiry",
   },
-  NewsLetter:{
-    NewsLetter:"/news-letter",
-    Add:"/news-letter/add",
-    Edit:"/news-letter/edit",
-    Delete:"/news-letter",
+  NewsLetter: {
+    NewsLetter: "/news-letter",
+    Add: "/news-letter/add",
+    Edit: "/news-letter/edit",
+    Delete: "/news-letter",
+  },
+  AskQuestion: {
+    AskQuestion: "/ask-a-question",
+    Add: "/ask-a-question/add",
+    Edit: "/ask-a-question/edit",
+    Delete: "/ask-a-question",
   },
 } as const;
 
