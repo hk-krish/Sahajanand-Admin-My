@@ -87,6 +87,10 @@ const URL = {
     Edit: "/ask-a-question/edit",
     Delete: "/ask-a-question",
   },
+  Order: {
+    Order: "/order",
+    Add: "/order/add",
+  },
 } as const;
 
 type UrlMap = typeof URL;

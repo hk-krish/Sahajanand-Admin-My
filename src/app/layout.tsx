@@ -5,6 +5,7 @@ import "../../src/index.scss";
 import MainProvider from "./MainProvider";
 import { ChildrenType } from "@/Types/Layout";
 import NoSsr from "@/Utils/NoSsr";
+import NextTopLoader from "nextjs-toploader";
 
 const nunito = Nunito_Sans({
   weight: ["200", "300", "400","500", "600", "700", "800", "900"],
@@ -34,7 +35,10 @@ export default function RootLayout({ children }:ChildrenType) {
       </head>
       <body suppressHydrationWarning={true} className={nunito.className || roboto.className}>
         <NoSsr>
-          <MainProvider>{children}</MainProvider>
+          <MainProvider>
+            <NextTopLoader color="#cca270" showSpinner={false} />
+            {children}
+            </MainProvider>
         </NoSsr>
       </body>
     </html>

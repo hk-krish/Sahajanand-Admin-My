@@ -50,6 +50,14 @@ export const menuList: MenuItem[] | undefined = [
         type: "link",
         url: RouteList.TrackOrder,
       },
+       {
+        id: 11,
+        title: "Order History",
+        icon: "icons",
+        active: false,
+        type: "link",
+        url: RouteList.OrderHistory,
+      },
     ],
   },
   {

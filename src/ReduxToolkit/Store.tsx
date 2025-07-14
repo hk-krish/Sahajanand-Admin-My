@@ -12,6 +12,7 @@ import ProductReviewSlice from "./Slice/ProductReview";
 import EnquirySlice from "./Slice/EnquirySlice";
 import NewsLetter from "./Slice/NewsLetterSlice";
 import AskQuestionSlice from "./Slice/AskQuestionSlice";
+import OrderHistorySlice from "./Slice/OrderHistorySlice";
 
 export const store = configureStore({
   reducer: {
@@ -28,6 +29,7 @@ export const store = configureStore({
     enquiry: EnquirySlice,
     newsLetter: NewsLetter,
     askQuestion: AskQuestionSlice,
+    order: OrderHistorySlice,
   },
 });
 

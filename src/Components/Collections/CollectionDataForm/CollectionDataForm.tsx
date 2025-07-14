@@ -43,12 +43,15 @@ const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       setValue("isVisible", singleEditingCollection.isVisible);
       setValue("priority", singleEditingCollection.priority);
       setValue("products", singleEditingCollection.products);
+      setCollectionType(singleEditingCollection.type);
+      const selectedOptions = allProduct?.product_data?.filter((product) => singleEditingCollection.products.includes(product._id))?.map((product) => ({ label: product.name, value: product._id }));
+      setValue("products", selectedOptions || []);
       if (singleEditingCollection.image) {
         setValue("image", [singleEditingCollection.image]);
         setPhoto([singleEditingCollection.image]);
       }
     }
-  }, [action, setValue, singleEditingCollection]);
+  }, [action, allProduct?.product_data, setValue, singleEditingCollection]);
 
   const onSubmit = async (data: CollectionFormData) => {
     const normalizeTags = (items: SelectOption[] = []) => items.map((item) => (typeof item === "string" ? item : item.value));
