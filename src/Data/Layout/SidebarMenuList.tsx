@@ -44,7 +44,7 @@ export const menuList: MenuItem[] | undefined = [
       },
        {
         id: 13,
-        title: "Unique Collections",
+        title: "Unique Category",
         icon: "widget",
         active: false,
         type: "link",
