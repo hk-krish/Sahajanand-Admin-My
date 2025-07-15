@@ -9,7 +9,7 @@ import Image from "next/image";
 import { FC, Fragment } from "react";
 import Dropzone from "react-dropzone";
 
-const CommonImageUpload: FC<CommonImageUploadProps> = ({ multiple, errors, setValue, setPhoto, photo, trigger, name, type }) => {
+const CommonImageUpload: FC<CommonImageUploadProps> = ({ multiple, errors, setValue, setPhoto, photo, trigger, name, type, disabled }) => {
   const normalizedPhoto: string[] = Array.isArray(photo) ? photo : photo ? [photo] : [];
 
   const onDrop = async (acceptedFiles: File[]) => {
@@ -37,7 +37,7 @@ const CommonImageUpload: FC<CommonImageUploadProps> = ({ multiple, errors, setVa
 
   const removeFile = async (imageSrc: string) => {
     const updatedPhoto = normalizedPhoto.filter((img) => img !== imageSrc);
-    await Delete(Url_Keys.Upload.Delete, { imageUrl: imageSrc },false);
+    await Delete(Url_Keys.Upload.Delete, { imageUrl: imageSrc }, false);
     setPhoto?.(updatedPhoto);
     setValue?.(name, updatedPhoto);
     trigger?.(name);
@@ -92,9 +92,11 @@ const CommonImageUpload: FC<CommonImageUploadProps> = ({ multiple, errors, setVa
                   ) : (
                     <div className="file-card">
                       <img src={file} alt={`image-${index}`} className="file-thumbnail" />
-                      <button type="button" onClick={() => removeFile(file)} className="remove-button" title="Remove file">
-                        ×
-                      </button>
+                      {!disabled && (
+                        <button type="button" onClick={() => removeFile(file)} className="remove-button" title="Remove file">
+                          ×
+                        </button>
+                      )}
                     </div>
                   )}
                 </Fragment>

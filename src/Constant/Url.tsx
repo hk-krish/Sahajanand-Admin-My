@@ -35,6 +35,7 @@ const URL = {
     Product: "/product",
     Add: "/product/add",
     Edit: "/product/edit",
+    Delete: "/product",
   },
   Blog: {
     Blog: "/blog",
@@ -90,6 +91,46 @@ const URL = {
   Order: {
     Order: "/order",
     Add: "/order/add",
+  },
+  Material: {
+    Material: "/material/all",
+    Add: "/material/add",
+    Edit: "/material/edit",
+    Delete: "/material",
+  },
+  Color: {
+    Color: "/color/all",
+    Add: "/color/add",
+    Edit: "/color/edit",
+    Delete: "/color",
+  },
+  Occasion: {
+    Occasion: "/occasion/all",
+    Add: "/occasion/add",
+    Edit: "/occasion/edit",
+    Delete: "/occasion",
+  },
+  Fabric: {
+    Fabric: "/fabric/all",
+    Add: "/fabric/add",
+    Edit: "/fabric/edit",
+    Delete: "/fabric",
+  },
+  Size: {
+    Size: "/size/all",
+    Add: "/size/add",
+    Edit: "/size/edit",
+    Delete: "/size",
+  },
+  OurStory: {
+    OurStory: "/our-story",
+    Edit: "/our-story/add/edit",
+  },
+  UniqueCategory: {
+    UniqueCategory: "/unique-category/all",
+    Add: "/unique-category/add",
+    Delete: "/unique-category",
+    Edit: "/unique-category/edit",
   },
 } as const;
 

@@ -1,6 +1,6 @@
 import { Get } from "@/Api";
 import { Url_Keys } from "@/Constant";
-import { CategoryApiResponse, CollectionApiResponse, FetchApiParams, ProductApiResponse, ProductSliceType } from "@/Types/Product";
+import { CategoryApiResponse, CollectionApiResponse, FetchApiParams, ProductApiResponse, ProductSliceType, UniqueCategoryApiResponse } from "@/Types/Product";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState: ProductSliceType = {
@@ -16,6 +16,11 @@ const initialState: ProductSliceType = {
   isLoadingCollection: true,
   isCollectionSearchData: null,
   singleEditingCollection: null,
+  allUniqueCategory: null,
+  singleEditingUniqueCategory: null,
+  isUniqueCategorySearchData: null,
+  isLoadingUniqueCategory: true,
+  isAddUniqueCategoryModal: false,
 };
 
 export const fetchCategoryApiData = createAsyncThunk<CategoryApiResponse, FetchApiParams>("admin/category", async ({ page, limit, search }) => {
@@ -43,6 +48,14 @@ export const fetchCollectionApiData = createAsyncThunk<CollectionApiResponse, Fe
   return response?.data;
 });
 
+export const fetchUniqueCategoryApiData = createAsyncThunk<UniqueCategoryApiResponse, FetchApiParams>("admin/unique-category", async ({ page, limit, search }) => {
+  let url = Url_Keys.UniqueCategory.UniqueCategory;
+  if (page) url += `?page=${page}&limit=${limit}`;
+  if (search) url += `&search=${search}`;
+  const response = await Get<UniqueCategoryApiResponse>(url);
+  return response?.data;
+});
+
 const ProductSlice = createSlice({
   name: "Product",
   initialState,
@@ -65,6 +78,16 @@ const ProductSlice = createSlice({
     setSingleEditingCollection(state, action) {
       state.singleEditingCollection = action.payload;
     },
+    setSingleEditingUniqueCategory(state, action) {
+      state.singleEditingUniqueCategory = action.payload;
+    },
+    setAddUniqueCategoryModal: (state) => {
+      state.isAddUniqueCategoryModal = !state.isAddUniqueCategoryModal;
+    },
+
+    setUniqueCategorySearchData: (state, action) => {
+      state.isUniqueCategorySearchData = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCategoryApiData.fulfilled, (state, action) => {
@@ -79,8 +102,12 @@ const ProductSlice = createSlice({
       state.allCollection = action.payload;
       state.isLoadingCollection = false;
     });
+    builder.addCase(fetchUniqueCategoryApiData.fulfilled, (state, action) => {
+      state.allUniqueCategory = action.payload;
+      state.isLoadingUniqueCategory = false;
+    });
   },
 });
 
-export const {setSingleEditingCategory, setCategorySearchData, setProductSearchData, setSingleEditingProduct, setCollectionSearchData, setSingleEditingCollection } = ProductSlice.actions;
+export const { setSingleEditingUniqueCategory, setUniqueCategorySearchData, setAddUniqueCategoryModal, setSingleEditingCategory, setCategorySearchData, setProductSearchData, setSingleEditingProduct, setCollectionSearchData, setSingleEditingCollection } = ProductSlice.actions;
 export default ProductSlice.reducer;

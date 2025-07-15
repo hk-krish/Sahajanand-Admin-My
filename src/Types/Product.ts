@@ -55,26 +55,32 @@ export interface ProductFormData {
   sku: string;
   stock: number;
   categoryId: string;
-  subCategoryId: string;
+  uniqueCategoryId: string;
   image: File[];
   tags: SelectOption[];
-  color: SelectOption[];
-  size: SelectOption[];
-  material: SelectOption[];
-  fabric: SelectOption[];
-  occasion: SelectOption[];
+  colorIds: SelectOption[];
+  sizeIds: SelectOption[];
+  materialIds: SelectOption[];
+  fabricIds: SelectOption[];
+  occasionIds: SelectOption[];
   isNewArrival: boolean;
   isBestSelling: boolean;
   isFeatured: boolean;
   showOnHomepage: boolean;
 }
 
+export interface SubAttributes {
+  _id: string;
+  name: string;
+  colorCode?: string;
+}
+
 export interface Attributes {
-  color: string[];
-  size: string[];
-  material: string[];
-  fabric: string[];
-  occasion: string[];
+  colorIds: SubAttributes[];
+  sizeIds: SubAttributes[];
+  materialIds: SubAttributes[];
+  fabricIds: SubAttributes[];
+  occasionIds: SubAttributes[];
 }
 
 export interface SEO {
@@ -91,7 +97,7 @@ export interface ProductType {
   sku: string;
   images: string[];
   categoryId: string;
-  subCategoryId: string;
+  uniqueCategoryId: string;
   tags: string[];
   attributes: Attributes;
   stock: number;
@@ -149,10 +155,32 @@ export interface CollectionFormData {
   description: string;
   image?: string[];
   isVisible: boolean;
-  priority:number;
-  products:SelectOption[]
+  priority: number;
+  products: SelectOption[];
 }
 
+export interface UniqueCategoryType {
+  _id: string;
+  name: string;
+  priority: number;
+  image: string;
+  isDeleted: boolean;
+  isBlocked: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UniqueCategoryState {
+  page: number;
+  limit: number;
+  page_limit: number;
+}
+
+export interface UniqueCategoryApiResponse {
+  unique_category_data: UniqueCategoryType[];
+  totalData: number;
+  state: UniqueCategoryState;
+}
 
 export interface ProductSliceType {
   allCategory: CategoryApiResponse;
@@ -167,4 +195,21 @@ export interface ProductSliceType {
   isLoadingCollection: boolean;
   isCollectionSearchData: string;
   singleEditingCollection: CollectionType;
+  allUniqueCategory: UniqueCategoryApiResponse;
+  singleEditingUniqueCategory: UniqueCategoryType;
+  isUniqueCategorySearchData: string;
+  isLoadingUniqueCategory: boolean;
+  isAddUniqueCategoryModal: boolean;
+}
+
+export interface AddUniqueCategoryModalType {
+  isEdit: boolean;
+  setEdit: (isEdit: boolean) => void;
+  getAllUniqueCategory: () => void;
+}
+
+export interface UniqueCategoryFormData {
+  name: string;
+  priority: number;
+  image?: string[];
 }

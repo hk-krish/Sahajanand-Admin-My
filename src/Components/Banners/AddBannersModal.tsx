@@ -53,7 +53,7 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
         trigger("mobileImage")
       }
     }
-  }, [isEdit, setValue, singleEditingBanner]);
+  }, [isEdit, setValue, singleEditingBanner, trigger]);
 
   const onCloseModal = () => {
     getAllBanner();
@@ -161,7 +161,7 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
                 </Col>
                 <Col md="4" className="input-box">
                   <Label htmlFor="priority">Priority</Label>
-                  <input type="number" id="priority" placeholder="Title" {...register("priority")} />
+                  <input type="number" id="priority" placeholder="Priority" {...register("priority")} />
                   {errors.priority && <span className="text-danger">{errors.priority.message}</span>}
                 </Col>
                 <Col md="6" className="custom-dropzone-project input-box">

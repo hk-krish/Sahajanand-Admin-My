@@ -1,6 +1,6 @@
 import { Get } from "@/Api";
 import { Url_Keys } from "@/Constant";
-import { AboutSliceType, AboutUsType, PrivacyPolicyType, ReturnPolicyType, TermsConditionType } from "@/Types/AboutUs";
+import { AboutSliceType, AboutUsType, OurStoryType, PrivacyPolicyType, ReturnPolicyType, TermsConditionType } from "@/Types/AboutUs";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState: AboutSliceType = {
@@ -8,6 +8,7 @@ const initialState: AboutSliceType = {
   allAboutUs: null,
   allReturnPolicy: null,
   allTermsCondition: null,
+  allOurStory: null,
 };
 
 export const fetchPrivacyPoliciesApiData = createAsyncThunk<PrivacyPolicyType, void>("admin/privacy-policy", async () => {
@@ -30,6 +31,11 @@ export const fetchTermsConditionApiData = createAsyncThunk<TermsConditionType, v
   return response?.data!;
 });
 
+export const fetchOurStoryApiData = createAsyncThunk<OurStoryType, void>("admin/our-story", async () => {
+  const response = await Get<OurStoryType>(Url_Keys.OurStory.OurStory);
+  return response?.data!;
+});
+
 const AboutSlice = createSlice({
   name: "aboutUs",
   initialState,
@@ -46,6 +52,9 @@ const AboutSlice = createSlice({
     });
     builder.addCase(fetchTermsConditionApiData.fulfilled, (state, action) => {
       state.allTermsCondition = action.payload;
+    });
+    builder.addCase(fetchOurStoryApiData.fulfilled, (state, action) => {
+      state.allOurStory = action.payload;
     });
   },
 });

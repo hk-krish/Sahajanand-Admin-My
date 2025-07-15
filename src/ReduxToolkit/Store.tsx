@@ -13,6 +13,7 @@ import EnquirySlice from "./Slice/EnquirySlice";
 import NewsLetter from "./Slice/NewsLetterSlice";
 import AskQuestionSlice from "./Slice/AskQuestionSlice";
 import OrderHistorySlice from "./Slice/OrderHistorySlice";
+import AttributeSlice from "./Slice/AttributeSlice";
 
 export const store = configureStore({
   reducer: {
@@ -30,6 +31,7 @@ export const store = configureStore({
     newsLetter: NewsLetter,
     askQuestion: AskQuestionSlice,
     order: OrderHistorySlice,
+    attribute: AttributeSlice,
   },
 });
 

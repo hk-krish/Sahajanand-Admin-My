@@ -33,7 +33,7 @@ export const RouteList = {
     AddCollections: "/collections/add-collections",
     EditCollections: "/collections/edit-collections",
   },
-  
+  UniqueCategory: "/unique-category",
   FAQ: "/faq",
   Banners: "/banners",
   TrackOrder: "/track-order",
@@ -43,5 +43,11 @@ export const RouteList = {
   Enquiry:"/enquiry",
   NewsLetter:"/news-letter",
   AskQuestion:"/ask-a-question",
-  OrderHistory:"/order-history"
+  OrderHistory:"/order-history",
+  Material:"/material",
+  Color:"/color",
+  Occasion:"/occasion",
+  Fabric:"/fabric",
+  Size:"/size",
+  OurStory:"/our-story",
 };

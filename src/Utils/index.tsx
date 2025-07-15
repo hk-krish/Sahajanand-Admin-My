@@ -7,5 +7,7 @@ export const dynamicNumber = (totalLength: number) => {
 
 //get token
 export const getToken = () => {
-  return Cookies.get('token');
+  return Cookies.get("token");
 };
+
+export const generateOptions = (data?: { _id: string; name: string }[]) => data?.map((item) => ({ value: item._id, label: item.name })) || [];

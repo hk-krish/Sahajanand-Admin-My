@@ -72,13 +72,13 @@ export const AddProductSchema = yup.object().shape({
     })
     .required("Stock is required"),
   categoryId: yup.string().required("Category is required"),
-  subCategoryId: yup.string().required("Sub Category is required"),
+  uniqueCategoryId: yup.string().required("Unique Category is required"),
   tags: tagArraySchema,
-  color: tagArraySchema,
-  size: tagArraySchema,
-  material: tagArraySchema,
-  fabric: tagArraySchema,
-  occasion: tagArraySchema,
+  colorIds: tagArraySchema,
+  sizeIds: tagArraySchema,
+  materialIds: tagArraySchema,
+  fabricIds: tagArraySchema,
+  occasionIds: tagArraySchema,
   isNewArrival: yup.boolean(),
   isBestSelling: yup.boolean(),
   isFeatured: yup.boolean(),
@@ -88,8 +88,8 @@ export const AddProductSchema = yup.object().shape({
 
 export const AddCategorySchema = yup.object().shape({
   name: yup.string().required("Product name is required"),
-  slug: yup.string().required("Slug is required"),
-  description: yup.string().required("Description is required"),
+  slug: yup.string(),
+  description: yup.string(),
   isFeatured: yup.boolean(),
   image: imageSchema,
 });
@@ -199,4 +199,48 @@ export const AskQuestionSchema = yup.object().shape({
     .matches(/^[0-9]{10}$/, "Phone Number must be exactly 10 digits and contain no letters"),
   email: yup.string().required("Email is required"),
   message: yup.string().required("Message is required"),
+});
+
+export const AttributeSchema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+  priority: yup
+    .number()
+    .typeError("Priority must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
+    .min(1, "Priority must be at least 1")
+    .required("Priority is required"),
+});
+
+export const ColorSchema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+  colorCode: yup.string().required("Color Code is required"),
+  priority: yup
+    .number()
+    .typeError("Priority must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
+    .min(1, "Priority must be at least 1")
+    .required("Priority is required"),
+});
+
+export const AddOurStorySchema = yup.object().shape({
+  title: yup.string().required("Title is required"),
+  image: imageSchema,
+  description: yup.string().required("Description is required"),
+});
+
+export const UniqueCategorySchema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+  priority: yup
+    .number()
+    .typeError("Priority must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    })
+    .min(1, "Priority must be at least 1")
+    .required("Priority is required"),
+  image: imageSchema,
 });

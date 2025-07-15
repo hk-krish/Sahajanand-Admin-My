@@ -30,9 +30,20 @@ export interface TermsConditionType {
   updatedAt: string;
 }
 
+export interface OurStoryType {
+  _id: string;
+  isDeleted: boolean;
+  title: string;
+  description: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AboutSliceType {
   allPrivacyPolicy: PrivacyPolicyType | null;
   allAboutUs: AboutUsType | null;
   allReturnPolicy: ReturnPolicyType | null;
   allTermsCondition: TermsConditionType | null;
+  allOurStory: OurStoryType | null;
 }

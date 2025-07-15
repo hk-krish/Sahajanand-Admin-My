@@ -6,23 +6,24 @@ import CommonImageUpload from "@/CoreComponents/CommonImageUpload";
 import CustomCheckbox from "@/CoreComponents/CustomCheckbox";
 import CustomTypeahead from "@/CoreComponents/CustomTypeahead";
 import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
-import { fetchCategoryApiData } from "@/ReduxToolkit/Slice/ProductSlice";
+import { fetchColorApiData, fetchFabricApiData, fetchMaterialApiData, fetchOccasionApiData, fetchSizeApiData } from "@/ReduxToolkit/Slice/AttributeSlice";
+import { fetchCategoryApiData, fetchUniqueCategoryApiData } from "@/ReduxToolkit/Slice/ProductSlice";
 import { ProductFormData, SelectOption } from "@/Types/Product";
+import { generateOptions } from "@/Utils";
 import { AddProductSchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { FC, Fragment, useCallback, useEffect, useState } from "react";
-import { Typeahead } from "react-bootstrap-typeahead";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
-import ColorSelector from "./ColorSelector";
 
 const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
   const [photo, setPhoto] = useState<string[]>([]);
 
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { allCategory, singleEditingProduct } = useAppSelector((state) => state.product);
+  const { allCategory, singleEditingProduct, allUniqueCategory } = useAppSelector((state) => state.product);
+  const { allSize, allColor, allFabric, allMaterial, allOccasion } = useAppSelector((state) => state.attribute);
 
   const {
     register,
@@ -45,13 +46,13 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       setValue("salePrice", singleEditingProduct.salePrice);
       setValue("sku", singleEditingProduct.sku);
       setValue("categoryId", singleEditingProduct.categoryId);
-      setValue("subCategoryId", singleEditingProduct.subCategoryId);
+      setValue("uniqueCategoryId", singleEditingProduct.uniqueCategoryId);
       setValue("tags", singleEditingProduct.tags);
-      setValue("color", singleEditingProduct.attributes.color);
-      setValue("size", singleEditingProduct.attributes.size);
-      setValue("material", singleEditingProduct.attributes.material);
-      setValue("fabric", singleEditingProduct.attributes.fabric);
-      setValue("occasion", singleEditingProduct.attributes.occasion);
+      setValue("colorIds", generateOptions(singleEditingProduct.attributes.colorIds));
+      setValue("sizeIds", generateOptions(singleEditingProduct.attributes.sizeIds));
+      setValue("materialIds", generateOptions(singleEditingProduct.attributes.materialIds));
+      setValue("fabricIds", generateOptions(singleEditingProduct.attributes.fabricIds));
+      setValue("occasionIds", generateOptions(singleEditingProduct.attributes.occasionIds));
       setValue("stock", singleEditingProduct.stock);
       setValue("isFeatured", singleEditingProduct.isFeatured);
       setValue("isNewArrival", singleEditingProduct.isNewArrival);
@@ -65,7 +66,7 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
   }, [action, setValue, singleEditingProduct]);
 
   const onSubmit = async (data: ProductFormData) => {
-    const normalizeTags = (items: SelectOption[] = []) => items.map((item) => (typeof item === "string" ? item : item.label));
+    const normalizeTags = (items: SelectOption[] = []) => items.map((item) => (typeof item === "string" ? item : item.value));
     const Product = {
       name: data.name,
       slug: data.slug,
@@ -75,14 +76,14 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       sku: data.sku,
       images: photo,
       categoryId: data.categoryId,
-      subCategoryId: data.subCategoryId,
+      uniqueCategoryId: data.uniqueCategoryId,
       tags: normalizeTags(data.tags),
       attributes: {
-        color: normalizeTags(data.color),
-        size: normalizeTags(data.size),
-        material: normalizeTags(data.material),
-        fabric: normalizeTags(data.fabric),
-        occasion: normalizeTags(data.occasion),
+        colorIds: normalizeTags(data.colorIds),
+        sizeIds: normalizeTags(data.sizeIds),
+        materialIds: normalizeTags(data.materialIds),
+        fabricIds: normalizeTags(data.fabricIds),
+        occasionIds: normalizeTags(data.occasionIds),
       },
       stock: data.stock,
       isNewArrival: data.isNewArrival,
@@ -110,6 +111,66 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
   useEffect(() => {
     getAllCategory();
   }, [getAllCategory]);
+
+  const getAllUniqueCategory = useCallback(async () => {
+    try {
+      await dispatch(fetchUniqueCategoryApiData({}));
+    } catch (error) {}
+  }, [dispatch]);
+
+  useEffect(() => {
+    getAllUniqueCategory();
+  }, [getAllUniqueCategory]);
+
+  const getAllSize = useCallback(async () => {
+    try {
+      await dispatch(fetchSizeApiData({}));
+    } catch (error) {}
+  }, [dispatch]);
+
+  useEffect(() => {
+    getAllSize();
+  }, [getAllSize]);
+
+  const getAllColor = useCallback(async () => {
+    try {
+      await dispatch(fetchColorApiData({}));
+    } catch (error) {}
+  }, [dispatch]);
+
+  useEffect(() => {
+    getAllColor();
+  }, [getAllColor]);
+
+  const getAllFabric = useCallback(async () => {
+    try {
+      await dispatch(fetchFabricApiData({}));
+    } catch (error) {}
+  }, [dispatch]);
+
+  useEffect(() => {
+    getAllFabric();
+  }, [getAllFabric]);
+
+  const getAllMaterial = useCallback(async () => {
+    try {
+      await dispatch(fetchMaterialApiData({}));
+    } catch (error) {}
+  }, [dispatch]);
+
+  useEffect(() => {
+    getAllMaterial();
+  }, [getAllMaterial]);
+
+  const getAllOccasion = useCallback(async () => {
+    try {
+      await dispatch(fetchOccasionApiData({}));
+    } catch (error) {}
+  }, [dispatch]);
+
+  useEffect(() => {
+    getAllOccasion();
+  }, [getAllOccasion]);
 
   return (
     <Fragment>
@@ -182,7 +243,7 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                       <div className="input-box">
                         <Label>Category</Label>
                         <select className="form-select" {...register("categoryId")}>
-                          <option>Select Category</option>
+                          <option value="">Select Category</option>
                           {allCategory?.category_data?.map((category, index) => (
                             <option value={category?._id} key={index}>
                               {category?.name}
@@ -195,25 +256,25 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
 
                     <Col sm="6" md="4" lg="3" xl="2">
                       <div className="input-box">
-                        <Label>Sub Category</Label>
-                        <select className="form-select" {...register("subCategoryId")}>
-                          <option>Select Sub Category</option>
-                          {allCategory?.category_data?.map((category, index) => (
-                            <option value={category?._id} key={index}>
-                              {category?.name}
+                        <Label>Unique Category</Label>
+                        <select className="form-select" {...register("uniqueCategoryId")}>
+                          <option value="">Select Unique Category</option>
+                          {allUniqueCategory?.unique_category_data?.map((uniqueCategory, index) => (
+                            <option value={uniqueCategory?._id} key={index}>
+                              {uniqueCategory?.name}
                             </option>
                           ))}
                         </select>
-                        {errors.subCategoryId && <p className="text-danger">{errors.subCategoryId.message}</p>}
+                        {errors.uniqueCategoryId && <p className="text-danger">{errors.uniqueCategoryId.message}</p>}
                       </div>
                     </Col>
-                    
+
                     <CustomTypeahead control={control} errors={errors.tags} title="Tags" name="tags" />
-                    <ColorSelector control={control} errors={errors} />
-                    <CustomTypeahead control={control} errors={errors.size} title="Size" name="size" />
-                    <CustomTypeahead control={control} errors={errors.material} title="Material" name="material" />
-                    <CustomTypeahead control={control} errors={errors.fabric} title="Fabric" name="fabric" />
-                    <CustomTypeahead control={control} errors={errors.occasion} title="Occasion" name="occasion" />
+                    <CustomTypeahead control={control} errors={errors.colorIds} title="Color" name="colorIds" options={generateOptions(allColor?.color_data)} />
+                    <CustomTypeahead control={control} errors={errors.sizeIds} title="Size" name="sizeIds" options={generateOptions(allSize?.size_data)} />
+                    <CustomTypeahead control={control} errors={errors.materialIds} title="Material" name="materialIds" options={generateOptions(allMaterial?.material_data)} />
+                    <CustomTypeahead control={control} errors={errors.fabricIds} title="Fabric" name="fabricIds" options={generateOptions(allFabric?.fabric_data)} />
+                    <CustomTypeahead control={control} errors={errors.occasionIds} title="Occasion" name="occasionIds" options={generateOptions(allOccasion?.occasion_data)} />
 
                     <Col md="12" className="custom-dropzone-project input-box">
                       <div className="mb-3">

@@ -22,7 +22,7 @@ const Information: FC<InformationProp> = ({ headerTitle, editorContent, setEdito
   }, [editorContent, value]);
   return (
     <Card>
-      <CommonCardHeader title={headerTitle} setIsEditing={setIsEditing} isEditing={isEditing} />
+      {headerTitle && <CommonCardHeader title={headerTitle} setIsEditing={setIsEditing} isEditing={isEditing} />}
       <CardBody>
         <ReactQuill className="Information" ref={quillRef} theme="snow" value={value} onChange={onEditorChange} modules={{ toolbar: ToolbarOptions }} readOnly={!isEditing} />
         {isEditing && (

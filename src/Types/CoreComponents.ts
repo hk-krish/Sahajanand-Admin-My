@@ -41,11 +41,11 @@ export interface CardHeaderProp {
   btnLink?: string;
   typeFilter?: (id: string) => void;
   typeFilterData?: TypeFilterData[];
-  rowClass?:string;
+  rowClass?: string;
 }
 
 export interface InformationProp {
-  headerTitle: string;
+  headerTitle?: string;
   editorContent: string;
   setEditorContent: (content: string) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
@@ -69,6 +69,7 @@ export interface CommonImageUploadProps {
   trigger?: any;
   name?: string;
   type?: string;
+  disabled?: boolean;
 }
 
 export interface PaginationListProps {
@@ -96,6 +97,7 @@ export interface CustomTypeaheadType {
   control: any;
   title?: string;
   name?: string;
+  options?: any;
 }
 
 export interface ProductImageProps {
