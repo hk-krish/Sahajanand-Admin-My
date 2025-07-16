@@ -19,20 +19,28 @@ export const menuList: MenuItem[] | undefined = [
     title: "Products",
     Items: [
       {
-        id: 6,
-        title: "Product",
-        icon: "ecommerce",
-        active: false,
-        type: "link",
-        url: RouteList.Product.Product,
-      },
-      {
         id: 7,
         title: "Category",
         icon: "charts",
         active: false,
         type: "link",
         url: RouteList.Category.Category,
+      },
+      {
+        id: 13,
+        title: "Unique Category",
+        icon: "widget",
+        active: false,
+        type: "link",
+        url: RouteList.UniqueCategory,
+      },
+      {
+        id: 6,
+        title: "Product",
+        icon: "ecommerce",
+        active: false,
+        type: "link",
+        url: RouteList.Product.Product,
       },
       {
         id: 12,
@@ -42,14 +50,11 @@ export const menuList: MenuItem[] | undefined = [
         type: "link",
         url: RouteList.Collections.Collections,
       },
-       {
-        id: 13,
-        title: "Unique Category",
-        icon: "widget",
-        active: false,
-        type: "link",
-        url: RouteList.UniqueCategory,
-      },
+    ],
+  },
+  {
+    title: "Order",
+    Items: [
       {
         id: 10,
         title: "TrackOrder",
@@ -103,7 +108,7 @@ export const menuList: MenuItem[] | undefined = [
         type: "link",
         url: RouteList.Fabric,
       },
-        {
+      {
         id: 1,
         icon: "widget",
         active: false,

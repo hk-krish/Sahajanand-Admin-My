@@ -90,7 +90,7 @@ const GridView = () => {
           <Pagination page={page} pageCount={allUniqueCategory?.state?.page_limit} selectedPageLimit={pageLimit} onPageLimitChange={setPageLimit} onPageChange={(selectedItem) => setPage(selectedItem.selected)} />
         </Fragment>
       ) : (
-        <SearchNotFoundClass word="No items found in Category" />
+        <SearchNotFoundClass word="No items found in Unique Category" />
       )}
       <AddUniqueCategoryModal isEdit={isEdit} setEdit={setEdit} getAllUniqueCategory={getAllUniqueCategory} />
     </div>
