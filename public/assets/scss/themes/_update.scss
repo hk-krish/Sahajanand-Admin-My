@@ -2814,6 +2814,10 @@ body.offcanvas {
       &:focus-visible {
         outline: none !important;
       }
+      &:disabled {
+        background-color: var(--bs-secondary-bg);
+        color: #6e6e6f;
+      }
     }
     .quill {
       .ql-toolbar.ql-snow,
@@ -3214,4 +3218,12 @@ nextjs-portal {
 ==========================**/
 .ant-popover {
   z-index: 1100;
+}
+
+.img-fluid-box {
+  max-width: 100%;
+  // height: auto;
+  object-fit: cover;
+  object-position: center;
+  aspect-ratio: 0.703704;
 }

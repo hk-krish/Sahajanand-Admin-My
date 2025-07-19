@@ -19,6 +19,7 @@ import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
 
 const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
   const [photo, setPhoto] = useState<string[]>([]);
+  const [isOffer, setOffer] = useState(false);
 
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -40,7 +41,6 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
   useEffect(() => {
     if (singleEditingProduct && action === "Edit") {
       setValue("name", singleEditingProduct.name);
-      setValue("slug", singleEditingProduct.slug);
       setValue("description", singleEditingProduct.description);
       setValue("price", singleEditingProduct.price);
       setValue("salePrice", singleEditingProduct.salePrice);
@@ -58,26 +58,30 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       setValue("isNewArrival", singleEditingProduct.isNewArrival);
       setValue("isBestSelling", singleEditingProduct.isBestSelling);
       setValue("showOnHomepage", singleEditingProduct.showOnHomepage);
+      setValue("offerPrice", singleEditingProduct.offerPrice);
+      if (singleEditingProduct.isOffer) {
+        setValue("isOffer", singleEditingProduct.isOffer);
+        setOffer(singleEditingProduct.isOffer);
+      }
       if (singleEditingProduct.images) {
         setValue("image", [singleEditingProduct.images]);
         setPhoto(singleEditingProduct.images);
       }
     }
-  }, [action, setValue, singleEditingProduct]);
+  }, [action, setPhoto, setValue, singleEditingProduct, setOffer]);
 
   const onSubmit = async (data: ProductFormData) => {
     const normalizeTags = (items: SelectOption[] = []) => items.map((item) => (typeof item === "string" ? item : item.value));
-    const Product = {
+    const Tags = (items: SelectOption[] = []) => items.map((item) => (typeof item === "string" ? item : item.label));
+    let Product: any = {
       name: data.name,
-      slug: data.slug,
       description: data.description,
       price: data.price,
       salePrice: data.salePrice,
       sku: data.sku,
       images: photo,
       categoryId: data.categoryId,
-      uniqueCategoryId: data.uniqueCategoryId,
-      tags: normalizeTags(data.tags),
+      tags: Tags(data.tags),
       attributes: {
         colorIds: normalizeTags(data.colorIds),
         sizeIds: normalizeTags(data.sizeIds),
@@ -90,8 +94,16 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
       isBestSelling: data.isBestSelling,
       isFeatured: data.isFeatured,
       showOnHomepage: data.showOnHomepage,
+      isOffer: isOffer,
+      offerPrice: data.offerPrice,
     };
+    if (data.uniqueCategoryId) {
+      Product.uniqueCategoryId = data.uniqueCategoryId;
+    }
+
     try {
+      console.log("Product", Product);
+
       const response = action === "Edit" ? await Post(Url_Keys.Product.Edit, { productId: singleEditingProduct._id, ...Product }) : await Post(Url_Keys.Product.Add, Product);
       if (response?.status === 200) {
         reset();
@@ -183,19 +195,11 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
               <div className="input-items">
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <Row className="gy-3 justify-content-center">
-                    <Col md="6">
+                    <Col md="12">
                       <div className="input-box">
                         <Label>Product Name</Label>
                         <input id="name" type="text" placeholder="Product name" {...register("name")} />
                         {errors.name && <p className="text-danger">{errors.name.message}</p>}
-                      </div>
-                    </Col>
-
-                    <Col md="6">
-                      <div className="input-box">
-                        <Label>Slug</Label>
-                        <input type="text" placeholder="Slug" {...register("slug")} />
-                        {errors.slug && <p className="text-danger">{errors.slug.message}</p>}
                       </div>
                     </Col>
 
@@ -269,7 +273,7 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                       </div>
                     </Col>
 
-                    <CustomTypeahead control={control} errors={errors.tags} title="Tags" name="tags" />
+                    <CustomTypeahead control={control} errors={errors.tags} title="Tags" name="tags" options={[]} />
                     <CustomTypeahead control={control} errors={errors.colorIds} title="Color" name="colorIds" options={generateOptions(allColor?.color_data)} />
                     <CustomTypeahead control={control} errors={errors.sizeIds} title="Size" name="sizeIds" options={generateOptions(allSize?.size_data)} />
                     <CustomTypeahead control={control} errors={errors.materialIds} title="Material" name="materialIds" options={generateOptions(allMaterial?.material_data)} />
@@ -282,18 +286,42 @@ const ProductDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
                         <CommonImageUpload multiple name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} />
                       </div>
                     </Col>
-                    <Col md="12" lg="10" xl="8">
+                    {isOffer && (
+                      <Col md="12">
+                        <div className="input-box">
+                          <Label>Offer Price</Label>
+                          <input type="number" placeholder="Offer Price" {...register("offerPrice")} />
+                          {errors.offerPrice && <p className="text-danger">{errors.offerPrice.message}</p>}
+                        </div>
+                      </Col>
+                    )}
+                    <Col md="12">
                       <Row>
                         <CustomCheckbox register={register} title="New Arrival" name="isNewArrival" />
                         <CustomCheckbox register={register} title="Best Selling" name="isBestSelling" />
                         <CustomCheckbox register={register} title="Featured" name="isFeatured" />
                         <CustomCheckbox register={register} title="Show On Homepage" name="showOnHomepage" />
+                        <Col sm="6" md="2">
+                          <div className="input-box">
+                            <div className="d-flex">
+                              <Label className="col-form-label m-r-10" htmlFor="isOffer">
+                                Offer Product
+                              </Label>
+                              <div className="text-end switch-sm">
+                                <Label className="switch">
+                                  <input type="checkbox" id="isOffer" {...register("isOffer")} onChange={(e) => setOffer(e.target.checked)} />
+                                  <span className="switch-state"></span>
+                                </Label>
+                              </div>
+                            </div>
+                          </div>
+                        </Col>
                       </Row>
                     </Col>
                   </Row>
                   <Row>
                     <Col>
-                      <div className="text-center">
+                      <div className="text-center mt-3">
                         <Button type="submit" color="primary">
                           Save
                         </Button>

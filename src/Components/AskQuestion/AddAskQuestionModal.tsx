@@ -72,7 +72,7 @@ const AddAskQuestionModal: FC<AddAskQuestionModalType> = ({ isEdit, setEdit, get
                 <Col md="6" className="input-box">
                   <Label>Product</Label>
                   <select className="form-select" {...register("productId")}>
-                    <option value="">-- Select Product Type --</option>
+                    <option value="">-- Select Product --</option>
                     {allProduct?.product_data?.map((product, index) => (
                       <option value={product?._id} key={index}>
                         {product?.name}

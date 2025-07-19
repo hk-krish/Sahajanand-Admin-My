@@ -3,22 +3,19 @@ import { RouteList, Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
 import CommonImageUpload from "@/CoreComponents/CommonImageUpload";
-import { CollectionTypeData } from "@/Data/CoreComponents";
 import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { fetchProductApiData } from "@/ReduxToolkit/Slice/ProductSlice";
 import { CollectionFormData, SelectOption } from "@/Types/Product";
 import { AddCollectionSchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ColorPicker } from "antd";
 import { useRouter } from "next/navigation";
 import { FC, Fragment, useEffect, useState } from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Controller, useForm } from "react-hook-form";
-import { Button, Card, CardBody, Col, Form, InputGroup, InputGroupText, Label, Row } from "reactstrap";
+import { Button, Card, CardBody, Col, Form, Label, Row } from "reactstrap";
 
 const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
   const [photo, setPhoto] = useState<string[]>([]);
-  const [isCollectionType, setCollectionType] = useState("");
   const { allProduct, singleEditingCollection } = useAppSelector((state) => state.product);
 
   const dispatch = useAppDispatch();
@@ -38,12 +35,10 @@ const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
   useEffect(() => {
     if (singleEditingCollection && action === "Edit") {
       setValue("name", singleEditingCollection.name);
-      setValue("type", singleEditingCollection.type);
       setValue("description", singleEditingCollection.description);
       setValue("isVisible", singleEditingCollection.isVisible);
       setValue("priority", singleEditingCollection.priority);
       setValue("products", singleEditingCollection.products);
-      setCollectionType(singleEditingCollection.type);
       const selectedOptions = allProduct?.product_data?.filter((product) => singleEditingCollection.products.includes(product._id))?.map((product) => ({ label: product.name, value: product._id }));
       setValue("products", selectedOptions || []);
       if (singleEditingCollection.image) {
@@ -57,7 +52,6 @@ const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
     const normalizeTags = (items: SelectOption[] = []) => items.map((item) => (typeof item === "string" ? item : item.value));
     const Collection = {
       name: data.name,
-      type: data.type,
       description: data.description,
       image: photo[0],
       isVisible: data.isVisible,
@@ -94,41 +88,10 @@ const CollectionDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
               <div className="input-items">
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <Row className="gy-3">
-                    <Col md="6">
-                      <div className="input-box">
-                        <Label>Type</Label>
-                        <select className="form-select" {...register("type")} onChange={(e) => setCollectionType(e.target.value)}>
-                          <option value="">-- Select Type --</option>
-                          {CollectionTypeData?.map((banner, index) => (
-                            <option value={banner?.value} key={index}>
-                              {banner?.label}
-                            </option>
-                          ))}
-                        </select>
-                        {errors.type && <p className="text-danger">{errors.type.message}</p>}
-                      </div>
-                    </Col>
-                    <Col md="6">
+                    <Col md="12">
                       <div className="input-box">
                         <Label>name</Label>
-                        {isCollectionType === "color" ? (
-                          <InputGroup>
-                            <Controller
-                              name="name"
-                              control={control}
-                              render={({ field }) => (
-                                <>
-                                  <InputGroupText className="list-light-primary">
-                                    <ColorPicker value={field.value} onChangeComplete={(color) => field.onChange(color.toHexString())} />
-                                  </InputGroupText>
-                                  <input type="text" value={field.value} placeholder="name" {...register("name")} />
-                                </>
-                              )}
-                            />
-                          </InputGroup>
-                        ) : (
-                          <input id="name" type="text" placeholder="Name" {...register("name")} />
-                        )}
+                        <input id="name" type="text" placeholder="Name" {...register("name")} />
                         {errors.name && <p className="text-danger">{errors.name.message}</p>}
                       </div>
                     </Col>

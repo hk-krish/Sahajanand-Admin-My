@@ -98,6 +98,7 @@ export interface CustomTypeaheadType {
   title?: string;
   name?: string;
   options?: any;
+  disabled?: boolean;
 }
 
 export interface ProductImageProps {

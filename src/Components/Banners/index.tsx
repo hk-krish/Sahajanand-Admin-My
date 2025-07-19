@@ -69,11 +69,11 @@ const BannersContainer = () => {
                         <th>Sr No.</th>
                         <th>Desktop Image</th>
                         <th>Mobile Image</th>
-                        <th>Title</th>
-                        <th>Description</th>
+                        {/* <th>Title</th>   */}
+                        {/* <th>Description</th> */}
                         <th>Type</th>
                         <th>Priority</th>
-                        <th>Link Type</th>
+                        {/* <th>Link Type</th> */}
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -82,16 +82,20 @@ const BannersContainer = () => {
                         <tr key={index}>
                           <td>{index + 1} </td>
                           <td>
-                            <RatioImage className="img-fluid img-60" src={item?.imageDesktop ? item.imageDesktop : `${ImagePath}product/compare-1.jpg`} />
+                            <a href={item.imageDesktop} target="_blank">
+                              <RatioImage className="img-fluid img-100" src={item?.imageDesktop ? item.imageDesktop : `${ImagePath}product/compare-1.jpg`} />
+                            </a>
                           </td>
                           <td>
-                            <RatioImage className="img-fluid img-60" src={item?.imageMobile ? item.imageMobile : `${ImagePath}product/compare-1.jpg`} />
+                            <a href={item.imageDesktop} target="_blank">
+                              <RatioImage className="img-fluid img-100" src={item?.imageMobile ? item.imageMobile : `${ImagePath}product/compare-1.jpg`} />
+                            </a>
                           </td>
-                          <td>{item.title}</td>
+                          {/* <td>{item.title}</td> */}
+                          {/* <td>{item.description}</td> */}
                           <td>{item.type}</td>
-                          <td>{item.description}</td>
                           <td>{item.priority}</td>
-                          <td>{item.linkType}</td>
+                          {/* <td>{item.linkType}</td> */}
                           <td>
                             <Button color="primary" href={Href} className="m-1 p-1" onClick={() => EditBanner(item)}>
                               <Edit className="action" />

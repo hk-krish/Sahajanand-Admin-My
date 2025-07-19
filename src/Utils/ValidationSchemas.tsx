@@ -43,11 +43,21 @@ const tagArraySchema = yup
   .min(1, "At least one value is required")
   .required("This field is required");
 
+const tagSchema = yup.array().of(
+  yup.lazy((value) =>
+    typeof value === "string"
+      ? yup.string()
+      : yup.object().shape({
+          label: yup.string().required(),
+          customOption: yup.boolean().optional(),
+        })
+  )
+);
+
 const imageSchema = yup.array().min(1, "At least one image is required").required("Image is required");
 
 export const AddProductSchema = yup.object().shape({
   name: yup.string().required("Product name is required"),
-  slug: yup.string().required("Slug is required"),
   description: yup.string().required("Description is required"),
   price: yup
     .number()
@@ -72,18 +82,25 @@ export const AddProductSchema = yup.object().shape({
     })
     .required("Stock is required"),
   categoryId: yup.string().required("Category is required"),
-  uniqueCategoryId: yup.string().required("Unique Category is required"),
-  tags: tagArraySchema,
+  uniqueCategoryId: yup.string(),
+  tags: tagSchema,
   colorIds: tagArraySchema,
   sizeIds: tagArraySchema,
   materialIds: tagArraySchema,
-  fabricIds: tagArraySchema,
-  occasionIds: tagArraySchema,
+  fabricIds: tagSchema,
+  occasionIds: tagSchema,
   isNewArrival: yup.boolean(),
   isBestSelling: yup.boolean(),
   isFeatured: yup.boolean(),
   showOnHomepage: yup.boolean(),
   image: imageSchema,
+  isOffer: yup.boolean(),
+  offerPrice: yup
+    .number()
+    .typeError("Offer Price must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    }),
 });
 
 export const AddCategorySchema = yup.object().shape({
@@ -110,10 +127,10 @@ export const AddFaqSchema = yup.object().shape({
 
 export const AddBannerSchema = yup.object().shape({
   type: yup.string().required("Type is required"),
-  title: yup.string().required("Title is required"),
+  title: yup.string(),
   linkType: yup.string().required("Link Type is required"),
-  linkId: yup.string().required("Link Id is required"),
-  description: yup.string().required("Description is required"),
+  linkId: yup.string(),
+  description: yup.string(),
   priority: yup
     .number()
     .typeError("Priority must be a number")
@@ -122,6 +139,14 @@ export const AddBannerSchema = yup.object().shape({
     })
     .min(1, "Priority must be at least 1")
     .required("Priority is required"),
+  buttonText: yup.string(),
+  percentage: yup
+    .number()
+    .typeError("Priority must be a number")
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    }),
+  buttonVisible: yup.boolean(),
   image: imageSchema,
   mobileImage: imageSchema,
 });
@@ -141,7 +166,6 @@ export const AddBlogSchema = yup.object().shape({
 
 export const AddCollectionSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
-  type: yup.string().required("Type is required"),
   description: yup.string().required("Description is required"),
   image: imageSchema,
   isVisible: yup.boolean(),
@@ -153,7 +177,7 @@ export const AddCollectionSchema = yup.object().shape({
     })
     .min(1, "Priority must be at least 1")
     .required("Priority is required"),
-  products: tagArraySchema,
+  products: tagSchema,
 });
 
 export const SettingSchema = yup.object().shape({
@@ -165,12 +189,18 @@ export const SettingSchema = yup.object().shape({
   twitter: yup.string().required("Twitter is required"),
   instagram: yup.string().required("Instagram is required"),
   image: imageSchema,
+  newsLetterImage: imageSchema,
   headerOffer: tagArraySchema,
   address: yup.string().required("Address is required"),
   city: yup.string().required("City is required"),
   country: yup.string().required("Country is required"),
   state: yup.string().required("State is required"),
   zipCode: yup.number().typeError("Zip Code must be a number").transform(emptyToUndefined).required("Zip Code is required"),
+  mapLink: yup.string().required("Map Link is required"),
+  whatsappNumber: yup.number().typeError("Whatsapp Number must be a number").transform(emptyToUndefined).required("Whatsapp Number is required"),
+  whatsappMessage: yup.string().required("Whatsapp Message is required"),
+  razorpayKeyId: yup.string().required("Razorpay Key Id is required"),
+  razorpayKeySecret: yup.string().required("Razorpay Secret Key is required"),
 });
 
 export const AddProductReviewSchema = yup.object().shape({

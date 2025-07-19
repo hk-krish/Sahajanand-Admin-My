@@ -42,7 +42,6 @@ const AddUniqueCategoryModal: FC<AddUniqueCategoryModalType> = ({ isEdit, setEdi
     reset();
     setEdit(false);
     dispatch(setAddUniqueCategoryModal());
-    trigger("image");
     setPhoto([]);
   };
 
@@ -56,6 +55,7 @@ const AddUniqueCategoryModal: FC<AddUniqueCategoryModalType> = ({ isEdit, setEdi
       const response = isEdit ? await Post(Url_Keys.UniqueCategory.Edit, { uniqueCategoryId: singleEditingUniqueCategory._id, ...UniqueCategory }) : await Post(Url_Keys.UniqueCategory.Add, UniqueCategory);
       if (response?.status === 200) {
         onCloseModal();
+        trigger("image");
       }
     } catch (error) {}
   };

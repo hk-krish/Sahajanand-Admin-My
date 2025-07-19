@@ -1,12 +1,12 @@
 import { Post } from "@/Api";
 import { Url_Keys } from "@/Constant";
 import CommonImageUpload from "@/CoreComponents/CommonImageUpload";
+import CustomCheckbox from "@/CoreComponents/CustomCheckbox";
 import { BannerTypeData, LinkTypeData } from "@/Data/CoreComponents";
 import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { setAddBannerModal } from "@/ReduxToolkit/Slice/BannersSlice";
-import { fetchCollectionApiData, fetchProductApiData } from "@/ReduxToolkit/Slice/ProductSlice";
+import { fetchCategoryApiData, fetchCollectionApiData, fetchProductApiData, fetchUniqueCategoryApiData } from "@/ReduxToolkit/Slice/ProductSlice";
 import { AddBannersModalType, BannerFormData } from "@/Types/Banner";
-import { getClosestColorName } from "@/Utils/getClosestColorName";
 import { AddBannerSchema } from "@/Utils/ValidationSchemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FC, useEffect, useState } from "react";
@@ -17,10 +17,11 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
   const [isLinkType, setLinkType] = useState("");
   const [photo, setPhoto] = useState<string[]>([]);
   const [mobilePhoto, setMobilePhoto] = useState<string[]>([]);
+  const [isOffer, setOffer] = useState("");
 
   const dispatch = useAppDispatch();
   const { isAddBannerModal, singleEditingBanner } = useAppSelector((state) => state.banners);
-  const { allProduct , allCollection} = useAppSelector((state) => state.product);
+  const { allUniqueCategory, allCollection, allCategory } = useAppSelector((state) => state.product);
 
   const {
     register,
@@ -33,11 +34,17 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
 
   useEffect(() => {
     if (singleEditingBanner && isEdit) {
-      setValue("type", singleEditingBanner.type);
       setValue("title", singleEditingBanner.title);
       setValue("priority", singleEditingBanner.priority);
       setValue("linkId", singleEditingBanner.linkId);
       setValue("description", singleEditingBanner.description);
+      setValue("buttonText", singleEditingBanner.buttonText);
+      setValue("percentage", singleEditingBanner.percentage);
+      setValue("buttonVisible", singleEditingBanner.buttonVisible);
+      if (singleEditingBanner.type) {
+        setValue("type", singleEditingBanner.type);
+        setOffer(singleEditingBanner.type);
+      }
       if (singleEditingBanner.linkType) {
         setValue("linkType", singleEditingBanner.linkType);
         setLinkType(singleEditingBanner.linkType);
@@ -45,12 +52,12 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
       if (singleEditingBanner.imageDesktop) {
         setValue("image", [singleEditingBanner.imageDesktop]);
         setPhoto([singleEditingBanner.imageDesktop]);
-        trigger("image")
+        trigger("image");
       }
       if (singleEditingBanner.imageMobile) {
         setValue("mobileImage", [singleEditingBanner.imageMobile]);
         setMobilePhoto([singleEditingBanner.imageMobile]);
-        trigger("mobileImage")
+        trigger("mobileImage");
       }
     }
   }, [isEdit, setValue, singleEditingBanner, trigger]);
@@ -62,25 +69,30 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
     dispatch(setAddBannerModal());
     setPhoto([]);
     setMobilePhoto([]);
-    trigger("image");
-    trigger("mobileImage");
   };
 
   const onSubmit = async (data: BannerFormData) => {
-    const Banner = {
+    let Banner: any = {
       type: data.type,
       title: data.title,
       priority: data.priority,
       linkType: data.linkType,
-      linkId: data.linkId,
       description: data.description,
+      buttonText: data.buttonText,
+      buttonVisible: data.buttonVisible,
+      percentage: data.percentage,
       imageDesktop: photo[0],
       imageMobile: mobilePhoto[0],
     };
+    if (["category", "uniqueCategory", "collection"].includes(isLinkType)) {
+      Banner = { ...Banner, linkId: data.linkId };
+    }
     try {
       const response = isEdit ? await Post(Url_Keys.Banner.Edit, { bannerId: singleEditingBanner._id, ...Banner }) : await Post(Url_Keys.Banner.Add, Banner);
       if (response?.status === 200) {
         onCloseModal();
+        trigger("image");
+        trigger("mobileImage");
       }
     } catch (error) {}
   };
@@ -88,6 +100,8 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
   useEffect(() => {
     dispatch(fetchProductApiData({}));
     dispatch(fetchCollectionApiData({}));
+    dispatch(fetchCategoryApiData({}));
+    dispatch(fetchUniqueCategoryApiData({}));
   }, [dispatch]);
 
   return (
@@ -109,7 +123,7 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
                 <Col md="6">
                   <div className="input-box">
                     <Label>Type</Label>
-                    <select className="form-select" {...register("type")}>
+                    <select className="form-select" {...register("type")} onChange={(e) => setOffer(e.target.value)}>
                       <option value="">-- Select Type --</option>
                       {BannerTypeData?.map((banner, index) => (
                         <option value={banner?.value} key={index}>
@@ -142,17 +156,23 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
                 <Col md="4">
                   <div className="input-box">
                     <Label>Link</Label>
-                    <select disabled={!isLinkType} className="form-select" {...register("linkId")}>
+                    <select disabled={!["category", "uniqueCategory", "collection"].includes(isLinkType)} className="form-select" {...register("linkId")}>
                       <option value="">-- Select Product Type --</option>
-                      {isLinkType === "product"
-                        ? allProduct?.product_data?.map((product, index) => (
+                      {isLinkType === "category"
+                        ? allCategory?.category_data?.map((product, index) => (
+                            <option value={product?._id} key={index}>
+                              {product?.name}
+                            </option>
+                          ))
+                        : isLinkType === "uniqueCategory"
+                        ? allUniqueCategory?.unique_category_data?.map((product, index) => (
                             <option value={product?._id} key={index}>
                               {product?.name}
                             </option>
                           ))
                         : allCollection?.collection_data?.map((product, index) => (
                             <option value={product?._id} key={index}>
-                              {product?.type === "color"? getClosestColorName(product?.name) : product?.name}
+                              {product?.name}
                             </option>
                           ))}
                     </select>
@@ -164,17 +184,32 @@ const AddBannersModal: FC<AddBannersModalType> = ({ isEdit, setEdit, getAllBanne
                   <input type="number" id="priority" placeholder="Priority" {...register("priority")} />
                   {errors.priority && <span className="text-danger">{errors.priority.message}</span>}
                 </Col>
+                <Col md="6" className="input-box">
+                  <Label htmlFor="buttonText">Button Text</Label>
+                  <input id="buttonText" placeholder="Button Text" {...register("buttonText")} />
+                  {errors.buttonText && <span className="text-danger">{errors.buttonText.message}</span>}
+                </Col>
+                <Col md="6" className="input-box">
+                  <Label htmlFor="percentage">offer percentage</Label>
+                  <input disabled={isOffer === "offer" ? false : true} type="number" id="percentage" placeholder="Offer Percentage" {...register("percentage")} />
+                  {errors.percentage && <span className="text-danger">{errors.percentage.message}</span>}
+                </Col>
                 <Col md="6" className="custom-dropzone-project input-box">
                   <div className="mb-3">
                     <Label>Image Desktop</Label>
-                    <CommonImageUpload name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo}/>
+                    <CommonImageUpload name="image" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setPhoto} photo={photo} type="banner" />
                   </div>
                 </Col>
                 <Col md="6" className="custom-dropzone-project input-box">
                   <div className="mb-3">
                     <Label>Image Mobile</Label>
-                    <CommonImageUpload name="mobileImage" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setMobilePhoto} photo={mobilePhoto}/>
+                    <CommonImageUpload name="mobileImage" trigger={trigger} errors={errors} setValue={setValue} setPhoto={setMobilePhoto} photo={mobilePhoto} type="banner" />
                   </div>
+                </Col>
+                <Col md="12" lg="10" xl="8">
+                  <Row>
+                    <CustomCheckbox register={register} title="Button Visible" name="buttonVisible" />
+                  </Row>
                 </Col>
               </Row>
               <Row>

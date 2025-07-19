@@ -55,7 +55,7 @@ export interface ProductFormData {
   sku: string;
   stock: number;
   categoryId: string;
-  uniqueCategoryId: string;
+  uniqueCategoryId?: string;
   image: File[];
   tags: SelectOption[];
   colorIds: SelectOption[];
@@ -67,6 +67,8 @@ export interface ProductFormData {
   isBestSelling: boolean;
   isFeatured: boolean;
   showOnHomepage: boolean;
+  isOffer: boolean;
+  offerPrice: number;
 }
 
 export interface SubAttributes {
@@ -112,6 +114,8 @@ export interface ProductType {
   reviews: any[];
   createdAt: string;
   updatedAt: string;
+  isOffer: boolean;
+  offerPrice: number;
 }
 
 export interface ProductApiResponse {
@@ -151,7 +155,6 @@ export interface CollectionApiResponse {
 
 export interface CollectionFormData {
   name: string;
-  type: string;
   description: string;
   image?: string[];
   isVisible: boolean;

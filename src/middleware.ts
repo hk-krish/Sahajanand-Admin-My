@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { RouteList } from "./Constant";
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get("token");
+  const token = request.cookies.get("sahajanand-admin-token");
   const pathname = request.nextUrl.pathname;
 
   const publicRoutes = [

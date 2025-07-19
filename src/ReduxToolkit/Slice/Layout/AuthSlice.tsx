@@ -4,21 +4,21 @@ import Cookies from "js-cookie";
 const AuthSlice = createSlice({
   name: "auth",
   initialState: {
-    user: JSON.parse(localStorage.getItem("user")) || {},
+    user: JSON.parse(localStorage.getItem("sahajanand-admin-user")) || {},
   },
   reducers: {
     login(state, action) {
-      Cookies.set("token", action.payload.token, {
+      Cookies.set("sahajanand-admin-token", action.payload.token, {
         path: "/",
         secure: true,
         sameSite: "strict",
       });
-      localStorage.setItem("user", JSON.stringify(action.payload));
+      localStorage.setItem("sahajanand-admin-user", JSON.stringify(action.payload));
       state.user = action.payload;
     },
     logout(state) {
       localStorage.removeItem("user");
-      Cookies.remove("token");
+      Cookies.remove("sahajanand-admin-token");
       state.user = null;
     },
   },

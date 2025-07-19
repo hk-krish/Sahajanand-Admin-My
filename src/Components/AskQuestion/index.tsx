@@ -96,7 +96,7 @@ const AskQuestionContainer = () => {
                   <Pagination page={page} pageCount={allAskQuestion?.state?.page_limit} selectedPageLimit={pageLimit} onPageLimitChange={setPageLimit} onPageChange={(selectedItem) => setPage(selectedItem.selected)} />
                 </Fragment>
               ) : (
-                <SearchNotFoundClass word="No items found in News Letter" />
+                <SearchNotFoundClass word="No items found in Ask A Question" />
               )}
             </CardBody>
           </Card>

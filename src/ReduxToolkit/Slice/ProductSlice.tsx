@@ -39,11 +39,10 @@ export const fetchProductApiData = createAsyncThunk<ProductApiResponse, FetchApi
   return response?.data;
 });
 
-export const fetchCollectionApiData = createAsyncThunk<CollectionApiResponse, FetchApiParams>("admin/collection", async ({ page, limit, search, typeFilter }) => {
+export const fetchCollectionApiData = createAsyncThunk<CollectionApiResponse, FetchApiParams>("admin/collection", async ({ page, limit, search }) => {
   let url = Url_Keys.Collection.Collection;
   if (page) url += `?page=${page}&limit=${limit}`;
   if (search) url += `&search=${search}`;
-  if (typeFilter) url += `&typeFilter=${typeFilter}`;
   const response = await Get<CollectionApiResponse>(url);
   return response?.data;
 });

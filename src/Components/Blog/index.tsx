@@ -1,5 +1,5 @@
 import Delete from "@/Api/Delete";
-import { Href, RouteList, Url_Keys } from "@/Constant";
+import { Href, ImagePath, RouteList, Url_Keys } from "@/Constant";
 import Breadcrumbs from "@/CoreComponents/Breadcrumbs";
 import CommonCardHeader from "@/CoreComponents/CommonCardHeader";
 import Pagination from "@/CoreComponents/Pagination";
@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { fetchBlogApiData, setBlogSearchData, setSingleEditingBlog } from "@/ReduxToolkit/Slice/BlogSlice";
 import { BlogType } from "@/Types/Blog";
 import { dynamicNumber } from "@/Utils";
+import RatioImage from "@/Utils/RatioImage";
 import Link from "next/link";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
@@ -66,7 +67,7 @@ const BlogContainer = () => {
                         <Col xs="12" sm="6" lg="4" xl="3" key={index}>
                           <div className="blog-box list-box">
                             <div className="blog-image">
-                              <ProductImage image={item?.image} />
+                              <RatioImage src={item?.image ? item?.image : `${ImagePath}product/compare-1.jpg`} alt={`product-${index}`} className="img-fluid w-100" />
                               <div className="product-hover">
                                 <ul>
                                   <li onClick={() => DeleteBlog(item?._id)}>
@@ -88,7 +89,6 @@ const BlogContainer = () => {
                                 <h5>{item?.title}</h5>
                               </a>
                               <p>{item?.content}</p>
-                              <h6>{item?.scheduledAt}</h6>
                             </div>
                           </div>
                         </Col>

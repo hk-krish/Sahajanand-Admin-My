@@ -24,11 +24,12 @@ dayjs.extend(utc);
 
 const BlogDataForm: FC<{ action: string }> = ({ action = "Add" }) => {
   const [photo, setPhoto] = useState<string[]>([]);
-  const { allCategory } = useAppSelector((state) => state.product);
-  const { singleEditingBlog } = useAppSelector((state) => state.blog);
   const [startDate, setStartDate] = useState<Date>(dayjs().startOf("day").toDate());
+
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { allCategory } = useAppSelector((state) => state.product);
+  const { singleEditingBlog } = useAppSelector((state) => state.blog);
 
   const {
     register,

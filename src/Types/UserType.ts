@@ -13,6 +13,12 @@ export interface UserType {
   createdAt: string;
   updatedAt: string;
   wishlists?: string[];
+  mapLink: string;
+  newsLetterImage: string;
+  whatsappNumber: number;
+  whatsappMessage: string;
+  razorpayKeyId: string;
+  razorpayKeySecret: string;
 }
 
 export interface UserListState {
@@ -35,9 +41,15 @@ export interface SettingFormData {
   facebook: string;
   twitter: string;
   instagram: string;
-  address:string;
+  address: string;
   city: string;
   country: string;
   state: string;
   zipCode: number;
+  mapLink: string;
+  headerOffer: string[];
+  whatsappNumber: number;
+  whatsappMessage: string;
+  razorpayKeyId: string;
+  razorpayKeySecret: string;
 }

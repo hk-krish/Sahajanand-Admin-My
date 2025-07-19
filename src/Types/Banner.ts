@@ -13,6 +13,9 @@ export interface BannerType {
   createdAt: string;
   updatedAt: string;
   description: string;
+  buttonText: string;
+  percentage: number;
+  buttonVisible: boolean;
 }
 
 export interface BannerState {
@@ -42,6 +45,9 @@ export interface BannerFormData {
   linkType: string;
   linkId: string;
   description: string;
+  buttonText: string;
+  percentage: number;
+  buttonVisible: boolean;
 }
 
 export interface AddBannersModalType {

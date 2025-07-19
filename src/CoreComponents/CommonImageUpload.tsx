@@ -85,13 +85,17 @@ const CommonImageUpload: FC<CommonImageUploadProps> = ({ multiple, errors, setVa
                   {type === "profile" ? (
                     <div className="dropzone-container-profile d-flex justify-content-center">
                       <img id="profile" src={file} alt={`image-${index}`} />
-                      <button type="button" onClick={() => removeFile(file)} className="remove-button" title="Remove file">
-                        ×
-                      </button>
+                      {!disabled && (
+                        <button type="button" onClick={() => removeFile(file)} className="remove-button" title="Remove file">
+                          ×
+                        </button>
+                      )}
                     </div>
                   ) : (
                     <div className="file-card">
-                      <img src={file} alt={`image-${index}`} className="file-thumbnail" />
+                      {/* <div className="file-thumbnail"> */}
+                        <img src={file} alt={`image-${index}`} className={`file-thumbnail ${type === "banner" ? "w-100" :""}`}/>
+                      {/* </div> */}
                       {!disabled && (
                         <button type="button" onClick={() => removeFile(file)} className="remove-button" title="Remove file">
                           ×
@@ -107,6 +111,7 @@ const CommonImageUpload: FC<CommonImageUploadProps> = ({ multiple, errors, setVa
       )}
       {errors?.image && name === "image" && <p className={`text-danger ${type === "profile" && "d-flex justify-content-center"}`}>{errors.image.message}</p>}
       {errors?.mobileImage && name === "mobileImage" && <p className="text-danger">{errors.mobileImage.message}</p>}
+      {errors?.newsLetterImage && name === "newsLetterImage" && <p className="text-danger">{errors.newsLetterImage.message}</p>}
     </Fragment>
   );
 };

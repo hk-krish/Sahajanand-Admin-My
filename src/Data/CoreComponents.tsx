@@ -17,12 +17,16 @@ export const BannerTypeData = [
   { value: "hero", label: "Hero" },
   { value: "offer", label: "Offer" },
   { value: "collection", label: "Collection" },
-  { value: "section", label: "Section" },
 ];
 
 export const LinkTypeData = [
-  { value: "product", label: "Product" },
-  { value: "collection", label: "Collection" },
+  { label: "All Product", value: "page" },
+  { label: "Best selling", value: "isBestSeller" },
+  { label: "New Arrival", value: "isNewArrival" },
+  { label: "Featured", value: "isFeatured" },
+  { label: "Category", value: "category" },
+  { label: "Unique Category", value: "uniqueCategory" },
+  { label: "Collection", value: "collection" },
 ];
 
 export const CategoryData = [

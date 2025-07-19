@@ -9,12 +9,11 @@ import { useAppDispatch, useAppSelector } from "@/ReduxToolkit/Hooks";
 import { fetchCollectionApiData, setSingleEditingCollection } from "@/ReduxToolkit/Slice/ProductSlice";
 import { CollectionType } from "@/Types/Product";
 import { dynamicNumber } from "@/Utils";
-import { getClosestColorName } from "@/Utils/getClosestColorName";
 import Link from "next/link";
 import { FC, Fragment, useCallback, useEffect, useState } from "react";
 import { Card, Col, Row } from "reactstrap";
 
-const GridView: FC<{ isTypeFilter: string }> = ({ isTypeFilter }) => {
+const GridView = () => {
   const [page, setPage] = useState(0);
   const [pageLimit, setPageLimit] = useState(LimitOptions[0]?.value);
 
@@ -34,9 +33,9 @@ const GridView: FC<{ isTypeFilter: string }> = ({ isTypeFilter }) => {
 
   const getAllCollection = useCallback(async () => {
     try {
-      await dispatch(fetchCollectionApiData({ page: page + 1, limit: pageLimit, search: isCollectionSearchData, typeFilter: isTypeFilter }));
+      await dispatch(fetchCollectionApiData({ page: page + 1, limit: pageLimit, search: isCollectionSearchData }));
     } catch (error) {}
-  }, [dispatch, page, pageLimit, isCollectionSearchData, isTypeFilter]);
+  }, [dispatch, page, pageLimit, isCollectionSearchData]);
 
   useEffect(() => {
     getAllCollection();
@@ -76,7 +75,7 @@ const GridView: FC<{ isTypeFilter: string }> = ({ isTypeFilter }) => {
                     </div>
                     <div className="product-details">
                       <Link href={RouteList.Default}>
-                        <h4>{item?.type === "color" ? getClosestColorName(item?.name) : item.name}</h4>
+                        <h4>{item.name}</h4>
                       </Link>
                       <div className="product-price">{item.type}</div>
                       <p>{item.description}</p>

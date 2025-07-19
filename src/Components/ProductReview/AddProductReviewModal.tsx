@@ -72,7 +72,7 @@ const AddProductReviewModal: FC<AddProductReviewModalType> = ({ isEdit, setEdit,
                 <Col md="12" className="input-box">
                   <Label>product</Label>
                   <select className="form-select" {...register("productId")}>
-                    <option value="">-- Select Product Type --</option>
+                    <option value="">-- Select Product --</option>
                     {allProduct?.product_data?.map((product, index) => (
                       <option value={product?._id} key={index}>
                         {product?.name}
